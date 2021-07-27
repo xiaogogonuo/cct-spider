@@ -13,3 +13,11 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+/doc
+/.idea
+*.DS_Store
+*.yaml
+*.xlsx
+*_test.go
+*.log
+*.txt
