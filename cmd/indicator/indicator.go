@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/xiaogogonuo/cct-spider/internal/indicator"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1"
 )
 
 func main() {
-	indicator.Start()
+	v1.Start()
 }

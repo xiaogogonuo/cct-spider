@@ -1,13 +1,13 @@
-package indicator
+package v1
 
 import (
 	"fmt"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/code/date_type_code"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/code/indicator_code"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/code/province_code"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/pkg/date"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/pkg/executor"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/pkg/urllib"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/code/date_type_code"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/code/indicator_code"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/code/province_code"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/pkg/date"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/pkg/executor"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/pkg/urllib"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
