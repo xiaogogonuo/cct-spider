@@ -109,6 +109,7 @@ func setUpIndexMap() {
 
 	// 居民消费价格指数(上年=100)
 	IndexMap[CPIName] = make(map[string]string)
+	IndexMap[CPIName]["TargetNameEN"] = "CPI"
 	IndexMap[CPIName]["TargetCode"] = "HG00003"
 	IndexMap[CPIName]["DataSourceCode"] = "stat"
 	IndexMap[CPIName]["DataSourceName"] = "国家统计局"
@@ -143,6 +144,7 @@ func setUpIndexMap() {
 
 	// 居民消费价格指数(上年同月=100)
 	IndexMap[CPI3Name] = make(map[string]string)
+	IndexMap[CPI3Name]["TargetNameEN"] = "CPI3"
 	IndexMap[CPI3Name]["TargetCode"] = "HG00004"
 	IndexMap[CPI3Name]["DataSourceCode"] = "stat"
 	IndexMap[CPI3Name]["DataSourceName"] = "国家统计局"
@@ -211,6 +213,7 @@ func setUpIndexMap() {
 
 	// 货币和准货币(M2)供应量_同比增长
 	IndexMap[CQC2Name] = make(map[string]string)
+	IndexMap[CQC2Name]["TargetNameEN"] = "M2同比"
 	IndexMap[CQC2Name]["TargetCode"] = "HG00007"
 	IndexMap[CQC2Name]["DataSourceCode"] = "stat"
 	IndexMap[CQC2Name]["DataSourceName"] = "国家统计局"
@@ -228,6 +231,7 @@ func setUpIndexMap() {
 
 	// 固定资产投资增速(固定资产投资额_累计增长)
 	IndexMap[FAI4Name] = make(map[string]string)
+	IndexMap[FAI4Name]["TargetNameEN"] = "固定资产投资增速"
 	IndexMap[FAI4Name]["TargetCode"] = "HG00039"
 	IndexMap[FAI4Name]["DataSourceCode"] = "stat"
 	IndexMap[FAI4Name]["DataSourceName"] = "国家统计局"
@@ -313,6 +317,7 @@ func setUpIndexMap() {
 
 	// 国内生产总值增长
 	IndexMap[GDP3Name] = make(map[string]string)
+	IndexMap[GDP3Name]["TargetNameEN"] = "GDP"
 	IndexMap[GDP3Name]["TargetCode"] = "HG00001"
 	IndexMap[GDP3Name]["DataSourceCode"] = "stat"
 	IndexMap[GDP3Name]["DataSourceName"] = "国家统计局"
@@ -330,6 +335,7 @@ func setUpIndexMap() {
 
 	// 地区生产总值
 	IndexMap[GDPRName] = make(map[string]string)
+	IndexMap[GDPRName]["TargetNameEN"] = "RegionGDP"
 	IndexMap[GDPRName]["TargetCode"] = "HG00002"
 	IndexMap[GDPRName]["DataSourceCode"] = "stat"
 	IndexMap[GDPRName]["DataSourceName"] = "国家统计局"
@@ -466,6 +472,7 @@ func setUpIndexMap() {
 
 	// 工业增加值_同比增长
 	IndexMap[IAV1Name] = make(map[string]string)
+	IndexMap[IAV1Name]["TargetNameEN"] = "IAV同比"
 	IndexMap[IAV1Name]["TargetCode"] = "HG00016"
 	IndexMap[IAV1Name]["DataSourceCode"] = "stat"
 	IndexMap[IAV1Name]["DataSourceName"] = "国家统计局"
@@ -534,6 +541,7 @@ func setUpIndexMap() {
 
 	// 制造业采购经理指数
 	IndexMap[PMIName] = make(map[string]string)
+	IndexMap[PMIName]["TargetNameEN"] = "PMI"
 	IndexMap[PMIName]["TargetCode"] = "HG00020"
 	IndexMap[PMIName]["DataSourceCode"] = "stat"
 	IndexMap[PMIName]["DataSourceName"] = "国家统计局"
@@ -585,6 +593,7 @@ func setUpIndexMap() {
 
 	// 工业生产者出厂价格指数(上年同月=100)
 	IndexMap[PPI3Name] = make(map[string]string)
+	IndexMap[PPI3Name]["TargetNameEN"] = "PPI月度同比"
 	IndexMap[PPI3Name]["TargetCode"] = "HG00023"
 	IndexMap[PPI3Name]["DataSourceCode"] = "stat"
 	IndexMap[PPI3Name]["DataSourceName"] = "国家统计局"
@@ -619,6 +628,7 @@ func setUpIndexMap() {
 
 	// 居民消费水平
 	IndexMap[RCLName] = make(map[string]string)
+	IndexMap[RCLName]["TargetNameEN"] = "RCL"
 	IndexMap[RCLName]["TargetCode"] = "HG00025"
 	IndexMap[RCLName]["DataSourceCode"] = "stat"
 	IndexMap[RCLName]["DataSourceName"] = "国家统计局"
@@ -687,6 +697,7 @@ func setUpIndexMap() {
 
 	// 社会消费品零售总额_同比增长
 	IndexMap[SCG3Name] = make(map[string]string)
+	IndexMap[SCG3Name]["TargetNameEN"] = "SCG同比"
 	IndexMap[SCG3Name]["TargetCode"] = "HG00029"
 	IndexMap[SCG3Name]["DataSourceCode"] = "stat"
 	IndexMap[SCG3Name]["DataSourceName"] = "国家统计局"

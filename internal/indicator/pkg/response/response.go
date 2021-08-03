@@ -28,6 +28,7 @@ type TargetValue struct {
 	TargetGUID       string `db:"TARGET_GUID"`        // 指标ID
 	TargetCode       string `db:"TARGET_CODE"`        // 指标代码
 	TargetName       string `db:"TARGET_NAME"`        // 指标名称
+	TargetNameEN     string `db:"TARGET_NAME_EN"`     // 指标英文名称
 	DataSourceCode   string `db:"DATA_SOURCE_CODE"`   // 数据来源代码
 	DataSourceName   string `db:"DATA_SOURCE_NAME"`   // 数据来源名称
 	SourceTargetCode string `db:"SOURCE_TARGET_CODE"` // 来源系统指标代码

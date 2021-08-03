@@ -48,6 +48,7 @@ func (c Constructor ) Construct() (data []response.TargetValue) {
 		tv.TargetGUID = md5.MD5(c.IndicatorInfo["TargetCode"])
 		tv.TargetCode = c.IndicatorInfo["TargetCode"]
 		tv.TargetName = c.IndicatorName
+		tv.TargetNameEN = c.IndicatorInfo["TargetNameEN"]
 		tv.DataSourceCode = c.IndicatorInfo["DataSourceCode"]
 		tv.DataSourceName = c.IndicatorInfo["DataSourceName"]
 		tv.SourceTargetCode = c.IndicatorInfo["SourceTargetCode"]
