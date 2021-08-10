@@ -8,7 +8,6 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/indicator/v1/pkg/urllib"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
-	"time"
 )
 
 // end return the last value of a slice
@@ -37,7 +36,7 @@ func Execute(param urllib.Param, cn, zb string) (row [][]string) {
 		Cookie: cookie,
 	}
 	resBody, err := req.Visit()
-	time.Sleep(time.Second * 3)
+	//time.Sleep(time.Second * 3)
 	if err != nil {
 		logger.Error(err.Error())
 		return
