@@ -2,7 +2,7 @@ package response
 
 import (
 	"encoding/json"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/pkg/net/http/request"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/net/http/request"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
 )

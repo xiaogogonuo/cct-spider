@@ -2,10 +2,10 @@ package indicator
 
 import (
 	"fmt"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/code"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/pkg/net/http/request"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/pkg/response"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/pkg/time/date"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/code"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/net/http/request"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/response"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/time/date"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"

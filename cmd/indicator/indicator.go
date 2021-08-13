@@ -1,7 +1,11 @@
 package main
 
-import "github.com/xiaogogonuo/cct-spider/internal/indicator/v2/indicator"
+import (
+	indicatorIndustry "github.com/xiaogogonuo/cct-spider/internal/indicator/industry/v2/indicator"
+	//indicatorMarco "github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/indicator"
+)
 
 func main() {
-	indicator.Start()
+	//indicatorMarco.Start()
+	indicatorIndustry.Start()
 }

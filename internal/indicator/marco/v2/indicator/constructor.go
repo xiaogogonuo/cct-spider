@@ -1,8 +1,8 @@
 package indicator
 
 import (
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/code"
-	"github.com/xiaogogonuo/cct-spider/internal/indicator/v2/pkg/response"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/code"
+	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/response"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 )
 

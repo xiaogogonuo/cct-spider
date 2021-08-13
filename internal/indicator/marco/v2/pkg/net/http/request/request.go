@@ -17,6 +17,6 @@ func Request(cn, zb string, param Param) (resBody []byte, err error) {
 		err = errors.New(zb + " get cookie failed")
 		return
 	}
-	resBody, err = GetIndicator(EasyQuery + param.ParamEncode(), cookie)
+	resBody, err = GetIndicator(EasyQuery+ param.ParamEncode(), cookie)
     return
 }
