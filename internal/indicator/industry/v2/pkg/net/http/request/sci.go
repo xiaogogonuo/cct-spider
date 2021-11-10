@@ -22,8 +22,8 @@ type PostData struct {
 	Type  string `json:"type"`
 }
 
-// VisitSCI 卓创资讯
-func VisitSCI(pd PostData) (respBytes []byte, err error) {
+// SCI 卓创资讯
+func SCI(pd PostData) (respBytes []byte, err error) {
 	bt, _ := json.Marshal(pd)
 	req, err := http.NewRequest(http.MethodPost, sciURL, bytes.NewReader(bt))
 	if err != nil {
@@ -37,6 +37,7 @@ func VisitSCI(pd PostData) (respBytes []byte, err error) {
 		logger.Error(err.Error())
 		return
 	}
+	defer resp.Body.Close()
 	respBytes, err = ioutil.ReadAll(resp.Body)
 	//byte数组直接转成string，优化内存
 	//str := (*string)(unsafe.Pointer(&respBytes))
@@ -85,4 +86,4 @@ path2: ""
 path3: ""
 path4: ""
 type: "2"
- */
+*/

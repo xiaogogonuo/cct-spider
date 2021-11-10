@@ -39,26 +39,26 @@ func (m model) entrypoint(wg *sync.WaitGroup) {
 	var rowRespond []response.Respond
 	switch m.indicatorInfo["Flag"] {
 	case "eastmoney":
-		rowRespond = response.CrawlEastMoney(m.indicatorInfo["SourceTargetCode"])
+		rowRespond = response.GetEastMoney(m.indicatorInfo["SourceTargetCode"])
 	case "sci":
 		pd := request.PostData{
-		HY: m.indicatorInfo["HY"],
-		Level: m.indicatorInfo["2"],
-		Path1: m.indicatorInfo["Path1"],
-		Path2: m.indicatorInfo["Path2"],
-		Path3: m.indicatorInfo["Path3"],
-		Path4: m.indicatorInfo["Path4"],
-		Type: m.indicatorInfo["Type"],
+			HY:    m.indicatorInfo["HY"],
+			Level: m.indicatorInfo["2"],
+			Path1: m.indicatorInfo["Path1"],
+			Path2: m.indicatorInfo["Path2"],
+			Path3: m.indicatorInfo["Path3"],
+			Path4: m.indicatorInfo["Path4"],
+			Type:  m.indicatorInfo["Type"],
 		}
-		rowRespond = response.CrawlSCI(pd)
+		rowRespond = response.GetSCI(pd)
 	case "sina":
-		rowRespond = response.CrawlSina(m.indicatorInfo["SourceTargetCode"])
+		rowRespond = response.GetSina(m.indicatorInfo["SourceTargetCode"])
 	case "shi":
-		rowRespond = response.CrawlShiBor()
+		rowRespond = response.GetShiBor()
 	case "tbi":
-		rowRespond = response.CrawlTBI()
+		rowRespond = response.GetTBI()
 	case "lpr":
-		rowRespond = response.CrawlLPR()
+		rowRespond = response.GetLPR()
 	}
 	diffRespond := m.difference(rowDate, rowRespond)
 	if diffRespond == nil || len(diffRespond) == 0 {
@@ -68,7 +68,7 @@ func (m model) entrypoint(wg *sync.WaitGroup) {
 	c := constructor{
 		indicatorName: m.indicatorName,
 		indicatorInfo: m.indicatorInfo,
-		respond: diffRespond,
+		respond:       diffRespond,
 	}
 	data := c.construct()
 	logger.Info(m.indicatorName, logger.Field("updating rows: ", len(data)))
@@ -79,7 +79,7 @@ func Start() {
 	var wg sync.WaitGroup
 	for indicatorName, indicatorInfo := range code.Indicator {
 		wg.Add(1)
-		model{indicatorName, indicatorInfo}.entrypoint(&wg)
+		go model{indicatorName, indicatorInfo}.entrypoint(&wg)
 	}
 	wg.Wait()
 }

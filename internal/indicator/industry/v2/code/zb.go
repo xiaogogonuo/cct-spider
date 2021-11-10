@@ -6,11 +6,15 @@ const (
 	BDIName = "波罗的海指数"
 	LPIName = "物流业景气指数"
 	CCIName = "中国大宗商品指数"
+
+	SHIName = "上海银行间同业拆放利率"
+
 	PIIName = "造纸行业价格指数"
 	COIName = "原油价格指数"
+
 	RMBName = "人民币汇率"
 	USDName = "美元指数"
-	SHIName = "上海银行间同业拆放利率"
+
 	TBIName = "国债指数"
 	LPRName = "贷款基准利率"
 )
@@ -32,7 +36,7 @@ func setUpIndicator() {
 	Indicator[BDIName]["PeriodType"] = fmt.Sprintf("%s", PeriodTypeDay)
 	Indicator[BDIName]["PeriodName"] = fmt.Sprintf("%s", PeriodNameDay)
 
-	// 物流景气指数
+	// 物流业景气指数
 	Indicator[LPIName] = make(map[string]string)
 	Indicator[LPIName]["Flag"] = "eastmoney"
 	Indicator[LPIName]["TargetNameEN"] = "LPI"
@@ -172,16 +176,3 @@ func setUpIndicator() {
 	Indicator[LPRName]["PeriodType"] = fmt.Sprintf("%s", PeriodTypeDay)
 	Indicator[LPRName]["PeriodName"] = fmt.Sprintf("%s", PeriodNameDay)
 }
-
-/*
-HY00001,物流业景气指数,LPI ok
-HY00002,中国大宗商品指数,CCI ok
-HY00003,波罗的海指数,BDI ok
-HY00004,原油价格指数,COI ok
-HY00005,国债指数,TBI ok
-HY00006,上海银行间同业拆放利率,SHIBOR ok
-HY00007,贷款基准利率,LPR ok
-HY00008,人民币汇率,RMBExchangeRate ok
-HY00009,美元指数,USDX ok
-HY00010,造纸行业价格指数,PII ok
- */

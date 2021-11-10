@@ -1,0 +1,22 @@
+package request
+
+import (
+	"fmt"
+	"github.com/xiaogogonuo/cct-spider/pkg/logger"
+	"io"
+	"net/http"
+)
+
+const shi = "http://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99228&cu=cny&type=009023&p=%d"
+
+func ShiBor(page int) (respBytes []byte, err error) {
+	url := fmt.Sprintf(shi, page)
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
