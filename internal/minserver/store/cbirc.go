@@ -1,7 +1,7 @@
 package store
 
 type DetailsCbirc struct {
-	DocId interface{} `json:"docId"`
+	DocId int `json:"docId"`
 }
 
 type Rows struct {

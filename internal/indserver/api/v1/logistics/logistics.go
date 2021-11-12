@@ -31,9 +31,18 @@ func GetPageUrlList(url string, urlChan chan<- *callback.UrlChan, wg *sync.WaitG
 		num = 80
 	}
 	for i := 2; i < num; i++ {
-		urlChan <- &callback.UrlChan{
-			Url:     fmt.Sprintf("%sindex_%v.shtml", url, i),
-			GetUrlF: GetDetailPageUrl,
+		if i < 10{
+			urlChan <- &callback.UrlChan{
+				Url:     fmt.Sprintf("%sindex_%v.shtml", url, i),
+				GetUrlF: GetDetailPageUrl,
+			}
+		} else
+		{
+			url = "http://www.chinawuliu.com.cn/zcms/ui/catalog/15166/pc/"
+			urlChan <- &callback.UrlChan{
+				Url:     fmt.Sprintf("%sindex_%v.shtml", url, i),
+				GetUrlF: GetDetailPageUrl,
+			}
 		}
 	}
 }
