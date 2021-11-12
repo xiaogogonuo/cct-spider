@@ -176,3 +176,23 @@ func setUpIndicator() {
 	Indicator[LPRName]["PeriodType"] = fmt.Sprintf("%s", PeriodTypeDay)
 	Indicator[LPRName]["PeriodName"] = fmt.Sprintf("%s", PeriodNameDay)
 }
+
+/*
+贷款基准利率
+117.185.132.25:80
+
+国债指数
+140.143.215.224:80
+
+美元指数、人民币汇率
+39.156.6.98:443
+
+原油价格指数、造纸行业价格指数
+223.96.90.169:443
+
+上海银行间同业拆放利率
+223.111.14.130:80
+
+波罗的海指数、物流业景气指数、中国大宗商品指数
+223.111.104.63:443
+*/
