@@ -3,6 +3,9 @@ package code
 import "fmt"
 
 const (
+	IAVNameTB = "工业增加值_同比增长"
+	IAV2Name  = "工业增加值_累计增长"
+
 	BDIName = "波罗的海指数"
 	LPIName = "物流业景气指数"
 	CCIName = "中国大宗商品指数"
@@ -22,6 +25,20 @@ const (
 var Indicator = make(map[string]map[string]string)
 
 func setUpIndicator() {
+	// 工业增加值_同比增长
+	Indicator[IAVNameTB] = make(map[string]string)
+	Indicator[IAVNameTB]["Flag"] = "IavTB"
+	Indicator[IAVNameTB]["TargetNameEN"] = "IAV同比"
+	Indicator[IAVNameTB]["TargetCode"] = "HG00016"
+	Indicator[IAVNameTB]["DataSourceCode"] = "eastmoney"
+	Indicator[IAVNameTB]["DataSourceName"] = "东方财富"
+	Indicator[IAVNameTB]["SourceTargetCode"] = "mkt0"
+	Indicator[IAVNameTB]["IsQuantity"] = "Y"
+	Indicator[IAVNameTB]["UnitType"] = UnitTypeP
+	Indicator[IAVNameTB]["UnitName"] = UnitNameP
+	Indicator[IAVNameTB]["PeriodType"] = fmt.Sprintf("%s", PeriodTypeMonth)
+	Indicator[IAVNameTB]["PeriodName"] = fmt.Sprintf("%s", PeriodNameMonth)
+
 	// 波罗的海干散货指数
 	Indicator[BDIName] = make(map[string]string)
 	Indicator[BDIName]["Flag"] = "eastmoney"

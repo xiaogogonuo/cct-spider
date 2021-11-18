@@ -17,10 +17,14 @@ type Respond struct {
 	TargetValue string
 }
 
+func GetIavTB(sourceTargetCode string) (row []Respond) {
+	return
+}
+
 func GetEastMoney(sourceTargetCode string) (row []Respond) {
 	row = make([]Respond, 0)
 	for i := 1; ; i++ {
-		b, err := request.EastMoney(sourceTargetCode, i)
+		b, err := request.EastMoneyHY(sourceTargetCode, i)
 		if err != nil {
 			logger.Error(err.Error())
 			continue

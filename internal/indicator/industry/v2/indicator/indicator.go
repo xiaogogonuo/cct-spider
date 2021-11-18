@@ -40,6 +40,8 @@ func (m model) entrypoint(wg *sync.WaitGroup) {
 	switch m.indicatorInfo["Flag"] {
 	case "eastmoney":
 		rowRespond = response.GetEastMoney(m.indicatorInfo["SourceTargetCode"])
+	case "IavTB":
+		rowRespond = response.GetIavTB(m.indicatorInfo["SourceTargetCode"])
 	case "sci":
 		pd := request.PostData{
 			HY:    m.indicatorInfo["HY"],
