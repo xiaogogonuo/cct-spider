@@ -158,7 +158,7 @@ func exec(sql string, stop chan struct{}, data ...interface{}) {
 		logger.Error(err.Error())
 		return
 	}
-	logger.Info("Insert success")
+	//logger.Info("Insert success")
 	return
 }
 

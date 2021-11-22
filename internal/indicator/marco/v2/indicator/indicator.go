@@ -7,7 +7,6 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/response"
 	"github.com/xiaogogonuo/cct-spider/internal/indicator/marco/v2/pkg/time/date"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
-	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
 	"time"
 )
@@ -93,7 +92,7 @@ func (m Model) entrypoint() {
 	mParam := m.param(dateRegion, sourceTargetCode)
 	result := response.Crawl(m.cn(), sourceTargetCode, mParam)
 	if result == nil || len(result) == 0 {
-		logger.Info(fmt.Sprintf("%s has no data to update", m.IndicatorName))
+		//logger.Info(fmt.Sprintf("%s has no data to update", m.IndicatorName))
 		return
 	}
 	data := Constructor{
@@ -102,7 +101,7 @@ func (m Model) entrypoint() {
 		IndicatorInfo: m.IndicatorInfo,
 		Respond: result,
 	}.Construct()
-	logger.Info(m.IndicatorName, logger.Field("updating rows: ", len(data)))
+	//logger.Info(m.IndicatorName, logger.Field("updating rows: ", len(data)))
 	Dump(data)
 }
 

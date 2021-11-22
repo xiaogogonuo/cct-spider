@@ -11,7 +11,6 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/insertdb"
 	"github.com/xiaogogonuo/cct-spider/pkg/config"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
-	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"sync"
 )
 
@@ -68,7 +67,7 @@ func ministries() {
 	go func() {
 		for v := range urlChannel {
 			if _, ok := urlKeyMap[md5.MD5(v.Url)]; ok {
-				logger.Info("Obtained, no need to update", logger.Field("url", v.Url))
+				//logger.Info("Obtained, no need to update", logger.Field("url", v.Url))
 				continue
 			}
 			limitChan <- struct{}{}
@@ -83,7 +82,7 @@ func ministries() {
 	go func() {
 		for v := range infoChannel {
 			if _, ok := urlKeyMap[md5.MD5(v.Url)]; ok {
-				logger.Info("Obtained, no need to update", logger.Field("url", v.Url))
+				//logger.Info("Obtained, no need to update", logger.Field("url", v.Url))
 				continue
 			}
 			limitChan <- struct{}{}

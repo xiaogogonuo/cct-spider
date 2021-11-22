@@ -64,7 +64,7 @@ func (m model) entrypoint(wg *sync.WaitGroup) {
 	}
 	diffRespond := m.difference(rowDate, rowRespond)
 	if diffRespond == nil || len(diffRespond) == 0 {
-		logger.Info(fmt.Sprintf("%s has no data to update", m.indicatorName))
+		//logger.Info(fmt.Sprintf("%s has no data to update", m.indicatorName))
 		return
 	}
 	c := constructor{

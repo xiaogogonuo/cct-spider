@@ -7,7 +7,6 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/tagserver/api/v1/region"
 	"github.com/xiaogogonuo/cct-spider/internal/tagserver/api/v1/sentiment"
 	"github.com/xiaogogonuo/cct-spider/internal/tagserver/store"
-	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"sync"
 )
 
@@ -32,7 +31,7 @@ func tagging(){
 	go func() {
 		for n := range newsOrgChan {
 			if _, ok := idKeyMap[n.NEWS_GUID]; ok {
-				logger.Info("Obtained, no need to update", logger.Field("news_guid", n.NEWS_GUID))
+				//logger.Info("Obtained, no need to update", logger.Field("news_guid", n.NEWS_GUID))
 				continue
 			}
 			limitChan <- struct {}{}

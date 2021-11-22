@@ -41,7 +41,6 @@ func (r *Request) Visit() (b []byte, err error) {
 			logger.Error(err.Error(), logger.Field("url", r.Url))
 			return
 		}
-		logger.Info("")
 	}
 	return
 }
