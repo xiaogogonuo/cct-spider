@@ -11,9 +11,10 @@ import (
 )
 
 // 外汇交易中心
+// http://www.chinamoney.com.cn/chinese/sddsintib1y/
 
-const lpr = "http://www.chinamoney.com.cn/ags/ms/cm-u-bk-currency/SddsIntrRatePlRatHis?lang=CN&" +
-	"startDate=1997-10-23&endDate=%s&pageNum=1&pageSize=10000"
+const lpr = "http://www.chinamoney.com.cn/ags/ms/cm-u-bk-currency/SddsIntrRatePlRatHis?lang=CN&startDate=1997-10-23&" +
+	"endDate=%s&pageNum=1&pageSize=10000"
 
 type StructLPR struct {
 	Records []LPR `json:"records"`

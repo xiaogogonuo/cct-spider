@@ -147,7 +147,7 @@ func visitMacroIndex(sourceTargetCode string) (b []byte, err error) {
 
 // RespondMacroIndex 返回东方财富宏观指标数据
 // 适用指标：工业增加值增长、社会消费品零售总额、货币供应量、居民消费价格指数(CPI)、国内生产总值(GDP)
-// 采购经理人指数(PMI)、工业品出厂价格指数(PPI)
+// 采购经理人指数(PMI)、工业品出厂价格指数(PPI)、贷款基准利率LPR
 func RespondMacroIndex(sourceTargetCode, targetCode string) (row []Respond) {
 	row = make([]Respond, 0)
 	b, err := visitMacroIndex(sourceTargetCode)
@@ -158,35 +158,39 @@ func RespondMacroIndex(sourceTargetCode, targetCode string) (row []Respond) {
 	stringB := string(b)
 	stringB = stringB[1 : len(stringB)-1]
 	switch targetCode {
+	case "HY00007": // 贷款基准利率
+		row = lprIndustryIndexApiSimilarMarcoIndex(stringB, 9, 5)
 	case "HG00016": // 工业增加值同比增长
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00017": // 工业增加值累计增长
-		row = marcoPipe(stringB, 2)
+		row = marcoPipe(stringB, 0, 2)
 	case "HG00027": // 社会消费品零售总额当期值
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00028": // 社会消费品零售总额累计值
-		row = marcoPipe(stringB, 4)
+		row = marcoPipe(stringB, 0, 4)
 	case "HG00029": // 社会消费品零售总额同比增长
-		row = marcoPipe(stringB, 2)
+		row = marcoPipe(stringB, 0, 2)
 	case "HG00030": // 社会消费品零售总额累计增长
-		row = marcoPipe(stringB, 5)
+		row = marcoPipe(stringB, 0, 5)
 	case "HG00006": // 货币和准货币(M2)供应量期末值
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00007": // 货币和准货币(M2)供应量同比增长
-		row = marcoPipe(stringB, 2)
+		row = marcoPipe(stringB, 0, 2)
 	case "HG00004": // 居民消费价格指数当月，对应国家统计局的居民消费价格指数(上年同月=100)
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00020": // 制造业采购经理指数
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00023": // 工业品出厂价格指数当月，对应国家统计局的工业生产者出厂价格指数(上年同月=100)
-		row = marcoPipe(stringB, 1)
+		row = marcoPipe(stringB, 0, 1)
 	case "HG00001": // 国内生产总值同比增长(季度)
-		row = marcoPipeMonth2Season(stringB, 2)
+		row = marcoPipeMonth2Season(stringB, 0, 2)
 	}
 	return
 }
 
-func marcoPipe(s string, valueIndex int) (row []Respond) {
+// 贷款基准利率在表设计时，当作行业指标，但是它的接口跟宏观指标一致，同时它是以天为单位，而宏观指标是以月为单位
+// 故提取前8位，其余部分与宏观指标逻辑一致
+func lprIndustryIndexApiSimilarMarcoIndex(s string, dateIndex, valueIndex int) (row []Respond) {
 	var data []string
 	if err := json.Unmarshal([]byte(s), &data); err != nil {
 		logger.Error(err.Error())
@@ -195,14 +199,14 @@ func marcoPipe(s string, valueIndex int) (row []Respond) {
 	for _, d := range data {
 		var respond Respond
 		ds := strings.Split(d, ",")
-		respond.Date = strings.ReplaceAll(ds[0], "-", "")[:6] // 提取前6位
+		respond.Date = strings.ReplaceAll(ds[dateIndex], "-", "")[:8] // 提取前8位
 		respond.TargetValue = ds[valueIndex]
 		row = append(row, respond)
 	}
 	return
 }
 
-func marcoPipeMonth2Season(s string, valueIndex int) (row []Respond) {
+func marcoPipe(s string, dateIndex, valueIndex int) (row []Respond) {
 	var data []string
 	if err := json.Unmarshal([]byte(s), &data); err != nil {
 		logger.Error(err.Error())
@@ -211,7 +215,23 @@ func marcoPipeMonth2Season(s string, valueIndex int) (row []Respond) {
 	for _, d := range data {
 		var respond Respond
 		ds := strings.Split(d, ",")
-		date := strings.ReplaceAll(ds[0], "-", "")
+		respond.Date = strings.ReplaceAll(ds[dateIndex], "-", "")[:6] // 提取前6位
+		respond.TargetValue = ds[valueIndex]
+		row = append(row, respond)
+	}
+	return
+}
+
+func marcoPipeMonth2Season(s string, dateIndex, valueIndex int) (row []Respond) {
+	var data []string
+	if err := json.Unmarshal([]byte(s), &data); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	for _, d := range data {
+		var respond Respond
+		ds := strings.Split(d, ",")
+		date := strings.ReplaceAll(ds[dateIndex], "-", "")
 		switch date[4:6] {
 		case "01", "02", "03":
 			respond.Date = date[:4] + "Q1"

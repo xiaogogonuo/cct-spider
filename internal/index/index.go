@@ -64,8 +64,6 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSina(c.SourceTargetCode)
 	case "ifeng":
 		rowRespond = response.RespondTBI()
-	case "yinhang123":
-		rowRespond = response.RespondYinHang()
 	case "sci":
 		pd := response.PostData{
 			HY:    c.HY,

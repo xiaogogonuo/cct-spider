@@ -199,6 +199,22 @@ var ConfigString = `[
 }, 
 
 {
+"Name": "贷款基准利率", 
+"Case": "eastMoneyHG", 
+"TargetNameEN": "LPR", 
+"TargetCode": "HY00007", 
+"DataSourceCode": "eastmoney", 
+"DataSourceName": "东方财富", 
+"SourceTargetCode": "13", 
+"SourceTargetCodeTable": "mkt130", 
+"IsQuantity": "Y", 
+"UnitType": "50", 
+"UnitName": "%", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
 "Name": "波罗的海干散货指数", 
 "Case": "eastMoneyHY", 
 "TargetNameEN": "BDI", 
@@ -306,22 +322,6 @@ var ConfigString = `[
 "IsQuantity": "Y", 
 "UnitType": "", 
 "UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日"
-}, 
-
-{
-"Name": "贷款基准利率", 
-"Case": "yinhang123", 
-"TargetNameEN": "LPR", 
-"TargetCode": "HY00007", 
-"DataSourceCode": "yinhang123", 
-"DataSourceName": "银行信息港", 
-"SourceTargetCode": "1254559", 
-"SourceTargetCodeTable": "1254559", 
-"IsQuantity": "Y", 
-"UnitType": "50", 
-"UnitName": "%", 
 "PeriodType": "50", 
 "PeriodName": "日"
 }, 
