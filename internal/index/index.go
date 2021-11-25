@@ -1,12 +1,16 @@
 package index
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/xiaogogonuo/cct-spider/internal/index/response"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
+	"math"
+	"net/http"
+	"sync"
 )
 
 var Table = "T_DMAA_BASE_TARGET_VALUE"
@@ -135,6 +139,7 @@ func acct(date, period string, f *Field) {
 type Configs []Config
 
 func RunIndex() {
+	var wg sync.WaitGroup
 	var configs Configs
 	if err := json.Unmarshal([]byte(ConfigString), &configs); err != nil {
 		logger.Fatal(err.Error())
@@ -150,6 +155,37 @@ func RunIndex() {
 		}
 		data := config.construct(diffRespond)
 		logger.Info(config.Name, logger.Field("updating rows: ", len(data)))
-		batchDump(data)
+		length := len(data)
+		epoch := int(math.Ceil(float64(length) / float64(batchSize)))
+		wg.Add(epoch + 1)
+		go batchDump(data, &wg)
+		for i := 0; i < epoch; i++ {
+			if batchSize*(i+1) < length {
+				batchData := data[i*batchSize : (i+1)*batchSize]
+				go send("http://127.0.0.1:8888/spider/post", batchData, &wg)
+			} else {
+				batchData := data[i*batchSize:]
+				go send("http://127.0.0.1:8888/spider/post", batchData, &wg)
+			}
+		}
 	}
+	wg.Wait()
+}
+
+func send(api string, data []Field, wg *sync.WaitGroup) {
+	defer wg.Done()
+	m, _ := json.Marshal(data)
+	req, err := http.NewRequest(http.MethodPost, api, bytes.NewReader(m))
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	req.Header.Add("Content-Type", "application/json")
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
 }
