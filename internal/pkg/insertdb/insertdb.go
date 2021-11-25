@@ -6,6 +6,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/filter"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/findmap"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/subString"
+	"github.com/xiaogogonuo/cct-spider/internal/webService/news"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"strings"
@@ -27,6 +28,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		quotes                          []string
 		insertValues                    []interface{}
 		beginLen                        = len(preamble) + len(epilogue)
+		pullServer                      []callback.SqlValues
 	)
 	for mes := range message {
 		tLen := len(mes.Title)
@@ -72,17 +74,19 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		}
 		f.WriteMap(guid)
 		v, l := GetQuotesAndValues(sqlValues)
-
-		if beginLen+l+len(oneQuoteSql) < 500000 {
+		if beginLen+l+len(oneQuoteSql) < 100000 {
 			insertValues = append(insertValues, v...)
+			pullServer = append(pullServer, *sqlValues)
 			quotes = append(quotes, oneQuoteSql)
 			beginLen += len(oneQuoteSql) + l
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 			mysql.Transaction(SQl, insertValues...)
+			news.HandlerNews(pullServer)
 			f.SaveUrlKey()
 			insertValues = append([]interface{}{}, v...)
+			pullServer = append([]callback.SqlValues{}, *sqlValues)
 			quotes = append([]string{}, oneQuoteSql)
 			beginLen = len(preamble) + len(epilogue) + len(oneQuoteSql) + l
 		}
@@ -92,5 +96,6 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 	mysql.Transaction(SQl, insertValues...)
+	news.HandlerNews(pullServer)
 	f.SaveUrlKey()
 }

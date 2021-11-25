@@ -62,27 +62,27 @@ type Message struct {
 }
 
 type SqlValues struct {
-	NEWS_GUID        string
-	NEWS_TITLE       string
-	NEWS_TITLE_EN    string
-	NEWS_TS          string
-	NEWS_URL         string
-	NEWS_SOURCE      string
-	NEWS_SOURCE_CODE string
-	NEWS_SUMMARY     string
-	POLICY_TYPE      string
-	POLICY_TYPE_NAME string
-	REGION_CODE      string
-	REGION_NAME      string
-	IS_CONTROL       string
-	IS_INVEST        string
-	IS_DEPOSIT       string
-	IS_FUND          string
-	IS_STOCK         string
-	IS_FINANCE       string
-	IS_INDUSTRY      string
-	IS_CAPITAL       string
-	NEWS_GYS_CODE    string
-	NEWS_GYS_NAME    string
-	NEWS_ID          int
+	NEWS_GUID        string `json:"NEWS_GUID"`
+	NEWS_TITLE       string `json:"NEWS_TITLE"`
+	NEWS_TITLE_EN    string `json:"NEWS_TITLE_EN"`
+	NEWS_TS          string `json:"NEWS_TS"`
+	NEWS_URL         string `json:"NEWS_URL"`
+	NEWS_SOURCE      string `json:"NEWS_SOURCE"`
+	NEWS_SOURCE_CODE string `json:"NEWS_SOURCE_CODE"`
+	NEWS_SUMMARY     string `json:"NEWS_SUMMARY"`
+	POLICY_TYPE      string `json:"POLICY_TYPE"`
+	POLICY_TYPE_NAME string `json:"POLICY_TYPE_NAME"`
+	REGION_CODE      string `json:"REGION_CODE"`
+	REGION_NAME      string `json:"REGION_NAME"`
+	IS_CONTROL       string `json:"IS_CONTROL"`
+	IS_INVEST        string `json:"IS_INVEST"`
+	IS_DEPOSIT       string `json:"IS_DEPOSIT"`
+	IS_FUND          string `json:"IS_FUND"`
+	IS_STOCK         string `json:"IS_STOCK"`
+	IS_FINANCE       string `json:"IS_FINANCE"`
+	IS_INDUSTRY      string `json:"IS_INDUSTRY"`
+	IS_CAPITAL       string `json:"IS_CAPITAL"`
+	NEWS_GYS_CODE    string `json:"NEWS_GYS_CODE"`
+	NEWS_GYS_NAME    string `json:"NEWS_GYS_NAME"`
+	NEWS_ID          int    `json:"NEWS_ID"`
 }
