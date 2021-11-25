@@ -87,7 +87,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		}
 		f.WriteMap(guid)
 		v, l := GetQuotesAndValues(sqlValues)
-		if beginLen+l+len(oneQuoteSql) < 100000 {
+		if beginLen+l+len(oneQuoteSql) < 500000 {
 			insertValues = append(insertValues, v...)
 			pullServer = append(pullServer, *sqlValues)
 			quotes = append(quotes, oneQuoteSql)
