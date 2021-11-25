@@ -1,14 +1,17 @@
 package insertdb
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/callback"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/filter"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/findmap"
+	"github.com/xiaogogonuo/cct-spider/internal/pkg/request"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/subString"
-	"github.com/xiaogogonuo/cct-spider/internal/webService/news"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -17,6 +20,16 @@ type DataInfo struct {
 	DBName     string
 	PolicyCode string
 	PolicyName string
+}
+
+var rep *request.Request
+
+func init() {
+	rep = &request.Request{
+		Url:     "http://127.0.0.1:8080/post",
+		Method:  http.MethodPost,
+	}
+
 }
 
 func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Message) {
@@ -83,7 +96,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 			mysql.Transaction(SQl, insertValues...)
-			news.HandlerNews(pullServer)
+			pullService(pullServer)
 			f.SaveUrlKey()
 			insertValues = append([]interface{}{}, v...)
 			pullServer = append([]callback.SqlValues{}, *sqlValues)
@@ -96,6 +109,16 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 	mysql.Transaction(SQl, insertValues...)
-	news.HandlerNews(pullServer)
+	pullService(pullServer)
 	f.SaveUrlKey()
+}
+
+func pullService(info []callback.SqlValues)(){
+	m, _ := json.Marshal(info)
+	rep.Body = bytes.NewReader(m)
+	_, err := rep.Visit()
+	if err != nil {
+		return
+	}
+
 }
