@@ -5,6 +5,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"math"
 	"strings"
+	"sync"
 )
 
 func questionMark() string {
@@ -23,7 +24,8 @@ func init() {
 
 var batchSize = 1000
 
-func batchDump(data []Field) {
+func batchDump(data []Field, wg *sync.WaitGroup) {
+	defer wg.Done()
 	length := len(data)
 	epoch := int(math.Ceil(float64(length) / float64(batchSize)))
 	for i := 0; i < epoch; i++ {
