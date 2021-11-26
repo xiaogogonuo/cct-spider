@@ -59,7 +59,6 @@ func GetDetailPageUrl(url string, urlChan chan<- *callback.UrlChan, infoChan cha
 
 	for _, v := range articles.Articles {
 		if v.ExpiredTime != 0 {
-			logger.Info("to exceed the time limit", logger.Field("url", v.Url))
 			continue
 		}
 		infoChan <- &callback.InfoChan{

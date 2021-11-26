@@ -24,10 +24,17 @@ type DataInfo struct {
 
 var rep *request.Request
 
+// 生产机
+var newsAPI = "http://106.37.165.121/inf/chengtong/dm/be/policyNewsInfo/saveRequest"
+
+// 本地
+var localHost = "http://localhost:8082/ct/dm/be/policyNewsInfo/saveRequest"
+
 func init() {
 	rep = &request.Request{
-		Url:    "http://106.37.165.121/inf/chengtong/dm/be/policyNewsInfo/saveRequest", // TODO: changeable
+		Url:    newsAPI,
 		Method: http.MethodPost,
+		Header: map[string]string{"Content-Type": "application/json"},
 	}
 }
 
