@@ -8,6 +8,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
+	"io"
 	"math"
 	"net/http"
 	"sync"
@@ -138,6 +139,8 @@ func acct(date, period string, f *Field) {
 
 type Configs []Config
 
+var webService = "http://106.37.165.121/inf/chengtong/dm/aa/baseTargetValue/saveRequest"
+
 func RunIndex() {
 	var wg sync.WaitGroup
 	var configs Configs
@@ -150,7 +153,6 @@ func RunIndex() {
 		rowRespond := config.routingDistribution()
 		diffRespond := config.difference(rowDate, rowRespond)
 		if diffRespond == nil || len(diffRespond) == 0 {
-			logger.Info(fmt.Sprintf("%s has no data to update", config.Name))
 			continue
 		}
 		data := config.construct(diffRespond)
@@ -162,10 +164,10 @@ func RunIndex() {
 		for i := 0; i < epoch; i++ {
 			if batchSize*(i+1) < length {
 				batchData := data[i*batchSize : (i+1)*batchSize]
-				go send("http://127.0.0.1:8888/spider/post", batchData, &wg)
+				go send(webService, batchData, &wg)
 			} else {
 				batchData := data[i*batchSize:]
-				go send("http://127.0.0.1:8888/spider/post", batchData, &wg)
+				go send(webService, batchData, &wg)
 			}
 		}
 	}
@@ -174,7 +176,8 @@ func RunIndex() {
 
 func send(api string, data []Field, wg *sync.WaitGroup) {
 	defer wg.Done()
-	m, _ := json.Marshal(data)
+	postData := map[string][]Field{"data": data}
+	m, _ := json.Marshal(postData)
 	req, err := http.NewRequest(http.MethodPost, api, bytes.NewReader(m))
 	if err != nil {
 		logger.Error(err.Error())
@@ -188,4 +191,6 @@ func send(api string, data []Field, wg *sync.WaitGroup) {
 		return
 	}
 	defer resp.Body.Close()
+	b, _ := io.ReadAll(resp.Body)
+	fmt.Println(string(b))
 }

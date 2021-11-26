@@ -26,10 +26,9 @@ var rep *request.Request
 
 func init() {
 	rep = &request.Request{
-		Url:     "http://127.0.0.1:8080/post",
-		Method:  http.MethodPost,
+		Url:    "http://106.37.165.121/inf/chengtong/dm/be/policyNewsInfo/saveRequest", // TODO: changeable
+		Method: http.MethodPost,
 	}
-
 }
 
 func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Message) {
@@ -113,8 +112,9 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	f.SaveUrlKey()
 }
 
-func pullService(info []callback.SqlValues)(){
-	m, _ := json.Marshal(info)
+func pullService(info []callback.SqlValues) {
+	postData := map[string][]callback.SqlValues{"data": info}
+	m, _ := json.Marshal(postData)
 	rep.Body = bytes.NewReader(m)
 	_, err := rep.Visit()
 	if err != nil {
