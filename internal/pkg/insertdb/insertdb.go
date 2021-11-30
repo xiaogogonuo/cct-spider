@@ -25,10 +25,7 @@ type DataInfo struct {
 var rep *request.Request
 
 // 生产机
-var newsAPI = "http://106.37.165.121/inf/chengtong/dm/be/policyNewsInfo/saveRequest"
-
-// 本地
-var localHost = "http://localhost:8082/ct/dm/be/policyNewsInfo/saveRequest"
+var newsAPI = "http://106.37.165.121/inf/dm/be/policyNewsInfo/saveRequest"
 
 func init() {
 	rep = &request.Request{
@@ -123,9 +120,9 @@ func pullService(info []callback.SqlValues) {
 	postData := map[string][]callback.SqlValues{"data": info}
 	m, _ := json.Marshal(postData)
 	rep.Body = bytes.NewReader(m)
-	_, err := rep.Visit()
+	b, err := rep.Visit()
 	if err != nil {
 		return
 	}
-
+	fmt.Println(string(b))
 }
