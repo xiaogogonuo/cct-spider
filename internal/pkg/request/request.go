@@ -1,6 +1,7 @@
 package request
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/codec"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
@@ -97,7 +98,12 @@ func (r *Request) request() (resp *http.Response, err error) {
 	if r.Cookies.StrCookie != ""{
 		req.Header.Set("Cookie", r.Cookies.StrCookie)
 	}
-	client := &http.Client{Timeout: r.Timeout}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, //InsecureSkipVerify参数值只能在客户端上设置有效
+	}
+	client := &http.Client{Timeout: r.Timeout, Transport: tr}
+
 	resp, err = client.Do(req)
 	if err != nil {
 		logger.Error(err.Error(), logger.Field("url", r.Url))
