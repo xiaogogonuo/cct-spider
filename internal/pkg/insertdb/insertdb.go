@@ -53,7 +53,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 			continue
 		}
 		if mes.Date == "" || mes.Date > t {
-			mes.Date = "10000101"
+			mes.Date = t
 		}
 		if len(mes.Summary) > 65535 {
 			n, _ := subString.RuneIndex([]byte(mes.Summary), 65535/3)
