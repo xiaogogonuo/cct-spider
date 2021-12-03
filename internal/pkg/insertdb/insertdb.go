@@ -55,6 +55,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		if mes.Date == "" || mes.Date > t {
 			mes.Date = t
 		}
+		mes.Date = fmt.Sprintf("%s-%s-%s 00:00:00", mes.Date[:4], mes.Date[4:6], mes.Date[6:])
 		if len(mes.Summary) > 65535 {
 			n, _ := subString.RuneIndex([]byte(mes.Summary), 65535/3)
 			mes.Summary = mes.Summary[:n]
