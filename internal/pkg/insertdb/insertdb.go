@@ -49,7 +49,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	for mes := range message {
 		tLen := len(mes.Title)
 		sLen := len(mes.Summary)
-		if (tLen == 0 && sLen == 0) || tLen+sLen < 15 {
+		if tLen == 0 || sLen == 0 || tLen+sLen < 30 {
 			continue
 		}
 		if mes.Date == "" || mes.Date > t {
@@ -100,7 +100,8 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 			mysql.Transaction(SQl, insertValues...)
-			pullService(pullServer)
+			fmt.Println("success")
+			//pullService(pullServer)
 			f.SaveUrlKey()
 			insertValues = append([]interface{}{}, v...)
 			pullServer = append([]callback.SqlValues{}, *sqlValues)
@@ -113,7 +114,9 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 	mysql.Transaction(SQl, insertValues...)
-	pullService(pullServer)
+	//pullService(pullServer)
+	fmt.Println("success")
+
 	f.SaveUrlKey()
 }
 
