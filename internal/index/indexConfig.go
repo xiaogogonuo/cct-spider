@@ -295,6 +295,22 @@ var ConfigString = `[
 }, 
 
 {
+"Name": "地区生产总值", 
+"Case": "sinaRegionGDP", 
+"TargetNameEN": "RegionGDP", 
+"TargetCode": "HG00002", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "event7", 
+"SourceTargetCodeTable": "event7", 
+"IsQuantity": "Y", 
+"UnitType": "32", 
+"UnitName": "亿元", 
+"PeriodType": "10", 
+"PeriodName": "年"
+}, 
+
+{
 "Name": "美元指数", 
 "Case": "sina", 
 "TargetNameEN": "USDX", 

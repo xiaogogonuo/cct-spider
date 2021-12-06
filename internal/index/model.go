@@ -22,7 +22,7 @@ type Field struct {
 	PeriodType       string `db:"PERIOD_TYPE" json:"periodType"`              // 计量单位类型
 	PeriodName       string `db:"PERIOD_NAME" json:"periodName"`              // 计量单位名称
 	AcctYear         string `db:"ACCT_YEAR" json:"acctYear"`                  // 年
-	AcctSeason       string `db:"ACCT_QUARTOR" json:"acctSeason"`             // 季
+	AcctSeason       string `db:"ACCT_QUARTOR" json:"acctQuartor"`            // 季
 	AcctMonth        string `db:"ACCT_MONTH" json:"acctMonth"`                // 月
 	AcctDate         string `db:"ACCT_DATE" json:"acctDate"`                  // 日
 	TargetValue      string `db:"TARGET_VALUE" json:"targetValue"`            // 指标值

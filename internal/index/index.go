@@ -56,6 +56,13 @@ func (c Config) downloaded() (row [][]string) {
 	return
 }
 
+// regionDownloaded 查询地区生产总值已经下载过的年度日期
+func (c Config) regionDownloaded() (row [][]string) {
+	sql := fmt.Sprintf("SELECT CONCAT(ACCT_YEAR, REGION_CODE) FROM %s WHERE TARGET_CODE = '%s'", Table, c.TargetCode)
+	row = mysql.Query(sql)
+	return
+}
+
 // routingDistribution 路由分发到对应的网址
 func (c Config) routingDistribution() (rowRespond []response.Respond) {
 	switch c.Case {
@@ -67,6 +74,8 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondShiBor()
 	case "sina":
 		rowRespond = response.RespondSina(c.SourceTargetCode)
+	case "sinaRegionGDP":
+		rowRespond = response.RespondSinaRegionGDP()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
 	case "sci":
@@ -90,7 +99,7 @@ func (c Config) difference(rowDate [][]string, rowRespond []response.Respond) (d
 		ch[v[0]] = struct{}{}
 	}
 	for _, row := range rowRespond {
-		if _, ok := ch[row.Date]; !ok {
+		if _, ok := ch[row.Date+row.RegionCode]; !ok {
 			diffRespond = append(diffRespond, row)
 		}
 	}
@@ -100,7 +109,7 @@ func (c Config) difference(rowDate [][]string, rowRespond []response.Respond) (d
 func (c Config) construct(rowRespond []response.Respond) (data []Field) {
 	for _, respond := range rowRespond {
 		f := &Field{}
-		f.ValueGUID = md5.MD5(c.TargetCode + respond.Date)
+		f.ValueGUID = md5.MD5(c.TargetCode + respond.Date + respond.RegionCode)
 		f.TargetGUID = md5.MD5(c.TargetCode)
 		f.TargetCode = c.TargetCode
 		f.TargetName = c.Name
@@ -111,6 +120,8 @@ func (c Config) construct(rowRespond []response.Respond) (data []Field) {
 		f.IsQuantity = c.IsQuantity
 		f.UnitType = c.UnitType
 		f.UnitName = c.UnitName
+		f.RegionCode = respond.RegionCode
+		f.RegionName = respond.RegionName
 		f.PeriodType = c.PeriodType
 		f.PeriodName = c.PeriodName
 		f.TargetValue = respond.TargetValue
@@ -149,7 +160,13 @@ func RunIndex() {
 		return
 	}
 	for _, config := range configs {
-		rowDate := config.downloaded()
+		var rowDate [][]string
+		switch config.Case {
+		case "sinaRegionGDP":
+			rowDate = config.regionDownloaded()
+		default:
+			rowDate = config.downloaded()
+		}
 		rowRespond := config.routingDistribution()
 		diffRespond := config.difference(rowDate, rowRespond)
 		if diffRespond == nil || len(diffRespond) == 0 {
