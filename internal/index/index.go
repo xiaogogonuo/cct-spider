@@ -56,9 +56,16 @@ func (c Config) downloaded() (row [][]string) {
 	return
 }
 
-// regionDownloaded 查询地区生产总值已经下载过的年度日期
-func (c Config) regionDownloaded() (row [][]string) {
+// regionYearDownloaded 查询地区生产总值已经下载过的年度日期
+func (c Config) regionYearDownloaded() (row [][]string) {
 	sql := fmt.Sprintf("SELECT CONCAT(ACCT_YEAR, REGION_CODE) FROM %s WHERE TARGET_CODE = '%s'", Table, c.TargetCode)
+	row = mysql.Query(sql)
+	return
+}
+
+// regionMonthDownloaded 查询地区生产总值已经下载过的月度日期
+func (c Config) regionMonthDownloaded() (row [][]string) {
+	sql := fmt.Sprintf("SELECT CONCAT(ACCT_YEAR, ACCT_MONTH, REGION_CODE) FROM %s WHERE TARGET_CODE = '%s'", Table, c.TargetCode)
 	row = mysql.Query(sql)
 	return
 }
@@ -76,6 +83,8 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSina(c.SourceTargetCode)
 	case "sinaRegionGDP":
 		rowRespond = response.RespondSinaRegionGDP()
+	case "sinaRegionCPI":
+		rowRespond = response.RespondSinaRegionCPI()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
 	case "sci":
@@ -163,7 +172,9 @@ func RunIndex() {
 		var rowDate [][]string
 		switch config.Case {
 		case "sinaRegionGDP":
-			rowDate = config.regionDownloaded()
+			rowDate = config.regionYearDownloaded()
+		case "sinaRegionCPI":
+			rowDate = config.regionMonthDownloaded()
 		default:
 			rowDate = config.downloaded()
 		}
@@ -209,5 +220,5 @@ func send(api string, data []Field, wg *sync.WaitGroup) {
 	}
 	defer resp.Body.Close()
 	b, _ := io.ReadAll(resp.Body)
-	fmt.Println(string(b))
+	logger.Info(string(b))
 }

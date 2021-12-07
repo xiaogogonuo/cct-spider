@@ -311,6 +311,22 @@ var ConfigString = `[
 }, 
 
 {
+"Name": "地区居民消费价格指数", 
+"Case": "sinaRegionCPI", 
+"TargetNameEN": "RegionCPI", 
+"TargetCode": "HG00040", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "event2", 
+"SourceTargetCodeTable": "event2", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "30", 
+"PeriodName": "月"
+}, 
+
+{
 "Name": "美元指数", 
 "Case": "sina", 
 "TargetNameEN": "USDX", 

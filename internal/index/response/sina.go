@@ -68,12 +68,12 @@ type RegionGDP struct {
 }
 
 // 新浪财经地区生产总值接口
-var sinaRegionGDBURL = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALLCALLBACK1638751228372/" +
+var sinaRegionGDPURL = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALLCALLBACK1638751228372/" +
 	"MacPage_Service.get_pagedata?cate=nation&event=7&from=1&num=%d&condition="
 
 func visitSinaRegionGDP() (respBytes []byte, err error) {
 	queryRow := (time.Now().Year() - 1992 + 1) * 31
-	resp, err := http.Get(fmt.Sprintf(sinaRegionGDBURL, queryRow))
+	resp, err := http.Get(fmt.Sprintf(sinaRegionGDPURL, queryRow))
 	if err != nil {
 		logger.Error(err.Error())
 		return
@@ -89,31 +89,15 @@ func RespondSinaRegionGDP() (row []Respond) {
 	row = make([]Respond, 0)
 	b, err := visitSinaRegionGDP()
 	if err != nil {
-		logger.Error(err.Error())
 		return
 	}
 	b, err = GBKToUTF8(b)
 	if err != nil {
-		logger.Error(err.Error())
 		return
 	}
-	s := string(b)
-	index := strings.Index(s, "config")
-	if index == -1 {
-		return
-	}
-	config := s[index-1 : len(s)-3]
-	config = strings.ReplaceAll(config, "all", `"all"`)
-	config = strings.ReplaceAll(config, "data", `"data"`)
-	config = strings.ReplaceAll(config, "count", `"count"`)
-	config = strings.ReplaceAll(config, "index", `"index"`)
-	config = strings.ReplaceAll(config, "title", `"title"`)
-	config = strings.ReplaceAll(config, "config", `"config"`)
-	config = strings.ReplaceAll(config, "except", `"except"`)
-	config = strings.ReplaceAll(config, "querylist", `"querylist"`)
-	config = strings.ReplaceAll(config, "defaultItems", `"defaultItems"`)
+	br := selectJson(b)
 	var regionGDP RegionGDP
-	err = json.Unmarshal([]byte(config), &regionGDP)
+	err = json.Unmarshal(br, &regionGDP)
 	if err != nil {
 		logger.Error(err.Error())
 		return
@@ -129,6 +113,99 @@ func RespondSinaRegionGDP() (row []Respond) {
 		respond.RegionCode = provinceNameCode(addProvinceName(data[1]))
 		row = append(row, respond)
 	}
+	return
+}
+
+// 新浪财经地区居民消费价格指数
+var sinaRegionCPIURL = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALLCALLBACK1638839653350/" +
+	"MacPage_Service.get_pagedata?cate=price&event=2&from=%d&num=31&condition="
+
+type RegionCPI struct {
+	Data map[string][][]string `json:"data"`
+}
+
+func visitSinaRegionCPI(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+// RespondSinaRegionCPI 返回新浪财经的地区居民消费价格指数
+//// 适用指标：地区居民消费价格指数
+func RespondSinaRegionCPI() (row []Respond) {
+	row = make([]Respond, 0)
+	for i := 1; ; i++ {
+		_from := 31 * i
+		url := fmt.Sprintf(sinaRegionCPIURL, _from)
+		b, err := visitSinaRegionCPI(url)
+		if err != nil {
+			continue
+		}
+		b, err = GBKToUTF8(b)
+		if err != nil {
+			continue
+		}
+		br := selectJson(b)
+		var regionCPI RegionCPI
+		if err := json.Unmarshal(br, &regionCPI); err != nil {
+			logger.Error(err.Error())
+			continue
+		}
+		// 取累计字段
+		lj := regionCPI.Data["累计"]
+		if len(lj) == 0 {
+			break
+		}
+		for _, data := range lj {
+			if data[1] == "全国" {
+				continue
+			}
+			var respond Respond
+			date := strings.Split(data[0], ".")
+			year := date[0]
+			month := ""
+			if len(date[1]) == 1 {
+				month = "0" + date[1]
+			} else {
+				month = date[1]
+			}
+			respond.Date = year + month
+			respond.TargetValue = data[2]
+			respond.RegionName = addProvinceName(data[1])
+			respond.RegionCode = provinceNameCode(respond.RegionName)
+			row = append(row, respond)
+		}
+	}
+	return
+}
+
+func selectJson(b []byte) (br []byte) {
+	s := string(b)
+	index := strings.Index(s, "config")
+	if index == -1 {
+		return
+	}
+	config := s[index-1 : len(s)-3]
+	config = strings.ReplaceAll(config, "Cmap", `"xxx"`)
+	config = strings.ReplaceAll(config, "C", `"C"`)
+	config = strings.ReplaceAll(config, "mapid", `"mapid"`)
+	config = strings.ReplaceAll(config, "mapname", `"mapname"`)
+	config = strings.ReplaceAll(config, "all", `"all"`)
+	config = strings.ReplaceAll(config, "data", `"data"`)
+	config = strings.ReplaceAll(config, "count", `"count"`)
+	config = strings.ReplaceAll(config, "index", `"index"`)
+	config = strings.ReplaceAll(config, "title", `"title"`)
+	config = strings.ReplaceAll(config, "config", `"config"`)
+	config = strings.ReplaceAll(config, "except", `"except"`)
+	config = strings.ReplaceAll(config, "querylist", `"querylist"`)
+	config = strings.ReplaceAll(config, "defaultItems", `"defaultItems"`)
+	config = strings.ReplaceAll(config, "'", `"`)
+	br = []byte(config)
 	return
 }
 
