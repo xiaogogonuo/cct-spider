@@ -21,3 +21,4 @@
 *_test.go
 *.log
 *.txt
+/bin
