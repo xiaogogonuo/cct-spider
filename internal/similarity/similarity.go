@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/antlabs/strsim"
 	"sort"
+	"strings"
 	"sync"
 )
 
@@ -67,17 +68,63 @@ func queryOneDayNews(ts string) []News {
 	return daily
 }
 
-func combineCompare(n []News) []News {
+// 删除标点符符号
+func dropSymbol(s string) string {
+	s = strings.ReplaceAll(s, "：", "")
+	s = strings.ReplaceAll(s, "？", "")
+	s = strings.ReplaceAll(s, "，", "")
+	s = strings.ReplaceAll(s, "。", "")
+	s = strings.ReplaceAll(s, "“", "")
+	s = strings.ReplaceAll(s, "《", "")
+	s = strings.ReplaceAll(s, "》", "")
+	s = strings.ReplaceAll(s, "【", "")
+	s = strings.ReplaceAll(s, "】", "")
+	s = strings.ReplaceAll(s, "、", "")
+	s = strings.ReplaceAll(s, "！", "")
+	s = strings.ReplaceAll(s, "—", "")
+	s = strings.ReplaceAll(s, "-", "")
+	s = strings.ReplaceAll(s, "!", "")
+	s = strings.ReplaceAll(s, "@", "")
+	s = strings.ReplaceAll(s, "#", "")
+	s = strings.ReplaceAll(s, "$", "")
+	s = strings.ReplaceAll(s, "%", "")
+	s = strings.ReplaceAll(s, "*", "")
+	s = strings.ReplaceAll(s, "&", "")
+	s = strings.ReplaceAll(s, "^", "")
+	s = strings.ReplaceAll(s, "(", "")
+	s = strings.ReplaceAll(s, ")", "")
+	s = strings.ReplaceAll(s, "=", "")
+	s = strings.ReplaceAll(s, "+", "")
+	s = strings.ReplaceAll(s, ":", "")
+	s = strings.ReplaceAll(s, ",", "")
+	s = strings.ReplaceAll(s, "?", "")
+	s = strings.ReplaceAll(s, "/", "")
+	s = strings.ReplaceAll(s, "｜", "")
+	s = strings.ReplaceAll(s, " ", "")
+	s = strings.ReplaceAll(s, "	", "")
+	s = strings.ReplaceAll(s, "\n", "")
+	s = strings.ReplaceAll(s, "\t", "")
+	s = strings.ReplaceAll(s, "\\", "")
+	s = strings.ReplaceAll(s, "（", "")
+	s = strings.ReplaceAll(s, "）", "")
+	return s
+}
+
+// 比较一天中所有新闻标题的相似度，返回相似度高的新闻
+func combineCompare(n []News, per float64) []News {
 	var deletedNews []News
 	for i := 0; i < len(n)-1; i++ {
 		for j := i + 1; j < len(n); j++ {
 			if n[i].Deleted || n[j].Deleted {
 				continue
 			}
-			if textCompare(n[i], n[j], 0.75) {
+			if textCompare(n[i], n[j], per) {
 				if len(n[i].NewsTitle) > len(n[j].NewsTitle) {
 					n[j].Deleted = true
 					deletedNews = append(deletedNews, n[j])
+				} else {
+					n[i].Deleted = true
+					deletedNews = append(deletedNews, n[i])
 				}
 			}
 		}
@@ -86,18 +133,25 @@ func combineCompare(n []News) []News {
 }
 
 func textCompare(n1, n2 News, per float64) bool {
-	if strsim.Compare(n1.NewsTitle, n2.NewsTitle) > per {
+	// 1、存在包含关系的
+	if strings.Contains(n1.NewsTitle, n2.NewsTitle) || strings.Contains(n2.NewsTitle, n1.NewsTitle) {
+		return true
+	}
+	// 2、相似度超过per的
+	if strsim.Compare(dropSymbol(n1.NewsTitle), dropSymbol(n2.NewsTitle)) > per {
 		return true
 	}
 	return false
 }
 
 func SimServer() {
+	// 第一个参数：存放值的参数地址
+	// 第二个参数：命令行参数的名称
+	// 第三个参数：命令行不输入时的默认值
 	var day int
-	flag.IntVar(&day, //第一个参数：存放值的参数地址
-		"day", //第二个参数：命令行参数的名称
-		-1,    //第三个参数：命令行不输入时的默认值
-		"")
+	flag.IntVar(&day, "day", -1, "")
+	var per float64
+	flag.Float64Var(&per, "per", 0.75, "")
 	flag.Parse()
 
 	var wg sync.WaitGroup
@@ -107,7 +161,7 @@ func SimServer() {
 		go func(n []News) {
 			defer wg.Done()
 			semaphore <- struct{}{}
-			deletedNews := combineCompare(n)
+			deletedNews := combineCompare(n, per)
 			wg.Add(1)
 			go func(deletedNews []News) { // 更新数据库DELETE_DATE字段
 				defer wg.Done()
