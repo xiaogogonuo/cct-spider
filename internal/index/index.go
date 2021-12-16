@@ -43,6 +43,8 @@ type Config struct {
 func (c Config) downloaded() (row [][]string) {
 	switch c.PeriodName {
 	case "年":
+		sql := fmt.Sprintf("SELECT ACCT_YEAR FROM %s WHERE TARGET_CODE = '%s'", Table, c.TargetCode)
+		row = mysql.Query(sql)
 	case "季":
 		sql := fmt.Sprintf("SELECT CONCAT(ACCT_YEAR, ACCT_QUARTOR) FROM %s WHERE TARGET_CODE = '%s'", Table, c.TargetCode)
 		row = mysql.Query(sql)
@@ -85,6 +87,8 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSinaRegionGDP()
 	case "sinaRegionCPI":
 		rowRespond = response.RespondSinaRegionCPI()
+	case "sinaCPI":
+		rowRespond = response.RespondSinaCPI()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
 	case "sci":

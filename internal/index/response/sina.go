@@ -17,6 +17,7 @@ import (
 )
 
 // 新浪财经
+// http://finance.sina.com.cn/mac/#price-0-0-31-2
 
 const (
 	sinaURL = "https://vip.stock.finance.sina.com.cn/forex/api/jsonp.php/_/NewForexService.getDayKLine?symbol="
@@ -116,6 +117,67 @@ func RespondSinaRegionGDP() (row []Respond) {
 	return
 }
 
+// CPI 新浪财经居民消费价格指数接口返回的结构体
+type CPI struct {
+	Data [][]string `json:"data"`
+}
+
+var sinaCPIURL = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALLCALLBACK1639556513165/" +
+	"MacPage_Service.get_pagedata?cate=price&event=0&from=%d&num=31&condition="
+
+func visitSinaCPI(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+// RespondSinaCPI 返回新浪财经的居民消费价格指数
+//// 适用指标：居民消费价格指数
+func RespondSinaCPI() (row []Respond) {
+	row = make([]Respond, 0)
+	for i := 0; ; i++ {
+		_from := 31 * i
+		url := fmt.Sprintf(sinaCPIURL, _from)
+		b, err := visitSinaCPI(url)
+		if err != nil {
+			continue
+		}
+		b, err = GBKToUTF8(b)
+		if err != nil {
+			continue
+		}
+		br := selectJson(b)
+		var cpi CPI
+		if err := json.Unmarshal(br, &cpi); err != nil {
+			logger.Error(err.Error())
+			continue
+		}
+		if len(cpi.Data) == 0 || cpi.Data == nil {
+			break
+		}
+		for _, data := range cpi.Data {
+			var respond Respond
+			date := strings.Split(data[0], ".")
+			year := date[0]
+			month := ""
+			if len(date[1]) == 1 {
+				month = "0" + date[1]
+			} else {
+				month = date[1]
+			}
+			respond.Date = year + month
+			respond.TargetValue = data[1]
+			row = append(row, respond)
+		}
+	}
+	return
+}
+
 // 新浪财经地区居民消费价格指数
 var sinaRegionCPIURL = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALLCALLBACK1638839653350/" +
 	"MacPage_Service.get_pagedata?cate=price&event=2&from=%d&num=31&condition="
@@ -139,7 +201,7 @@ func visitSinaRegionCPI(url string) (respBytes []byte, err error) {
 //// 适用指标：地区居民消费价格指数
 func RespondSinaRegionCPI() (row []Respond) {
 	row = make([]Respond, 0)
-	for i := 1; ; i++ {
+	for i := 0; ; i++ {
 		_from := 31 * i
 		url := fmt.Sprintf(sinaRegionCPIURL, _from)
 		b, err := visitSinaRegionCPI(url)
@@ -203,6 +265,7 @@ func selectJson(b []byte) (br []byte) {
 	config = strings.ReplaceAll(config, "config", `"config"`)
 	config = strings.ReplaceAll(config, "except", `"except"`)
 	config = strings.ReplaceAll(config, "querylist", `"querylist"`)
+	config = strings.ReplaceAll(config, "conditions", `"conditions"`)
 	config = strings.ReplaceAll(config, "defaultItems", `"defaultItems"`)
 	config = strings.ReplaceAll(config, "'", `"`)
 	br = []byte(config)
