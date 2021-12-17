@@ -418,5 +418,245 @@ var ConfigString = `[
 "Path3": "", 
 "Path4": "", 
 "Type": "2"
+},
+
+{
+"Name": "日经指数", 
+"Case": "fx", 
+"TargetNameEN": "NIKKI", 
+"TargetCode": "HG00041", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "NIKKI", 
+"SourceTargetCodeTable": "NIKKI", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "斯托克600", 
+"Case": "fx", 
+"TargetNameEN": "SXO", 
+"TargetCode": "HG00042", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "SXO", 
+"SourceTargetCodeTable": "SXO", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "道琼斯工业指数", 
+"Case": "fx", 
+"TargetNameEN": "DJIA", 
+"TargetCode": "HG00043", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "DJIA", 
+"SourceTargetCodeTable": "DJIA", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "标准普尔500指数", 
+"Case": "fx", 
+"TargetNameEN": "SP500", 
+"TargetCode": "HG00044", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "SP500", 
+"SourceTargetCodeTable": "SP500", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "欧元美元", 
+"Case": "fx", 
+"TargetNameEN": "EURUSD", 
+"TargetCode": "HG00045", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "EURUSD", 
+"SourceTargetCodeTable": "EURUSD", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "美元日元", 
+"Case": "fx", 
+"TargetNameEN": "USDJPY", 
+"TargetCode": "HG00046", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "USDJPY", 
+"SourceTargetCodeTable": "USDJPY", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "英镑美元", 
+"Case": "fx", 
+"TargetNameEN": "GBPUSD", 
+"TargetCode": "HG00047", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "GBPUSD", 
+"SourceTargetCodeTable": "GBPUSD", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "布伦特原油连续", 
+"Case": "fx", 
+"TargetNameEN": "OILC", 
+"TargetCode": "HG00048", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "OILC", 
+"SourceTargetCodeTable": "OILC", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "纽约黄金连续", 
+"Case": "fx", 
+"TargetNameEN": "GLNC", 
+"TargetCode": "HG00049", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "GLNC", 
+"SourceTargetCodeTable": "GLNC", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "纽约白银连续", 
+"Case": "fx", 
+"TargetNameEN": "SLNC", 
+"TargetCode": "HG00050", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "SLNC", 
+"SourceTargetCodeTable": "SLNC", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "LME铜", 
+"Case": "fx", 
+"TargetNameEN": "LMCI", 
+"TargetCode": "HG00051", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "LMCI", 
+"SourceTargetCodeTable": "LMCI", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "10年期美国国债", 
+"Case": "fx", 
+"TargetNameEN": "USG10Y", 
+"TargetCode": "HG00052", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "USG10Y", 
+"SourceTargetCodeTable": "USG10Y", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "10年期德国国债", 
+"Case": "fx", 
+"TargetNameEN": "GDBR10", 
+"TargetCode": "HG00053", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "GDBR10", 
+"SourceTargetCodeTable": "GDBR10", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "10年期英国国债", 
+"Case": "fx", 
+"TargetNameEN": "GUKG10", 
+"TargetCode": "HG00054", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "GUKG10", 
+"SourceTargetCodeTable": "GUKG10", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "10年期日本国债", 
+"Case": "fx", 
+"TargetNameEN": "GJGB10", 
+"TargetCode": "HG00055", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "GJGB10", 
+"SourceTargetCodeTable": "GJGB10", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
 }
 ]`

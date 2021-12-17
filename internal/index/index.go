@@ -91,6 +91,8 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSinaCPI()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
+	case "fx":
+		rowRespond = response.RespondHT(c.SourceTargetCode)
 	case "sci":
 		pd := response.PostData{
 			HY:    c.HY,
@@ -140,6 +142,7 @@ func (c Config) construct(rowRespond []response.Respond) (data []Field) {
 		f.TargetValue = respond.TargetValue
 		acct(respond.Date, f.PeriodType, f)
 		data = append(data, *f)
+		fmt.Println(*f)
 	}
 	return
 }
