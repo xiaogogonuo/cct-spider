@@ -56,4 +56,10 @@ func RespondHT(sourceTargetCode string)(row []Respond) {
 10年期德国国债：https://quote.fx678.com/symbol/GDBR10
 10年期英国国债：https://quote.fx678.com/symbol/GUKG10
 10年期日本国债：https://quote.fx678.com/symbol/GJGB10
+
+上证指数：https://quote.fx678.com/symbol/1A0001
+深证成指：https://quote.fx678.com/symbol/2A01
+纳斯达克指数：https://quote.fx678.com/symbol/NASDAQ
+英国FTSE100：https://quote.fx678.com/symbol/FTSE
+
  */

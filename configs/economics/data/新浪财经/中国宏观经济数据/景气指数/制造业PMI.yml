@@ -1,0 +1,17 @@
+# http://finance.sina.com.cn/mac/#boom-5-0-31-2
+# 新浪财经-中国宏观经济数据-景气指数-制造业PMI
+
+StartURL: "http://finance.sina.com.cn/mac/#boom-5-0-31-2"
+Case: "financeSinaMac"
+TargetCode: "HG00020"
+TargetName: "制造业PMI"
+TargetNameEN: "PMI"
+DataSourceCode: "financeSina"
+DataSourceName: "新浪财经"
+SourceTargetCode: "event=5"
+SourceTargetCodeTable: "event=5"
+IsQuantity: "Y"
+UnitType: ""
+UnitName: ""
+PeriodType: "30"
+PeriodName: "月"

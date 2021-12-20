@@ -246,6 +246,100 @@ func RespondSinaRegionCPI() (row []Respond) {
 	return
 }
 
+/* 香港恒生指数
+页面展示接口：http://stock.finance.sina.com.cn/hkstock/quotes/HSI.html
+数据抓包接口：http://hq.sinajs.cn/rn=1639970108245&list=rt_hkHSI
+ */
+
+var HsiAPI = "http://hq.sinajs.cn/rn=1639970108245&list=rt_hkHSI"
+
+func visitHSI(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondHSI() (row []Respond) {
+	body, err := visitHSI(HsiAPI)
+	if err != nil {
+		return
+	}
+	data := strings.Split(string(body), ",")
+	var respond Respond
+	respond.TargetValue = data[3]
+	respond.Date = time.Now().Format("20060102")
+	row = append(row, respond)
+	return
+}
+
+/* 美元兑人民币
+页面展示接口：https://finance.sina.com.cn/money/forex/hq/USDCNY.shtml
+数据抓包接口：https://hq.sinajs.cn/rn=1639973351984list=fx_susdcny
+ */
+
+var UsdCnyApi = "https://hq.sinajs.cn/rn=1639973351984list=fx_susdcny"
+
+func visitUSDCNY(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondUSDCNY() (row []Respond) {
+	body, err := visitUSDCNY(UsdCnyApi)
+	if err != nil {
+		return
+	}
+	data := strings.Split(string(body), ",")
+	var respond Respond
+	respond.TargetValue = data[3]
+	respond.Date = time.Now().Format("20060102")
+	row = append(row, respond)
+	return
+}
+
+/* 人民币兑港币汇率
+页面展示接口：https://finance.sina.com.cn/money/forex/hq/HKDCNY.shtml
+数据抓包接口：https://hq.sinajs.cn/rn=1639973901502list=fx_shkdcny
+ */
+
+var HkdCnyApi = "https://hq.sinajs.cn/rn=1639973901502list=fx_shkdcny"
+
+func visitHKDCNY(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondHKDCNY() (row []Respond) {
+	body, err := visitUSDCNY(HkdCnyApi)
+	if err != nil {
+		return
+	}
+	data := strings.Split(string(body), ",")
+	var respond Respond
+	respond.TargetValue = data[3]
+	respond.Date = time.Now().Format("20060102")
+	row = append(row, respond)
+	return
+}
+
+
 func selectJson(b []byte) (br []byte) {
 	s := string(b)
 	index := strings.Index(s, "config")

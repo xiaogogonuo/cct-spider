@@ -263,7 +263,7 @@ var ConfigString = `[
 }, 
 
 {
-"Name": "上海银行间同业拆放利率", 
+"Name": "上海银行间同业拆放利率隔夜", 
 "Case": "eastMoneySHIBOR", 
 "TargetNameEN": "SHIBOR", 
 "TargetCode": "HY00006", 
@@ -653,6 +653,102 @@ var ConfigString = `[
 "DataSourceName": "汇通财经", 
 "SourceTargetCode": "GJGB10", 
 "SourceTargetCodeTable": "GJGB10", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
+"Name": "英国富时", 
+"Case": "fx", 
+"TargetNameEN": "FTSE", 
+"TargetCode": "HG00056", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "FTSE", 
+"SourceTargetCodeTable": "FTSE", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
+"Name": "纳斯达克指数", 
+"Case": "fx", 
+"TargetNameEN": "NASDAQ", 
+"TargetCode": "HG00057", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "NASDAQ", 
+"SourceTargetCodeTable": "NASDAQ", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
+"Name": "香港恒生指数", 
+"Case": "sinaHSI", 
+"TargetNameEN": "HSZS", 
+"TargetCode": "HG00058", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "hkHSI", 
+"SourceTargetCodeTable": "hkHSI", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
+"Name": "美元兑人民币", 
+"Case": "sinaUSDCNY", 
+"TargetNameEN": "USDCNY", 
+"TargetCode": "HG00059", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "USDCNY", 
+"SourceTargetCodeTable": "USDCNY", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+},
+
+{
+"Name": "港币兑人民币", 
+"Case": "sinaHDKCNY", 
+"TargetNameEN": "HDKCNY", 
+"TargetCode": "HG00060", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "HDKCNY", 
+"SourceTargetCodeTable": "HDKCNY", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日"
+}, 
+
+{
+"Name": "铁矿石主力合约", 
+"Case": "eastMoneyIM", 
+"TargetNameEN": "IM", 
+"TargetCode": "HG00061", 
+"DataSourceCode": "eastMoney", 
+"DataSourceName": "东方财富", 
+"SourceTargetCode": "IM", 
+"SourceTargetCodeTable": "IM", 
 "IsQuantity": "Y", 
 "UnitType": "", 
 "UnitName": "", 

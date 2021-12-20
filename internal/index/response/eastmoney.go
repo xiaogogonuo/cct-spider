@@ -9,12 +9,18 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // 东方财富
 
-// 上海银行间同业拆放利率接口
-const shiBorURL = "http://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99228&cu=cny&type=009023&p=%d"
+/* SHIBOR隔夜
+页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016
+数据抓包接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016
+ */
+
+// Shibor同业间拆借（隔夜）利率
+const shiBorURL = "https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016&p=%d"
 
 // visitShiBor 请求东方财富接口
 // 适用指标：上海银行间同业拆放利率
@@ -61,6 +67,49 @@ func RespondShiBor() (row []Respond) {
 			}
 		}
 	}
+	return
+}
+
+/* 铁矿石主力合约
+页面展示接口：http://quote.eastmoney.com/qihuo/IM.html
+数据抓包接口：https://futsseapi.eastmoney.com/static/114_im_qt
+*/
+
+var ImApi = "https://futsseapi.eastmoney.com/static/114_im_qt"
+
+type IM struct {
+	QT Detail `json:"qt"`
+}
+
+type Detail struct {
+	QRSPJ float64 `json:"qrspj"` // 昨收
+}
+
+func visitIM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondIM() (row []Respond) {
+	body, err := visitIM(ImApi)
+	if err != nil {
+		return
+	}
+	var im IM
+	if err := json.Unmarshal(body, &im); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	respond.TargetValue = fmt.Sprintf("%.2f", im.QT.QRSPJ)
+	row = append(row, respond)
 	return
 }
 

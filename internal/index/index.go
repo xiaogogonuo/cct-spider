@@ -9,7 +9,6 @@ import (
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"io"
-	"math"
 	"net/http"
 	"sync"
 )
@@ -75,35 +74,43 @@ func (c Config) regionMonthDownloaded() (row [][]string) {
 // routingDistribution 路由分发到对应的网址
 func (c Config) routingDistribution() (rowRespond []response.Respond) {
 	switch c.Case {
-	case "eastMoneyHG":
-		rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
-	case "eastMoneyHY":
-		rowRespond = response.RespondIndustryIndex(c.SourceTargetCode)
-	case "eastMoneySHIBOR":
-		rowRespond = response.RespondShiBor()
-	case "sina":
-		rowRespond = response.RespondSina(c.SourceTargetCode)
-	case "sinaRegionGDP":
-		rowRespond = response.RespondSinaRegionGDP()
-	case "sinaRegionCPI":
-		rowRespond = response.RespondSinaRegionCPI()
-	case "sinaCPI":
-		rowRespond = response.RespondSinaCPI()
-	case "ifeng":
-		rowRespond = response.RespondTBI()
-	case "fx":
-		rowRespond = response.RespondHT(c.SourceTargetCode)
-	case "sci":
-		pd := response.PostData{
-			HY:    c.HY,
-			Level: c.Level,
-			Path1: c.Path1,
-			Path2: c.Path2,
-			Path3: c.Path3,
-			Path4: c.Path4,
-			Type:  c.Type,
-		}
-		rowRespond = response.RespondSCI(pd)
+	case "sinaHSI":
+		rowRespond = response.RespondHSI()
+	case "sinaUSDCNY":
+		rowRespond = response.RespondUSDCNY()
+	case "sinaHDKCNY":
+		rowRespond = response.RespondHKDCNY()
+	case "eastMoneyIM":
+		rowRespond = response.RespondIM()
+	//case "eastMoneyHG":
+	//	rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
+	//case "eastMoneyHY":
+	//	rowRespond = response.RespondIndustryIndex(c.SourceTargetCode)
+	//case "eastMoneySHIBOR":
+	//	rowRespond = response.RespondShiBor()
+	//case "sina":
+	//	rowRespond = response.RespondSina(c.SourceTargetCode)
+	//case "sinaRegionGDP":
+	//	rowRespond = response.RespondSinaRegionGDP()
+	//case "sinaRegionCPI":
+	//	rowRespond = response.RespondSinaRegionCPI()
+	//case "sinaCPI":
+	//	rowRespond = response.RespondSinaCPI()
+	//case "ifeng":
+	//	rowRespond = response.RespondTBI()
+	//case "fx":
+		//rowRespond = response.RespondHT(c.SourceTargetCode)
+	//case "sci":
+	//	pd := response.PostData{
+	//		HY:    c.HY,
+	//		Level: c.Level,
+	//		Path1: c.Path1,
+	//		Path2: c.Path2,
+	//		Path3: c.Path3,
+	//		Path4: c.Path4,
+	//		Type:  c.Type,
+	//	}
+	//	rowRespond = response.RespondSCI(pd)
 	}
 	return
 }
@@ -192,19 +199,19 @@ func RunIndex() {
 		}
 		data := config.construct(diffRespond)
 		logger.Info(config.Name, logger.Field("updating rows: ", len(data)))
-		length := len(data)
-		epoch := int(math.Ceil(float64(length) / float64(batchSize)))
-		wg.Add(epoch + 1)
-		go batchDump(data, &wg)
-		for i := 0; i < epoch; i++ {
-			if batchSize*(i+1) < length {
-				batchData := data[i*batchSize : (i+1)*batchSize]
-				go send(webService, batchData, &wg)
-			} else {
-				batchData := data[i*batchSize:]
-				go send(webService, batchData, &wg)
-			}
-		}
+		//length := len(data)
+		//epoch := int(math.Ceil(float64(length) / float64(batchSize)))
+		//wg.Add(epoch + 1)
+		//go batchDump(data, &wg)
+		//for i := 0; i < epoch; i++ {
+		//	if batchSize*(i+1) < length {
+		//		batchData := data[i*batchSize : (i+1)*batchSize]
+		//		go send(webService, batchData, &wg)
+		//	} else {
+		//		batchData := data[i*batchSize:]
+		//		go send(webService, batchData, &wg)
+		//	}
+		//}
 	}
 	wg.Wait()
 }

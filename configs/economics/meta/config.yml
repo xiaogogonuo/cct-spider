@@ -1,0 +1,11 @@
+# 网络并发访问量
+concurrency: 10
+
+# 指标表
+table: "T_DMAA_BASE_TARGET_VALUE"
+
+# 金融指标配置文件目录
+configPath: "configs/economics/data"
+
+requestConcurrency: 100
+responseConcurrency: 100
