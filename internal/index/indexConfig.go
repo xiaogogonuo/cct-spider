@@ -19,7 +19,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "20", 
-"PeriodName": "季"
+"PeriodName": "季",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -35,7 +36,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -51,7 +53,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -67,7 +70,8 @@ var ConfigString = `[
 "UnitType": "32", 
 "UnitName": "亿元", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -83,7 +87,8 @@ var ConfigString = `[
 "UnitType": "32", 
 "UnitName": "亿元", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -99,7 +104,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -115,7 +121,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -131,7 +138,8 @@ var ConfigString = `[
 "UnitType": "32", 
 "UnitName": "亿元", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -147,7 +155,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -163,7 +172,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -179,7 +189,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -195,7 +206,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -211,7 +223,8 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 },
 
 {
@@ -227,7 +240,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -243,7 +257,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -259,7 +274,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -275,8 +291,60 @@ var ConfigString = `[
 "UnitType": "50", 
 "UnitName": "%", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
+
+{
+"Name": "美元兑人民币", 
+"Case": "sinaUSDCNY", 
+"TargetNameEN": "USDCNY", 
+"TargetCode": "HG00059", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "USDCNY", 
+"SourceTargetCodeTable": "USDCNY", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日", 
+"RunTime": "20:00~22:00"
+},
+
+{
+"Name": "港币兑人民币", 
+"Case": "sinaHDKCNY", 
+"TargetNameEN": "HDKCNY", 
+"TargetCode": "HG00060", 
+"DataSourceCode": "sina", 
+"DataSourceName": "新浪财经", 
+"SourceTargetCode": "HDKCNY", 
+"SourceTargetCodeTable": "HDKCNY", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日", 
+"RunTime": "20:00~22:00"
+}, 
+
+{
+"Name": "铁矿石主力合约", 
+"Case": "eastMoneyIM", 
+"TargetNameEN": "IM", 
+"TargetCode": "HG00061", 
+"DataSourceCode": "eastMoney", 
+"DataSourceName": "东方财富", 
+"SourceTargetCode": "IM", 
+"SourceTargetCodeTable": "IM", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
+},
 
 {
 "Name": "人民币汇率", 
@@ -291,7 +359,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -307,7 +376,8 @@ var ConfigString = `[
 "UnitType": "32", 
 "UnitName": "亿元", 
 "PeriodType": "10", 
-"PeriodName": "年"
+"PeriodName": "年",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -323,7 +393,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "30", 
-"PeriodName": "月"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -339,23 +410,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "30", 
-"PeriodName": "月"
-}, 
-
-{
-"Name": "美元指数", 
-"Case": "sina", 
-"TargetNameEN": "USDX", 
-"TargetCode": "HY00009", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
-"SourceTargetCode": "DINIW", 
-"SourceTargetCodeTable": "DINIW", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "月",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -371,7 +427,8 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -394,7 +451,8 @@ var ConfigString = `[
 "Path2": "", 
 "Path3": "", 
 "Path4": "", 
-"Type": "2"
+"Type": "2",
+"RunTime": "20:00~22:00"
 }, 
 
 {
@@ -417,12 +475,13 @@ var ConfigString = `[
 "Path2": "", 
 "Path3": "", 
 "Path4": "", 
-"Type": "2"
+"Type": "2",
+"RunTime": "20:00~22:00"
 },
 
 {
-"Name": "日经指数", 
-"Case": "fx", 
+"Name": "日经225", 
+"Case": "fxGJZS", 
 "TargetNameEN": "NIKKI", 
 "TargetCode": "HG00041", 
 "DataSourceCode": "fx678", 
@@ -433,12 +492,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "斯托克600", 
-"Case": "fx", 
+"Case": "fxGJZS", 
 "TargetNameEN": "SXO", 
 "TargetCode": "HG00042", 
 "DataSourceCode": "fx678", 
@@ -449,12 +509,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "道琼斯工业指数", 
-"Case": "fx", 
+"Case": "fxGJZS", 
 "TargetNameEN": "DJIA", 
 "TargetCode": "HG00043", 
 "DataSourceCode": "fx678", 
@@ -465,12 +526,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
-"Name": "标准普尔500指数", 
-"Case": "fx", 
+"Name": "标普500", 
+"Case": "fxGJZS", 
 "TargetNameEN": "SP500", 
 "TargetCode": "HG00044", 
 "DataSourceCode": "fx678", 
@@ -481,12 +543,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "欧元美元", 
-"Case": "fx", 
+"Case": "fxWH", 
 "TargetNameEN": "EURUSD", 
 "TargetCode": "HG00045", 
 "DataSourceCode": "fx678", 
@@ -497,12 +560,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "美元日元", 
-"Case": "fx", 
+"Case": "fxWH", 
 "TargetNameEN": "USDJPY", 
 "TargetCode": "HG00046", 
 "DataSourceCode": "fx678", 
@@ -513,12 +577,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "英镑美元", 
-"Case": "fx", 
+"Case": "fxWH", 
 "TargetNameEN": "GBPUSD", 
 "TargetCode": "HG00047", 
 "DataSourceCode": "fx678", 
@@ -529,12 +594,30 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
+}, 
+
+{
+"Name": "美元指数", 
+"Case": "fxWH", 
+"TargetNameEN": "USDX", 
+"TargetCode": "HY00009", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "USDX", 
+"SourceTargetCodeTable": "USDX", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "布伦特原油连续", 
-"Case": "fx", 
+"Case": "fxIPE", 
 "TargetNameEN": "OILC", 
 "TargetCode": "HG00048", 
 "DataSourceCode": "fx678", 
@@ -545,12 +628,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "纽约黄金连续", 
-"Case": "fx", 
+"Case": "fxCOMEX", 
 "TargetNameEN": "GLNC", 
 "TargetCode": "HG00049", 
 "DataSourceCode": "fx678", 
@@ -561,12 +645,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "纽约白银连续", 
-"Case": "fx", 
+"Case": "fxCOMEX", 
 "TargetNameEN": "SLNC", 
 "TargetCode": "HG00050", 
 "DataSourceCode": "fx678", 
@@ -577,12 +662,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "LME铜", 
-"Case": "fx", 
+"Case": "fxLME", 
 "TargetNameEN": "LMCI", 
 "TargetCode": "HG00051", 
 "DataSourceCode": "fx678", 
@@ -593,12 +679,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "17:00~19:00"
 }, 
 
 {
 "Name": "10年期美国国债", 
-"Case": "fx", 
+"Case": "fxGJZQ", 
 "TargetNameEN": "USG10Y", 
 "TargetCode": "HG00052", 
 "DataSourceCode": "fx678", 
@@ -609,12 +696,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "10年期德国国债", 
-"Case": "fx", 
+"Case": "fxGJZQ", 
 "TargetNameEN": "GDBR10", 
 "TargetCode": "HG00053", 
 "DataSourceCode": "fx678", 
@@ -625,12 +713,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "10年期英国国债", 
-"Case": "fx", 
+"Case": "fxGJZQ", 
 "TargetNameEN": "GUKG10", 
 "TargetCode": "HG00054", 
 "DataSourceCode": "fx678", 
@@ -641,12 +730,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 }, 
 
 {
 "Name": "10年期日本国债", 
-"Case": "fx", 
+"Case": "fxGJZQ", 
 "TargetNameEN": "GJGB10", 
 "TargetCode": "HG00055", 
 "DataSourceCode": "fx678", 
@@ -657,12 +747,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 },
 
 {
-"Name": "英国富时", 
-"Case": "fx", 
+"Name": "英国FTSE100", 
+"Case": "fxGJZS", 
 "TargetNameEN": "FTSE", 
 "TargetCode": "HG00056", 
 "DataSourceCode": "fx678", 
@@ -673,12 +764,13 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 },
 
 {
 "Name": "纳斯达克指数", 
-"Case": "fx", 
+"Case": "fxGJZS", 
 "TargetNameEN": "NASDAQ", 
 "TargetCode": "HG00057", 
 "DataSourceCode": "fx678", 
@@ -689,70 +781,24 @@ var ConfigString = `[
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日",
+"RunTime": "13:00~15:00"
 },
 
 {
-"Name": "香港恒生指数", 
-"Case": "sinaHSI", 
+"Name": "恒生指数", 
+"Case": "fxGJZS", 
 "TargetNameEN": "HSZS", 
 "TargetCode": "HG00058", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
 "SourceTargetCode": "hkHSI", 
 "SourceTargetCodeTable": "hkHSI", 
 "IsQuantity": "Y", 
 "UnitType": "", 
 "UnitName": "", 
 "PeriodType": "50", 
-"PeriodName": "日"
-},
-
-{
-"Name": "美元兑人民币", 
-"Case": "sinaUSDCNY", 
-"TargetNameEN": "USDCNY", 
-"TargetCode": "HG00059", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
-"SourceTargetCode": "USDCNY", 
-"SourceTargetCodeTable": "USDCNY", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日"
-},
-
-{
-"Name": "港币兑人民币", 
-"Case": "sinaHDKCNY", 
-"TargetNameEN": "HDKCNY", 
-"TargetCode": "HG00060", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
-"SourceTargetCode": "HDKCNY", 
-"SourceTargetCodeTable": "HDKCNY", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日"
-}, 
-
-{
-"Name": "铁矿石主力合约", 
-"Case": "eastMoneyIM", 
-"TargetNameEN": "IM", 
-"TargetCode": "HG00061", 
-"DataSourceCode": "eastMoney", 
-"DataSourceName": "东方财富", 
-"SourceTargetCode": "IM", 
-"SourceTargetCodeTable": "IM", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日"
+"PeriodName": "日", 
+"RunTime": "17:00~19:00"
 }
 ]`

@@ -10,7 +10,9 @@ import (
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"io"
 	"net/http"
+	"strings"
 	"sync"
+	"time"
 )
 
 var Table = "T_DMAA_BASE_TARGET_VALUE"
@@ -36,6 +38,7 @@ type Config struct {
 	Path3                 string `json:"Path3"`
 	Path4                 string `json:"Path4"`
 	Type                  string `json:"Type"`
+	RunTime               string `json:"RunTime"`
 }
 
 // downloaded 查询已经下载过的日期
@@ -74,14 +77,14 @@ func (c Config) regionMonthDownloaded() (row [][]string) {
 // routingDistribution 路由分发到对应的网址
 func (c Config) routingDistribution() (rowRespond []response.Respond) {
 	switch c.Case {
-	case "sinaHSI":
-		rowRespond = response.RespondHSI()
-	case "sinaUSDCNY":
-		rowRespond = response.RespondUSDCNY()
-	case "sinaHDKCNY":
-		rowRespond = response.RespondHKDCNY()
-	case "eastMoneyIM":
-		rowRespond = response.RespondIM()
+	//case "sinaHSI":
+	//	rowRespond = response.RespondHSI()
+	//case "sinaUSDCNY":
+	//	rowRespond = response.RespondUSDCNY()
+	//case "sinaHDKCNY":
+	//	rowRespond = response.RespondHKDCNY()
+	//case "eastMoneyIM":
+	//	rowRespond = response.RespondIM()
 	//case "eastMoneyHG":
 	//	rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
 	//case "eastMoneyHY":
@@ -99,7 +102,9 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 	//case "ifeng":
 	//	rowRespond = response.RespondTBI()
 	//case "fx":
-		//rowRespond = response.RespondHT(c.SourceTargetCode)
+	//	rowRespond = response.RespondHT(c.SourceTargetCode)
+	case "fxGJZS", "fxGJZQ", "fxWH", "fxIPE", "fxCOMEX", "fxLME":
+		rowRespond = response.RespondHT(c.Name, c.Case)
 	//case "sci":
 	//	pd := response.PostData{
 	//		HY:    c.HY,
@@ -183,6 +188,19 @@ func RunIndex() {
 		return
 	}
 	for _, config := range configs {
+		curTime := time.Now()
+		runTimes := strings.Split(config.RunTime, "~")
+		runTimeL, _ := time.Parse("15:04", runTimes[0])
+		runTimeR, _ := time.Parse("15:04", runTimes[1])
+		if curTime.Hour() < runTimeL.Hour() || curTime.Hour() > runTimeR.Hour() {
+			continue
+		}
+		if curTime.Hour() == runTimeL.Hour() && curTime.Minute() < runTimeL.Minute() {
+			continue
+		}
+		if curTime.Hour() == runTimeR.Hour() && curTime.Minute() > runTimeR.Minute() {
+			continue
+		}
 		var rowDate [][]string
 		switch config.Case {
 		case "sinaRegionGDP":
