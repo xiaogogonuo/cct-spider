@@ -76,7 +76,9 @@ func RespondHT(name, condition string) (row []Respond) {
 	var data string
 	for i := 0; i < len(tmp)/8; i++ {
 		if tmp[i*8] == name {
-			data = strings.Join(tmp[i*8+1:(i+1)*8-1], ",")
+			record := tmp[i*8+1:(i+1)*8]
+			record[len(record)-1] = time.Now().Format("2006-01-02") + " " + record[len(record)-1]
+			data = strings.Join(record, ",")
 			break
 		}
 	}
@@ -88,35 +90,33 @@ func RespondHT(name, condition string) (row []Respond) {
 }
 
 /*
-下午2点半爬
-日经指数：https://quote.fx678.com/symbol/NIKKI
-10年期日本国债：https://quote.fx678.com/symbol/GJGB10
+恒生指数：https://quote.fx678.com/symbol/HSI 09:25-16:00
 
-下午2点半爬
-道琼斯工业指数：https://quote.fx678.com/symbol/DJIA
-纳斯达克指数：https://quote.fx678.com/symbol/NASDAQ
+日经指数：https://quote.fx678.com/symbol/NIKKI  08:00-14:00
+日债10年收益率：https://quote.fx678.com/symbol/GJGB10 08:05-16:00
 
-下午2点半爬
-斯托克600：https://quote.fx678.com/symbol/SXO
-标准普尔500指数：https://quote.fx678.com/symbol/SP500
-英国FTSE100：https://quote.fx678.com/symbol/FTSE
-10年期德国国债：https://quote.fx678.com/symbol/GDBR10
-10年期英国国债：https://quote.fx678.com/symbol/GUKG10
+道琼斯工业指数：https://quote.fx678.com/symbol/DJIA 22:35-04:15
+纳斯达克指数：https://quote.fx678.com/symbol/NASDAQ 22:35-04:15
+标准普尔500指数：https://quote.fx678.com/symbol/SP500 22:35-04:15
 
-下午5点爬
-欧元美元 ：https://quote.fx678.com/symbol/EURUSD
-美元日元：https://quote.fx678.com/symbol/USDJPY
-英镑美元：https://quote.fx678.com/symbol/GBPUSD
-原油：https://quote.fx678.com/symbol/OILC
-黄金：https://quote.fx678.com/symbol/GLNC
-白银：https://quote.fx678.com/symbol/SLNC
-铜：https://quote.fx678.com/symbol/LMCI
-恒生指数：https://quote.fx678.com/symbol/HSI
-美元指数：https://quote.fx678.com/symbol/USD
-10年期美国国债：https://quote.fx678.com/symbol/USG10Y  收盘时间待定
+斯托克600：https://quote.fx678.com/symbol/SXO 16:00-01:00
+英国FTSE100：https://quote.fx678.com/symbol/FTSE 16:20-23:45
+德债10年收益率：https://quote.fx678.com/symbol/GDBR10 15:20-01:00
+英债10年收益率：https://quote.fx678.com/symbol/GUKG10 16:05-01:00
+
+欧元美元 ：https://quote.fx678.com/symbol/EURUSD 24小时
+美元日元：https://quote.fx678.com/symbol/USDJPY 24小时
+英镑美元：https://quote.fx678.com/symbol/GBPUSD 24小时
+原油：https://quote.fx678.com/symbol/OILC 24小时
+黄金：https://quote.fx678.com/symbol/GLNC  24小时
+白银：https://quote.fx678.com/symbol/SLNC  24小时
+铜：https://quote.fx678.com/symbol/LMCI  24小时
+美元指数：https://quote.fx678.com/symbol/USD 24小时
+美债10年收益率：https://quote.fx678.com/symbol/USG10Y 24小时
 
 1、中国沪深市场交易时间为：周一至五的9:30-11:30，下午13:00-15:00，周末不交易；
 2、中国香港股市的交易时间为：周一至五的9:30-12:00，下午13:00-16:00，周末不交易；
 3、美国股票的交易时间为：夏21:30-4:00，冬令22:30-5:00；
 4、欧洲股市的交易时间为：夏15:00-23:30，冬16:00-0:30。
+5、港股开盘和收盘时间是早上9点半-12点,下午12点半-4点的
 */

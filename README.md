@@ -10,3 +10,33 @@ GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/governmen
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/similarity cmd/similarity/main.go
 
 ```
+
+```
+crontab 每隔5分钟执行一次，但是第一次执行需要从0点开始
+*/5 0 * * * /bin/sh test.sh
+```
+
+# 汇率相关定时：00:00~00:00 每30分钟跑一次，每次做更新
+```shell
+*/30 * * * * cd /home/chengtong && /home/chengtong/index24
+```
+# 宏观指标定时：20:00~22:00 每15分钟跑一次，每天插一次
+```shell
+*/15 20-22 * * * cd /home/chengtong && /home/chengtong/index
+```
+# 日本相关定时：16:00~17:00 每15分钟跑一次，每天插一次
+```shell
+*/15 16-17 * * * cd /home/chengtong && /home/chengtong/index
+```
+# 欧洲相关定时：01:00~02:00 每15分钟跑一次，每天插一次
+```shell
+*/15 1-2 * * * cd /home/chengtong && /home/chengtong/index
+```
+# 美国相关定时：05:00~06:00 每15分钟跑一次，每天插一次
+```shell
+*/15 5-6 * * * cd /home/chengtong && /home/chengtong/index
+```
+# 相关相关定时：16:00~17:00 每15分钟跑一次，每天插一次
+```shell
+*/15 16-17 * * * cd /home/chengtong && /home/chengtong/index
+```

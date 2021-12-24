@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
-	s := "你好"
-	b := []byte(s)
-	fmt.Println(b)
+	s := "122"
+
+	fmt.Println(strings.Split(s, ",")[0])
 }
