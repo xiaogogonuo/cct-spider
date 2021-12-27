@@ -3,6 +3,7 @@
 ## 构建可执行文件
 ```sh
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index cmd/index/main.go
+GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index24 cmd/index24/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/industry cmd/industry/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/ministries cmd/ministries/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/government cmd/government/main.go
@@ -36,7 +37,7 @@ crontab 每隔5分钟执行一次，但是第一次执行需要从0点开始
 ```shell
 */15 5-6 * * * cd /home/chengtong && /home/chengtong/index
 ```
-# 相关相关定时：16:00~17:00 每15分钟跑一次，每天插一次
+# 香港相关定时：16:00~17:00 每15分钟跑一次，每天插一次
 ```shell
 */15 16-17 * * * cd /home/chengtong && /home/chengtong/index
 ```

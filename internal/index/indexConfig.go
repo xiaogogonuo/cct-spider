@@ -279,57 +279,6 @@ var ConfigString = `[
 }, 
 
 {
-"Name": "上海银行间同业拆放利率隔夜", 
-"Case": "eastMoneySHIBOR", 
-"TargetNameEN": "SHIBOR", 
-"TargetCode": "HY00006", 
-"DataSourceCode": "eastmoney", 
-"DataSourceName": "东方财富", 
-"SourceTargetCode": "EMI99221", 
-"SourceTargetCodeTable": "EMI99221", 
-"IsQuantity": "Y", 
-"UnitType": "50", 
-"UnitName": "%", 
-"PeriodType": "50", 
-"PeriodName": "日",
-"RunTime": "20:00~22:00"
-}, 
-
-{
-"Name": "美元兑人民币", 
-"Case": "sinaUSDCNY", 
-"TargetNameEN": "USDCNY", 
-"TargetCode": "HG00059", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
-"SourceTargetCode": "USDCNY", 
-"SourceTargetCodeTable": "USDCNY", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日", 
-"RunTime": "20:00~22:00"
-},
-
-{
-"Name": "港币兑人民币", 
-"Case": "sinaHDKCNY", 
-"TargetNameEN": "HDKCNY", 
-"TargetCode": "HG00060", 
-"DataSourceCode": "sina", 
-"DataSourceName": "新浪财经", 
-"SourceTargetCode": "HDKCNY", 
-"SourceTargetCodeTable": "HDKCNY", 
-"IsQuantity": "Y", 
-"UnitType": "", 
-"UnitName": "", 
-"PeriodType": "50", 
-"PeriodName": "日", 
-"RunTime": "20:00~22:00"
-}, 
-
-{
 "Name": "铁矿石主力合约", 
 "Case": "eastMoneyIM", 
 "TargetNameEN": "IM", 
@@ -344,6 +293,23 @@ var ConfigString = `[
 "PeriodType": "50", 
 "PeriodName": "日",
 "RunTime": "20:00~22:00"
+},
+
+{
+"Name": "中债10年期国债到期收益率", 
+"Case": "eastMoneyGCHN10", 
+"TargetNameEN": "GCHN10", 
+"TargetCode": "HG00062", 
+"DataSourceCode": "eastMoney", 
+"DataSourceName": "东方财富", 
+"SourceTargetCode": "GCHN10", 
+"SourceTargetCodeTable": "GCHN10", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "00:00~22:00"
 },
 
 {
@@ -478,6 +444,40 @@ var ConfigString = `[
 "Type": "2",
 "RunTime": "20:00~22:00"
 },
+
+{
+"Name": "美元人民币", 
+"Case": "fxWHMP", 
+"TargetNameEN": "MUSD", 
+"TargetCode": "HG00059", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "MUSD", 
+"SourceTargetCodeTable": "MUSD", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日", 
+"RunTime": "00:00~00:00"
+},
+
+{
+"Name": "港元人民币", 
+"Case": "fxWHMP", 
+"TargetNameEN": "MHKD", 
+"TargetCode": "HG00060", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "MHKD", 
+"SourceTargetCodeTable": "MHKD", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日", 
+"RunTime": "00:00~00:00"
+}, 
 
 {
 "Name": "欧元美元", 
@@ -680,7 +680,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "01:00~02:00"
+"RunTime": "00:00~00:00"
 },
 
 {
@@ -697,7 +697,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "01:00~02:00"
+"RunTime": "00:00~00:00"
 }, 
 
 {
@@ -714,7 +714,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "01:00~02:00"
+"RunTime": "00:00~00:00"
 }, 
 
 {
@@ -731,7 +731,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "01:00~02:00"
+"RunTime": "00:00~00:00"
 }, 
 
 {
@@ -748,7 +748,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "05:00~06:00"
+"RunTime": "00:00~00:00"
 },
 
 {
@@ -765,7 +765,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "05:00~06:00"
+"RunTime": "00:00~00:00"
 }, 
 
 {
@@ -782,7 +782,7 @@ var ConfigString = `[
 "UnitName": "", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "05:00~06:00"
+"RunTime": "00:00~00:00"
 }, 
 
 {
@@ -800,5 +800,57 @@ var ConfigString = `[
 "PeriodType": "50", 
 "PeriodName": "日", 
 "RunTime": "16:00~17:00"
+}, 
+
+{
+"Name": "美元LIBOR隔夜", 
+"Case": "fxLibor", 
+"TargetNameEN": "USLibor", 
+"TargetCode": "HG00063", 
+"DataSourceCode": "fx678", 
+"DataSourceName": "汇通财经", 
+"SourceTargetCode": "USLibor", 
+"SourceTargetCodeTable": "USLibor", 
+"IsQuantity": "Y", 
+"UnitType": "50", 
+"UnitName": "%", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
+}, 
+
+{
+"Name": "上海银行间同业拆放利率隔夜", 
+"Case": "eastMoneySHIBOR", 
+"TargetNameEN": "SHIBOR", 
+"TargetCode": "HY00006", 
+"DataSourceCode": "eastmoney", 
+"DataSourceName": "东方财富", 
+"SourceTargetCode": "EMI99221", 
+"SourceTargetCodeTable": "EMI99221", 
+"IsQuantity": "Y", 
+"UnitType": "50", 
+"UnitName": "%", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
+}, 
+
+{
+"Name": "人民币指数", 
+"Case": "cni", 
+"TargetNameEN": "CNYX", 
+"TargetCode": "HG00064", 
+"DataSourceCode": "cni", 
+"DataSourceName": "国证指数", 
+"SourceTargetCode": "CNYX", 
+"SourceTargetCodeTable": "CNYX", 
+"IsQuantity": "Y", 
+"UnitType": "", 
+"UnitName": "", 
+"PeriodType": "50", 
+"PeriodName": "日",
+"RunTime": "20:00~22:00"
 }
+
 ]`

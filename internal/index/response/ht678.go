@@ -1,10 +1,14 @@
 package response
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"io"
 	"net/http"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -48,6 +52,8 @@ func respondHT(condition string) string {
 		return "https://quote.fx678.com/exchange/GJZQ"
 	case "fxWH": // 直盘
 		return "https://quote.fx678.com/exchange/WH"
+	case "fxWHMP": // 人民币汇率中间价
+		return "https://quote.fx678.com/exchange/WHMP"
 	case "fxIPE": // PIE原油
 		return "https://quote.fx678.com/exchange/IPE"
 	case "fxCOMEX": // 纽约金属
@@ -76,7 +82,7 @@ func RespondHT(name, condition string) (row []Respond) {
 	var data string
 	for i := 0; i < len(tmp)/8; i++ {
 		if tmp[i*8] == name {
-			record := tmp[i*8+1:(i+1)*8]
+			record := tmp[i*8+1 : (i+1)*8]
 			record[len(record)-1] = time.Now().Format("2006-01-02") + " " + record[len(record)-1]
 			data = strings.Join(record, ",")
 			break
@@ -85,6 +91,99 @@ func RespondHT(name, condition string) (row []Respond) {
 	var respond Respond
 	respond.TargetValue = data
 	respond.Date = time.Now().Format("20060102")
+	row = append(row, respond)
+	return
+}
+
+/* 美元Libor隔夜
+页面展示接口：https://quote.fx678.com/rate/libor
+数据抓包接口：https://quote.fx678.com/rate/libor
+*/
+
+const USLiborURL = "https://quote.fx678.com/rate/libor"
+
+func visitLibor(url string) (body []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	body, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondUSLibor(targetCode string) (row []Respond) {
+	body, err := visitLibor(USLiborURL)
+	if err != nil {
+		return
+	}
+	dom, err := goquery.NewDocumentFromReader(strings.NewReader(string(body)))
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var coinDate []string
+	dom.Find("h2[class='ttable_area-title']").Each(func(i int, selection *goquery.Selection) {
+		coinDate = append(coinDate, strings.Trim(selection.Text(), "\n\t "))
+	})
+	var libor []string
+	dom.Find("table[class='market_tab_gold_add2'] td").Each(func(i int, selection *goquery.Selection) {
+		libor = append(libor, strings.Trim(selection.Text(), "\n\t "))
+	})
+	reg := regexp.MustCompile("[0-9]+")
+	monthDay := reg.FindAllString(coinDate[1], -1)
+	var year, month, day string
+	year = fmt.Sprintf("%d", time.Now().Year())
+	if len(monthDay[0]) == 1 {
+		month = "0" + monthDay[0]
+	} else {
+		month = monthDay[0]
+	}
+	if len(monthDay[1]) == 1 {
+		day = "0" + monthDay[1]
+	} else {
+		day = monthDay[1]
+	}
+	var respond Respond
+	respond.Date = year + month + day
+	updateTime := respond.Date[:4] + "-" + respond.Date[4:6] + "-" + respond.Date[6:8] + " " +
+		strconv.FormatInt(int64(time.Now().Hour()), 10) + ":" +
+		strconv.FormatInt(int64(time.Now().Minute()), 10) + ":" +
+		strconv.FormatInt(int64(time.Now().Second()), 10)
+	var yesterdayValue string
+	// 从数据库提取历史数据
+	sql := fmt.Sprintf("SELECT ACCT_DATE, TARGET_VALUE FROM t_dmaa_base_target_value WHERE TARGET_CODE = '%s' ORDER BY ACCT_DATE DESC", targetCode)
+	history := mysql.Query(sql)
+	for idx, tv := range history {
+		if idx > len(history)-1 {
+			break
+		}
+		if tv[0] == respond.Date {
+			yesterdayValue = history[idx+1][1]
+			break
+		}
+	}
+	todayValue := libor[31]
+	var upDown, upDownPercent string
+	if todayValue == "" || yesterdayValue == "" {
+		upDown, upDownPercent = "", ""
+	} else {
+		// 计算涨跌、涨跌幅
+		todayValueF, _ := strconv.ParseFloat(todayValue, 64)
+		yesterdayValueF, _ := strconv.ParseFloat(yesterdayValue, 64)
+		upDown = fmt.Sprintf("%.4f", todayValueF-yesterdayValueF)
+		upDownPercent = fmt.Sprintf("%.4f", (todayValueF-yesterdayValueF)/yesterdayValueF)
+	}
+	respond.TargetValue = strings.Join([]string{
+		todayValue,     // 现价
+		upDown,         // 涨跌
+		upDownPercent,  // 涨跌幅
+		"",             // 最高
+		"",             // 最低
+		yesterdayValue, // 昨收
+		updateTime,     // 更新时间
+	}, ",")
 	row = append(row, respond)
 	return
 }
@@ -104,6 +203,8 @@ func RespondHT(name, condition string) (row []Respond) {
 德债10年收益率：https://quote.fx678.com/symbol/GDBR10 15:20-01:00
 英债10年收益率：https://quote.fx678.com/symbol/GUKG10 16:05-01:00
 
+美元人民币：https://quote.fx678.com/symbol/MUSD 24小时
+港元人民币：https://quote.fx678.com/symbol/MHKD 24小时
 欧元美元 ：https://quote.fx678.com/symbol/EURUSD 24小时
 美元日元：https://quote.fx678.com/symbol/USDJPY 24小时
 英镑美元：https://quote.fx678.com/symbol/GBPUSD 24小时

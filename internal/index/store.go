@@ -22,7 +22,7 @@ func init() {
 	dataString = "(" + questionMark() + ")"
 }
 
-var batchSize = 1000
+var batchSize = 10
 
 func batchDump(data []Field, wg *sync.WaitGroup) {
 	defer wg.Done()

@@ -7,6 +7,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"io"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -14,10 +15,133 @@ import (
 
 // 东方财富
 
+/* 中国10年期国债到期收益率
+页面展示接口：https://data.eastmoney.com/cjsj/zmgzsyl.html
+数据抓包接口：https://datacenter-web.eastmoney.com/api/data/get?type=RPTA_WEB_TREASURYYIELD&sty=ALL&st=SOLAR_DATE&sr=-1&p=1&ps=500
+*/
+
+const GCHN10URL = "https://datacenter-web.eastmoney.com/api/data/get?type=RPTA_WEB_TREASURYYIELD&sty=ALL&st=SOLAR_DATE&sr=-1&p=%d&ps=500"
+
+type GCHN10 struct {
+	Success bool `json:"success"`
+	Result  struct {
+		Data []struct {
+			SOLAR_DATE  string  `json:"SOLAR_DATE"`
+			EMM00166466 float64 `json:"EMM00166466"`
+		} `json:"data"`
+	} `json:"result"`
+}
+
+type Record []RecordSt
+
+type RecordSt struct {
+	Date  string
+	Value float64
+}
+
+func (r Record) Len() int {
+	return len(r)
+}
+
+func (r Record) Less(i, j int) bool {
+	return r[i].Date > r[j].Date // 降序
+}
+
+func (r Record) Swap(i, j int) {
+	r[i], r[j] = r[j], r[i]
+}
+
+func visitGCHN10URL(url string) (body []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	body, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondGCHN10() (row []Respond) {
+	var record Record
+	for i := 1; ; i++ {
+		body, err := visitGCHN10URL(fmt.Sprintf(GCHN10URL, i))
+		if err != nil {
+			continue
+		}
+		var s GCHN10
+		err = json.Unmarshal(body, &s)
+		if err != nil {
+			logger.Error(err.Error())
+			continue
+		}
+		if !s.Success {
+			break
+		}
+		for _, data := range s.Result.Data {
+			date := strings.Split(data.SOLAR_DATE, "/")
+			var (
+				year  string
+				month string
+				day   string
+			)
+			year = date[0]
+			if len(date[1]) == 1 {
+				month = "0" + date[1]
+			} else {
+				month = date[1]
+			}
+			if len(date[2]) == 1 {
+				day = "0" + date[2]
+			} else {
+				day = date[2]
+			}
+			value := data.EMM00166466
+			record = append(record, RecordSt{year + month + day, value})
+		}
+	}
+	sort.Sort(record)
+	for i := 0; i < len(record)-1; i++ {
+		var respond Respond
+		respond.Date = record[i].Date
+		updateTime := respond.Date[:4] + "-" + respond.Date[4:6] + "-" + respond.Date[6:8] + " " +
+			strconv.FormatInt(int64(time.Now().Hour()), 10) + ":" +
+			strconv.FormatInt(int64(time.Now().Minute()), 10) + ":" +
+			strconv.FormatInt(int64(time.Now().Second()), 10)
+		todayValue := fmt.Sprintf("%.4f", record[i].Value)
+		if todayValue == "0.0000" {
+			todayValue = ""
+		}
+		yesterdayValue := fmt.Sprintf("%.4f", record[i+1].Value)
+		if yesterdayValue == "0.0000" {
+			yesterdayValue = ""
+		}
+		var upDown, upDownPercent string
+		if todayValue == "" || yesterdayValue == "" {
+			upDown = ""
+			upDownPercent = ""
+		} else {
+			upDown = fmt.Sprintf("%.4f", record[i].Value-record[i+1].Value)
+			upDownPercent = fmt.Sprintf("%.4f", (record[i].Value-record[i+1].Value)/record[i+1].Value)
+		}
+		respond.TargetValue = strings.Join([]string{
+			todayValue,     // 现价
+			upDown,         // 涨跌
+			upDownPercent,  // 涨跌幅
+			"",             // 最高
+			"",             // 最低
+			yesterdayValue, // 昨收
+			updateTime,     // 更新时间
+		}, ",")
+		row = append(row, respond)
+	}
+	return
+}
+
 /* SHIBOR隔夜
 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016
 数据抓包接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016
- */
+*/
 
 // Shibor同业间拆借（隔夜）利率
 const shiBorURL = "https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016&p=%d"
@@ -38,9 +162,13 @@ func visitShiBor(page int) (respBytes []byte, err error) {
 
 // RespondShiBor 返回东方财富的数据
 // 适用指标：上海银行间同业拆放利率
-func RespondShiBor() (row []Respond) {
+func RespondShiBor(stopPage int) (row []Respond) {
 	row = make([]Respond, 0)
+	var record Record
 	for i := 1; ; i++ {
+		if i > stopPage + 1 && stopPage != -1 {
+			break
+		}
 		b, err := visitShiBor(i)
 		if err != nil {
 			logger.Error(err.Error())
@@ -55,20 +183,86 @@ func RespondShiBor() (row []Respond) {
 		if len(tableText) < 1 {
 			break
 		}
-		var respond Respond
+		var st RecordSt
 		for idx, value := range tableText {
 			if idx%3 == 0 {
-				respond.Date = strings.ReplaceAll(value, "-", "")
+				st.Date = strings.ReplaceAll(value, "-", "")
 			} else if idx%3 == 1 {
-				respond.TargetValue = value
+				st.Value, _ = strconv.ParseFloat(value, 64)
 			} else {
-				row = append(row, respond)
-				respond = Respond{}
+				record = append(record, st)
 			}
 		}
 	}
+	sort.Sort(record)
+	for i := 0; i < len(record)-1; i++ {
+		var respond Respond
+		respond.Date = record[i].Date
+		updateTime := respond.Date[:4] + "-" + respond.Date[4:6] + "-" + respond.Date[6:8] + " " +
+			strconv.FormatInt(int64(time.Now().Hour()), 10) + ":" +
+			strconv.FormatInt(int64(time.Now().Minute()), 10) + ":" +
+			strconv.FormatInt(int64(time.Now().Second()), 10)
+		todayValue := fmt.Sprintf("%.4f", record[i].Value)
+		if todayValue == "0.0000" {
+			todayValue = ""
+		}
+		yesterdayValue := fmt.Sprintf("%.4f", record[i+1].Value)
+		if yesterdayValue == "0.0000" {
+			yesterdayValue = ""
+		}
+		var upDown, upDownPercent string
+		if todayValue == "" || yesterdayValue == "" {
+			upDown = ""
+			upDownPercent = ""
+		} else {
+			upDown = fmt.Sprintf("%.4f", record[i].Value-record[i+1].Value)
+			upDownPercent = fmt.Sprintf("%.4f", (record[i].Value-record[i+1].Value)/record[i+1].Value)
+		}
+		respond.TargetValue = strings.Join([]string{
+			todayValue,     // 现价
+			upDown,         // 涨跌
+			upDownPercent,  // 涨跌幅
+			"",             // 最高
+			"",             // 最低
+			yesterdayValue, // 昨收
+			updateTime,     // 更新时间
+		}, ",")
+		row = append(row, respond)
+	}
 	return
 }
+
+//func RespondShiBor() (row []Respond) {
+//	row = make([]Respond, 0)
+//	for i := 1; ; i++ {
+//		b, err := visitShiBor(i)
+//		if err != nil {
+//			logger.Error(err.Error())
+//			continue
+//		}
+//		dom, _ := goquery.NewDocumentFromReader(strings.NewReader(string(b)))
+//		var tableText []string
+//		dom.Find("table[id='tb'] td").Each(func(i int, selection *goquery.Selection) {
+//			text := selection.Text()
+//			tableText = append(tableText, text)
+//		})
+//		if len(tableText) < 1 {
+//			break
+//		}
+//		var respond Respond
+//		for idx, value := range tableText {
+//			if idx%3 == 0 {
+//				respond.Date = strings.ReplaceAll(value, "-", "")
+//			} else if idx%3 == 1 {
+//				respond.TargetValue = value
+//			} else {
+//				row = append(row, respond)
+//				respond = Respond{}
+//			}
+//		}
+//	}
+//	return
+//}
 
 /* 铁矿石主力合约
 页面展示接口：http://quote.eastmoney.com/qihuo/IM.html
@@ -82,6 +276,11 @@ type IM struct {
 }
 
 type Detail struct {
+	P     float64 `json:"p"`     // 最新价
+	ZDE   float64 `json:"zde"`   // 涨跌额
+	ZDF   float64 `json:"zdf"`   // 涨跌幅
+	H     float64 `json:"h"`     // 最高
+	L     float64 `json:"l"`     // 最低
 	QRSPJ float64 `json:"qrspj"` // 昨收
 }
 
@@ -108,7 +307,9 @@ func RespondIM() (row []Respond) {
 	}
 	var respond Respond
 	respond.Date = time.Now().Format("20060102")
-	respond.TargetValue = fmt.Sprintf("%.2f", im.QT.QRSPJ)
+	value := fmt.Sprintf("%f,%f,%f,%f,%f,%f,%s", im.QT.P, im.QT.ZDE, im.QT.ZDF, im.QT.H, im.QT.L, im.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
 	row = append(row, respond)
 	return
 }
