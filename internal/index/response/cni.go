@@ -63,10 +63,11 @@ func RespondCNYX() (row []Respond) {
 	var respond Respond
 	respond.Date = tm.Format("20060102")
 	row = append(row, respond)
-	respond.TargetValue = fmt.Sprintf("%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%s",
+	respond.TargetValue = fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s",
 		v[1].(float64),                   // 现价
 		v[6].(float64),                   // 涨跌
 		v[7].(float64),                   // 涨跌幅
+		"%",
 		v[2].(float64),                   // 最高
 		v[4].(float64),                   // 最低
 		v[11].(float64),                  // 昨收
