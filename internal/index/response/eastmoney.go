@@ -307,7 +307,7 @@ func RespondIM() (row []Respond) {
 	}
 	var respond Respond
 	respond.Date = time.Now().Format("20060102")
-	value := fmt.Sprintf("%f,%f,%f,%f,%f,%f,%s", im.QT.P, im.QT.ZDE, im.QT.ZDF, im.QT.H, im.QT.L, im.QT.QRSPJ,
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", im.QT.P, im.QT.ZDE, im.QT.ZDF, "%", im.QT.H, im.QT.L, im.QT.QRSPJ,
 		time.Now().Format("2006-01-02 15:04:05"))
 	respond.TargetValue = value
 	row = append(row, respond)
