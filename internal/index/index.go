@@ -86,12 +86,14 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondHKDCNY()
 	case "eastMoneyIM":
 		rowRespond = response.RespondIM()
+	case "eastMoneyGCHN10":
+		rowRespond = response.RespondGCHN10()
 	case "eastMoneyHG":
 		rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
 	case "eastMoneyHY":
 		rowRespond = response.RespondIndustryIndex(c.SourceTargetCode)
 	case "eastMoneySHIBOR":
-		rowRespond = response.RespondShiBor()
+		rowRespond = response.RespondShiBor(1) // 第一次-1，后面设置为1
 	case "sina":
 		rowRespond = response.RespondSina(c.SourceTargetCode)
 	case "sinaRegionGDP":
@@ -102,8 +104,12 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSinaCPI()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
-	case "fxGJZS", "fxGJZQ", "fxWH", "fxIPE", "fxCOMEX", "fxLME":
+	case "fxGJZS", "fxGJZQ", "fxWH", "fxWHMP", "fxIPE", "fxCOMEX", "fxLME":
 		rowRespond = response.RespondHT(c.Name, c.Case)
+	case "fxLibor": // 美元Libor隔夜
+	  rowRespond = response.RespondUSLibor(c.TargetCode)
+	case "cni":
+		rowRespond = response.RespondCNYX()
 	case "sci":
 		pd := response.PostData{
 			HY:    c.HY,
@@ -158,7 +164,6 @@ func (c Config) construct(rowRespond []response.Respond, all bool) (data []Field
 		}
 		acct(respond.Date, f.PeriodType, f)
 		data = append(data, *f)
-		fmt.Println(*f)
 	}
 	return
 }
@@ -197,7 +202,7 @@ func RunIndex() {
 		runTimeL, _ := time.Parse("15:04", runTimes[0])
 		runTimeR, _ := time.Parse("15:04", runTimes[1])
 		// 24小时刷新数据的用另一套逻辑，此处跳过
-		if runTimeR.Hour() - runTimeL.Hour() == 0 {
+		if runTimeR.Hour()-runTimeL.Hour() == 0 {
 			continue
 		}
 		if curTime.Hour() < runTimeL.Hour() || curTime.Hour() > runTimeR.Hour() {

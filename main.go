@@ -1,12 +1,8 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-)
+import "fmt"
 
 func main() {
-	s := "122"
-
-	fmt.Println(strings.Split(s, ",")[0])
+	x := fmt.Sprintf("%.2f%s", 1.3333222, "%")
+	fmt.Println(x)
 }
