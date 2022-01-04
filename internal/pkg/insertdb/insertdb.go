@@ -100,8 +100,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 			mysql.Transaction(SQl, insertValues...)
-			fmt.Println("success")
-			//pullService(pullServer)
+			pullService(pullServer)
 			f.SaveUrlKey()
 			insertValues = append([]interface{}{}, v...)
 			pullServer = append([]callback.SqlValues{}, *sqlValues)
@@ -114,8 +113,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
 	mysql.Transaction(SQl, insertValues...)
-	//pullService(pullServer)
-	fmt.Println("success")
+	pullService(pullServer)
 
 	f.SaveUrlKey()
 }
