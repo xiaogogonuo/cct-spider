@@ -816,7 +816,7 @@ var ConfigString = `[
 "UnitName": "%", 
 "PeriodType": "50", 
 "PeriodName": "日",
-"RunTime": "00:00~22:00"
+"RunTime": "20:00~22:00"
 }, 
 
 {
