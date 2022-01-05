@@ -78,49 +78,49 @@ func (c Config) regionMonthDownloaded() (row [][]string) {
 // routingDistribution 路由分发到对应的网址
 func (c Config) routingDistribution() (rowRespond []response.Respond) {
 	switch c.Case {
-	case "sinaHSI":
-		rowRespond = response.RespondHSI()
-	case "sinaUSDCNY":
-		rowRespond = response.RespondUSDCNY()
-	case "sinaHDKCNY":
-		rowRespond = response.RespondHKDCNY()
-	case "eastMoneyIM":
-		rowRespond = response.RespondIM()
-	case "eastMoneyGCHN10":
-		rowRespond = response.RespondGCHN10()
-	case "eastMoneyHG":
-		rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
-	case "eastMoneyHY":
-		rowRespond = response.RespondIndustryIndex(c.SourceTargetCode)
-	case "eastMoneySHIBOR":
-		rowRespond = response.RespondShiBor(1) // 第一次-1，后面设置为1
-	case "sina":
-		rowRespond = response.RespondSina(c.SourceTargetCode)
-	case "sinaRegionGDP":
-		rowRespond = response.RespondSinaRegionGDP()
-	case "sinaRegionCPI":
-		rowRespond = response.RespondSinaRegionCPI()
-	case "sinaCPI":
-		rowRespond = response.RespondSinaCPI()
-	case "ifeng":
-		rowRespond = response.RespondTBI()
-	case "fxGJZS", "fxGJZQ", "fxWH", "fxWHMP", "fxIPE", "fxCOMEX", "fxLME":
-		rowRespond = response.RespondHT(c.Name, c.Case)
+	//case "sinaHSI":
+	//	rowRespond = response.RespondHSI()
+	//case "sinaUSDCNY":
+	//	rowRespond = response.RespondUSDCNY()
+	//case "sinaHDKCNY":
+	//	rowRespond = response.RespondHKDCNY()
+	//case "eastMoneyIM":
+	//	rowRespond = response.RespondIM()
+	//case "eastMoneyGCHN10":
+	//	rowRespond = response.RespondGCHN10()
+	//case "eastMoneyHG":
+	//	rowRespond = response.RespondMacroIndex(c.SourceTargetCode, c.TargetCode)
+	//case "eastMoneyHY":
+	//	rowRespond = response.RespondIndustryIndex(c.SourceTargetCode)
+	//case "eastMoneySHIBOR":
+	//	rowRespond = response.RespondShiBor(1) // 第一次-1，后面设置为1
+	//case "sina":
+	//	rowRespond = response.RespondSina(c.SourceTargetCode)
+	//case "sinaRegionGDP":
+	//	rowRespond = response.RespondSinaRegionGDP()
+	//case "sinaRegionCPI":
+	//	rowRespond = response.RespondSinaRegionCPI()
+	//case "sinaCPI":
+	//	rowRespond = response.RespondSinaCPI()
+	//case "ifeng":
+	//	rowRespond = response.RespondTBI()
+	//case "fxGJZS", "fxGJZQ", "fxWH", "fxWHMP", "fxIPE", "fxCOMEX", "fxLME":
+	//	rowRespond = response.RespondHT(c.Name, c.Case)
 	case "fxLibor": // 美元Libor隔夜
 	  rowRespond = response.RespondUSLibor(c.TargetCode)
-	case "cni":
-		rowRespond = response.RespondCNYX()
-	case "sci":
-		pd := response.PostData{
-			HY:    c.HY,
-			Level: c.Level,
-			Path1: c.Path1,
-			Path2: c.Path2,
-			Path3: c.Path3,
-			Path4: c.Path4,
-			Type:  c.Type,
-		}
-		rowRespond = response.RespondSCI(pd)
+	//case "cni":
+	//	rowRespond = response.RespondCNYX()
+	//case "sci":
+	//	pd := response.PostData{
+	//		HY:    c.HY,
+	//		Level: c.Level,
+	//		Path1: c.Path1,
+	//		Path2: c.Path2,
+	//		Path3: c.Path3,
+	//		Path4: c.Path4,
+	//		Type:  c.Type,
+	//	}
+	//	rowRespond = response.RespondSCI(pd)
 	}
 	return
 }

@@ -134,7 +134,12 @@ func RespondUSLibor(targetCode string) (row []Respond) {
 	reg := regexp.MustCompile("[0-9]+")
 	monthDay := reg.FindAllString(coinDate[1], -1)
 	var year, month, day string
-	year = fmt.Sprintf("%d", time.Now().Year())
+	// 如果从页面提取出来的月份大于系统月份，则代表跨年没更新
+	if monthInt, _ := strconv.Atoi(monthDay[0]); monthInt > int(time.Now().Month()) {
+		year = fmt.Sprintf("%d", time.Now().Year() - 1)
+	} else {
+		year = fmt.Sprintf("%d", time.Now().Year())
+	}
 	if len(monthDay[0]) == 1 {
 		month = "0" + monthDay[0]
 	} else {
@@ -155,14 +160,13 @@ func RespondUSLibor(targetCode string) (row []Respond) {
 	// 从数据库提取历史数据
 	sql := fmt.Sprintf("SELECT ACCT_DATE, TARGET_VALUE FROM t_dmaa_base_target_value WHERE TARGET_CODE = '%s' ORDER BY ACCT_DATE DESC", targetCode)
 	history := mysql.Query(sql)
-	for idx, tv := range history {
-		if idx > len(history)-1 {
-			break
+	if len(history) >= 1 {
+		// 如果页面提取的日期与数据库最新的日期一样，则代表没有开市，无数据需要更新
+		if history[0][0] == respond.Date {
+			return
 		}
-		if tv[0] == respond.Date {
-			yesterdayValue = history[idx+1][1]
-			break
-		}
+		// 拿第一条记录的TARGET_VALUE值作为昨天的TARGET_VALUE
+		yesterdayValue = history[0][1]
 	}
 	todayValue := libor[31]
 	var upDown, upDownPercent string
@@ -172,8 +176,8 @@ func RespondUSLibor(targetCode string) (row []Respond) {
 		// 计算涨跌、涨跌幅
 		todayValueF, _ := strconv.ParseFloat(todayValue, 64)
 		yesterdayValueF, _ := strconv.ParseFloat(yesterdayValue, 64)
-		upDown = fmt.Sprintf("%.4f", todayValueF-yesterdayValueF)
-		upDownPercent = fmt.Sprintf("%.4f", (todayValueF-yesterdayValueF)/yesterdayValueF)
+		upDown = fmt.Sprintf("%.2f", todayValueF-yesterdayValueF)
+		upDownPercent = fmt.Sprintf("%.2f%s", (todayValueF-yesterdayValueF)/yesterdayValueF, "%")
 	}
 	respond.TargetValue = strings.Join([]string{
 		todayValue,     // 现价
