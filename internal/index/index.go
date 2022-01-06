@@ -187,7 +187,9 @@ func acct(date, period string, f *Field) {
 
 type Configs []Config
 
-var webService = "http://106.37.165.121/inf/dm/aa/baseTargetValue/saveRequest"
+//var webService = "http://106.37.165.121/inf/dm/aa/baseTargetValue/saveRequest"
+
+var webService = "http://106.37.165.121/inf/chengtong/py/sy/baseTargetValue/saveRequest"
 
 func RunIndex() {
 	var wg sync.WaitGroup
