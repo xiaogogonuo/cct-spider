@@ -15,7 +15,7 @@ var rep *request.Request
 
 func init() {
 	rep = &request.Request{
-		Url:     "http://127.0.0.1:9090/clsIndustry",
+		Url:     "http://172.17.0.23:9090/clsIndustry",
 		Method:  http.MethodPost,
 		Header: map[string]string{"Content-Type": "application/json" },
 		//Timeout: time.Second * 2,
@@ -41,7 +41,7 @@ func GetIndustry(n *store.PolicyNewsOrg, wg *sync.WaitGroup) {
 	var m M
 	rep.Body = bytes.NewBuffer([]byte(n.NEWS_SUMMARY))
 	b, err := rep.Visit()
-	if err != nil {
+	if err != nil || len(b)== 0 {
 		return
 	}
 	err = json.Unmarshal(b, &m)

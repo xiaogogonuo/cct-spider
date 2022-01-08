@@ -16,10 +16,11 @@ import (
 var rep *request.Request
 
 // 生产机
-var regionAPI = "http://106.37.165.121/inf/dm/be/policyNewsInfo/saveRequest"
-var companyAPI = "http://106.37.165.121/inf/dm/be/policyNewsInfo/saveRequest"
-var industryAPI = "http://106.37.165.121/inf/dm/be/policyNewsInfo/saveRequest"
-var maxByte = 500000
+var regionAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsRegionLabel/saveRequest"
+var companyAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsCompanyLabel/saveRequest"
+var industryAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsIndustryLabel/saveRequest"
+var updateNewsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
+var maxByte = 50000
 
 func init() {
 	rep = &request.Request{
@@ -49,8 +50,9 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			mysql.Transaction(SQl, insertValues...)
-			pullService(regionServer)
+			//pullService(regionServer)
+			//mysql.Transaction(SQl, insertValues...)
+			recursion(regionServer, SQl, insertValues, 0)
 			insertValues = append([]interface{}{}, v...)
 			quotes = append([]string{}, oneQuoteSql)
 			beginLen = len(preamble) + len(epilogue) + len(oneQuoteSql) + l
@@ -61,8 +63,11 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	mysql.Transaction(SQl, insertValues...)
-	pullService(regionServer)
+	//pullService(regionServer)
+	//mysql.Transaction(SQl, insertValues...)
+	recursion(regionServer, SQl, insertValues, 0)
+
+
 }
 
 func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
@@ -85,8 +90,10 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			mysql.Transaction(SQl, insertValues...)
-			pullService(companyServer)
+			//pullService(companyServer)
+			//mysql.Transaction(SQl, insertValues...)
+			recursion(companyServer, SQl, insertValues, 0)
+
 			insertValues = append([]interface{}{}, v...)
 			quotes = append([]string{}, oneQuoteSql)
 			companyServer = append([]NewsCompany{}, *company)
@@ -97,8 +104,11 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	mysql.Transaction(SQl, insertValues...)
-	pullService(companyServer)
+	//pullService(companyServer)
+	//mysql.Transaction(SQl, insertValues...)
+	recursion(companyServer, SQl, insertValues, 0)
+
+
 }
 
 func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
@@ -121,8 +131,10 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			mysql.Transaction(SQl, insertValues...)
-			pullService(industryServer)
+			//pullService(industryServer)
+			//mysql.Transaction(SQl, insertValues...)
+			recursion(industryServer, SQl, insertValues, 0)
+
 			insertValues = append([]interface{}{}, v...)
 			quotes = append([]string{}, oneQuoteSql)
 			industryServer = append([]NewsIndustry{}, *industry)
@@ -133,8 +145,10 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	mysql.Transaction(SQl, insertValues...)
-	pullService(industryServer)
+	//pullService(industryServer)
+	//mysql.Transaction(SQl, insertValues...)
+	recursion(industryServer, SQl, insertValues, 0)
+
 }
 
 func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGroup) {
@@ -166,9 +180,10 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 			}
 			sqlCode = fmt.Sprintf(`UPDATE %s SET %s END %s (%s)`, `t_dmbe_policy_news_info`,
 				strings.Join(newsValue, ` END, `), epilogue, strings.Join(idList, ", "))
-			mysql.Transaction(sqlCode)
-			pullService(newsServer)
-			f.SaveUrlKey()
+			//pullService(newsServer)
+			//mysql.Transaction(sqlCode)
+			//f.SaveUrlKey()
+			recursionSaveIdKey(newsServer, sqlCode, f, 0)
 			sumLen = 0
 			idList = []string{}
 			newsValue = make([]string, fieldLen)
@@ -185,13 +200,15 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 	}
 	sqlCode = fmt.Sprintf(`UPDATE %s SET %s END %s (%s)`, `t_dmbe_policy_news_info`,
 		strings.Join(newsValue, ` END, `), epilogue, strings.Join(idList, ", "))
-	mysql.Transaction(sqlCode)
-	pullService(newsServer)
-	f.SaveUrlKey()
+	//pullService(newsServer)
+	//mysql.Transaction(sqlCode)
+	//f.SaveUrlKey()
+	recursionSaveIdKey(newsServer, sqlCode, f, 0)
+
 }
 
 
-func pullService(info interface{}) {
+func pullService(info interface{}) bool {
 	var m []byte
 	switch info.(type) {
 	case []NewsRegion:
@@ -207,11 +224,44 @@ func pullService(info interface{}) {
 		postData := map[string][]NewsIndustry{"data": info.([]NewsIndustry)}
 		m, _ = json.Marshal(postData)
 		rep.Url = industryAPI
+
+	case []PolicyNews:
+		postData := map[string][]PolicyNews{"data": info.([]PolicyNews)}
+		m, _ = json.Marshal(postData)
+		rep.Url = updateNewsAPI
 	}
 	rep.Body = bytes.NewReader(m)
 	b, err := rep.Visit()
 	if err != nil {
-		return
+		return false
 	}
 	fmt.Println(string(b))
+	return true
+}
+
+func recursionSaveIdKey(info interface{}, SQl string, f *filter.Filter, reqNum int) {
+	reqNum ++
+	if pullService(info) {
+		mysql.Transaction(SQl)
+		f.SaveUrlKey()
+		return
+	} else {
+		if reqNum >= 5 {
+			return
+		}
+		recursionSaveIdKey(info, SQl, f, reqNum)
+	}
+}
+
+func recursion(info interface{}, SQl string, insertValues []interface{}, reqNum int) {
+	reqNum ++
+	if pullService(info) {
+		mysql.Transaction(SQl, insertValues...)
+		return
+	} else {
+		if reqNum >= 5 {
+			return
+		}
+		recursion(info, SQl, insertValues, reqNum)
+	}
 }
