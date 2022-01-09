@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	regionLabels = `{\"labelCode\":\"70\",\"labelName\":\"地区标签\",\"code\":\"%s\",\"name\":\"%s\"}`
-	companyLabels = `{\"labelCode\":\"10\",\"labelName\":\"公司标签\",\"code\":\"%s\",\"name\":\"%s\"}`
-	industryLabels = `{\"labelCode\":\"20\",\"labelName\":\"行业标签\",\"code\":\"%s\",\"name\":\"%s\"}`
+	regionLabels = `{"labelCode":"70","labelName":"地区标签","code":"%s","name":"%s"}`
+	companyLabels = `{"labelCode":"10","labelName":"公司标签","code":"%s","name":"%s"}`
+	industryLabels = `{"labelCode":"20","labelName":"行业标签","code":"%s","name":"%s"}`
 )
 
 
