@@ -47,6 +47,7 @@ func GetIndustry(n *store.PolicyNewsOrg, wg *sync.WaitGroup) {
 	err = json.Unmarshal(b, &m)
 	if err != nil {
 		logger.Error(err.Error())
+		return
 	}
 	sort.Sort(m)
 	n.IndustryMap = make(map[string]float64)

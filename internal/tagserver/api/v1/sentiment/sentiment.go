@@ -59,6 +59,7 @@ func GetSentiment(n *store.PolicyNewsOrg, wg *sync.WaitGroup) {
 	err = json.Unmarshal(b, &m)
 	if err != nil {
 		logger.Error(err.Error())
+		return
 	}
 	sort.Sort(m)
 	s := fmt.Sprintf("%v", m[0][0])
