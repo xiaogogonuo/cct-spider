@@ -164,6 +164,9 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 	sumLen := 0
 	newsValue := make([]string, fieldLen)
 	for news := range newsChan {
+		if news.EMOTION_INDICATOR == ""{
+			continue
+		}
 		updateValues := insertdb.GetWhenAndThen(news)
 		f.WriteMap(news.NEWS_GUID)
 		if sumLen+beginLen+len(idList)*len(news.NEWS_GUID) < maxByte {
