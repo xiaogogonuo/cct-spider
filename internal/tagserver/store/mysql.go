@@ -164,7 +164,7 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 	sumLen := 0
 	newsValue := make([]string, fieldLen)
 	for news := range newsChan {
-		if news.EMOTION_INDICATOR == ""{
+		if len(news.EMOTION_INDICATOR) == 0{
 			continue
 		}
 		updateValues := insertdb.GetWhenAndThen(news)
