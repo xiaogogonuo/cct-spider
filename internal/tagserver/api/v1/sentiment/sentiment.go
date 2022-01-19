@@ -20,7 +20,7 @@ var (
 
 func init() {
 	rep = &request.Request{
-		Url:     "http://172.17.0.23:9090/clsSentiment",
+		Url:     "http://127.0.0.1:9090/clsSentiment",
 		Method:  http.MethodPost,
 		Header: map[string]string{"Content-Type": "application/json" },
 		//Timeout: time.Second * 2,

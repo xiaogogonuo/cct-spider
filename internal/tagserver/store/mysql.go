@@ -19,7 +19,7 @@ var rep *request.Request
 var regionAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsRegionLabel/saveRequest"
 var companyAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsCompanyLabel/saveRequest"
 var industryAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsIndustryLabel/saveRequest"
-var updateNewsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
+var updateNewsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/updateRequest"
 var maxByte = 50000
 
 func init() {
@@ -41,6 +41,9 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 	)
 
 	for region := range newsRegionChan {
+		if len(region.EMOTION_INDICATOR) == 0{
+			continue
+		}
 		v, l := insertdb.GetQuotesAndValues(region)
 		if beginLen+l+len(oneQuoteSql) < maxByte {
 			insertValues = append(insertValues, v...)
@@ -81,6 +84,9 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 	)
 
 	for company := range newsCompanyChan {
+		if len(company.EMOTION_INDICATOR) == 0{
+			continue
+		}
 		v, l := insertdb.GetQuotesAndValues(company)
 		if beginLen+l+len(oneQuoteSql) < maxByte {
 			insertValues = append(insertValues, v...)
@@ -122,6 +128,9 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 	)
 
 	for industry := range newsIndustryChan {
+		if len(industry.EMOTION_INDICATOR) == 0{
+			continue
+		}
 		v, l := insertdb.GetQuotesAndValues(industry)
 		if beginLen+l+len(oneQuoteSql) < maxByte {
 			insertValues = append(insertValues, v...)
