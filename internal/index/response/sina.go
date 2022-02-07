@@ -198,10 +198,11 @@ func visitSinaRegionCPI(url string) (respBytes []byte, err error) {
 }
 
 // RespondSinaRegionCPI 返回新浪财经的地区居民消费价格指数
-//// 适用指标：地区居民消费价格指数
+// TODO(IMPORTANT)：因为地区居民消费价格指数有几百页，首次入库全量，后期每次5页
+// 适用指标：地区居民消费价格指数
 func RespondSinaRegionCPI() (row []Respond) {
 	row = make([]Respond, 0)
-	for i := 0; ; i++ {
+	for i := 0; i < 5; i++ {
 		_from := 31 * i
 		url := fmt.Sprintf(sinaRegionCPIURL, _from)
 		b, err := visitSinaRegionCPI(url)
