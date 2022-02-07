@@ -53,8 +53,6 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			//pullService(regionServer)
-			//mysql.Transaction(SQl, insertValues...)
 			recursion(regionServer, SQl, insertValues, 0)
 			insertValues = append([]interface{}{}, v...)
 			quotes = append([]string{}, oneQuoteSql)
@@ -66,8 +64,6 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	//pullService(regionServer)
-	//mysql.Transaction(SQl, insertValues...)
 	recursion(regionServer, SQl, insertValues, 0)
 
 
@@ -96,8 +92,6 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			//pullService(companyServer)
-			//mysql.Transaction(SQl, insertValues...)
 			recursion(companyServer, SQl, insertValues, 0)
 
 			insertValues = append([]interface{}{}, v...)
@@ -110,8 +104,6 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	//pullService(companyServer)
-	//mysql.Transaction(SQl, insertValues...)
 	recursion(companyServer, SQl, insertValues, 0)
 
 
@@ -140,8 +132,6 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			//pullService(industryServer)
-			//mysql.Transaction(SQl, insertValues...)
 			recursion(industryServer, SQl, insertValues, 0)
 
 			insertValues = append([]interface{}{}, v...)
@@ -154,8 +144,6 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	//pullService(industryServer)
-	//mysql.Transaction(SQl, insertValues...)
 	recursion(industryServer, SQl, insertValues, 0)
 
 }
@@ -192,9 +180,6 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 			}
 			sqlCode = fmt.Sprintf(`UPDATE %s SET %s END %s (%s)`, `t_dmbe_policy_news_info`,
 				strings.Join(newsValue, ` END, `), epilogue, strings.Join(idList, ", "))
-			//pullService(newsServer)
-			//mysql.Transaction(sqlCode)
-			//f.SaveUrlKey()
 			recursionSaveIdKey(newsServer, sqlCode, f, 0)
 			sumLen = 0
 			idList = []string{}
@@ -212,9 +197,6 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 	}
 	sqlCode = fmt.Sprintf(`UPDATE %s SET %s END %s (%s)`, `t_dmbe_policy_news_info`,
 		strings.Join(newsValue, ` END, `), epilogue, strings.Join(idList, ", "))
-	//pullService(newsServer)
-	//mysql.Transaction(sqlCode)
-	//f.SaveUrlKey()
 	recursionSaveIdKey(newsServer, sqlCode, f, 0)
 
 }
