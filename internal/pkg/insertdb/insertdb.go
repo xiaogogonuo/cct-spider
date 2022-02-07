@@ -25,7 +25,7 @@ type DataInfo struct {
 var rep *request.Request
 
 // 生产机
-var newsAPI = "http://106.37.165.121/inf/dm/be/policyNewsInfo/saveRequest"
+var newsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
 
 func init() {
 	rep = &request.Request{
@@ -99,9 +99,8 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 
 		} else {
 			SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-			mysql.Transaction(SQl, insertValues...)
-			pullService(pullServer)
-			f.SaveUrlKey()
+			recursion(pullServer, SQl, insertValues, f, 0)
+
 			insertValues = append([]interface{}{}, v...)
 			pullServer = append([]callback.SqlValues{}, *sqlValues)
 			quotes = append([]string{}, oneQuoteSql)
@@ -112,18 +111,31 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
-	mysql.Transaction(SQl, insertValues...)
-	pullService(pullServer)
-	f.SaveUrlKey()
+	recursion(pullServer, SQl, insertValues, f, 0)
 }
 
-func pullService(info []callback.SqlValues) {
+func pullService(info []callback.SqlValues) bool {
 	postData := map[string][]callback.SqlValues{"data": info}
 	m, _ := json.Marshal(postData)
 	rep.Body = bytes.NewReader(m)
 	b, err := rep.Visit()
 	if err != nil {
-		return
+		return false
 	}
 	fmt.Println(string(b))
+	return true
+}
+
+func recursion(info []callback.SqlValues, SQl string, insertValues []interface{}, f *filter.Filter, reqNum int) {
+	reqNum ++
+	if pullService(info) {
+		mysql.Transaction(SQl, insertValues...)
+		f.SaveUrlKey()
+		return
+	} else {
+		if reqNum >= 5 {
+			return
+		}
+		recursion(info, SQl, insertValues, f, reqNum)
+	}
 }

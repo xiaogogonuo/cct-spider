@@ -12,7 +12,7 @@ import (
 
 func tagging(){
 	wg := &sync.WaitGroup{}
-	limitChan := make(chan struct{}, 2)
+	limitChan := make(chan struct{}, 4)
 	newsOrgChan := make(chan *store.PolicyNewsOrg)
 	newsChan := make(chan *store.PolicyNews)
 	newsRegionChan := make(chan *store.NewsRegion)

@@ -22,6 +22,7 @@ func init() {
 	rep = &request.Request{
 		Url:     "http://127.0.0.1:9090/clsSentiment",
 		Method:  http.MethodPost,
+		Header: map[string]string{"Content-Type": "application/json" },
 		//Timeout: time.Second * 2,
 	}
 	sMap = make(map[string]string)
@@ -58,6 +59,7 @@ func GetSentiment(n *store.PolicyNewsOrg, wg *sync.WaitGroup) {
 	err = json.Unmarshal(b, &m)
 	if err != nil {
 		logger.Error(err.Error())
+		return
 	}
 	sort.Sort(m)
 	s := fmt.Sprintf("%v", m[0][0])
