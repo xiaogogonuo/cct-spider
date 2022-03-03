@@ -219,10 +219,10 @@ func EntryPoint() {
 	filter.ReadAll()
 
 	startURL := map[string]string{
-		//"集团动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtdt/index.html",
-		//"国资动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/gzdt4/index.html",
-		//"媒体聚焦": "http://www.cctgroup.com.cn/cctgroup/xwzx/mtjj/index.html",
-		//"集团公告": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtgg/index.html",
+		"集团动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtdt/index.html",
+		"国资动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/gzdt4/index.html",
+		"媒体聚焦": "http://www.cctgroup.com.cn/cctgroup/xwzx/mtjj/index.html",
+		"集团公告": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtgg/index.html",
 		"出资企业": "http://www.cctgroup.com.cn/cctgroup/xwzx/czqy/index.html",
 	}
 	c := C{
