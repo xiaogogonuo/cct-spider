@@ -25,7 +25,7 @@ type DataInfo struct {
 var rep *request.Request
 
 // 生产机
-var newsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
+var newsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/insertRequest"
 
 func init() {
 	rep = &request.Request{
@@ -120,6 +120,7 @@ func pullService(info []callback.SqlValues) bool {
 	rep.Body = bytes.NewReader(m)
 	b, err := rep.Visit()
 	if err != nil {
+		fmt.Println(string(b))
 		return false
 	}
 	fmt.Println(string(b))
