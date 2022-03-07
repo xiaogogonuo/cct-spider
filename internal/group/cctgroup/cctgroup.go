@@ -80,6 +80,11 @@ func (c *C) newsDetail(n News) {
 			} else {
 				imageURL = domain + src
 			}
+			if !strings.Contains(imageURL, "jpg") ||
+				!strings.Contains(imageURL, "jpeg") ||
+				!strings.Contains(imageURL, "png"){
+				return
+			}
 			body, e := downloader(imageURL)
 			if e != nil {
 				logger.Error(e.Error())
@@ -122,6 +127,11 @@ func (c *C) getNews(pi PagerIndex, dom *goquery.Document) {
 func (c *C) getNextPage(pi PagerIndex, dom *goquery.Document) {
 	dom.Find("a[title='下一页']").Each(func(i int, selection *goquery.Selection) {
 		tagName, _ := selection.Attr("tagname")
+		// 如果只爬首页，就不要取下一页了
+		if HowManyPages == 1 {
+			c.stop <- struct{}{}
+			return
+		}
 		// 全爬：[NEXTPAGE]
 		// 爬前3页(不包括第3页)：-3.html
 		if strings.Contains(tagName, fmt.Sprintf("-%d.html", HowManyPages)) {
@@ -211,7 +221,7 @@ func (f *Filter) AppendNewLine(newline []string) {
 	}
 }
 
-var HowManyPages = 2
+var HowManyPages = 1
 
 func EntryPoint() {
 	filter := NewFilter("cctNewsURL.txt")
@@ -220,7 +230,7 @@ func EntryPoint() {
 
 	startURL := map[string]string{
 		"集团动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtdt/index.html",
-		"国资动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/gzdt4/index.html",
+		//"国资动态": "http://www.cctgroup.com.cn/cctgroup/xwzx/gzdt4/index.html",
 		"媒体聚焦": "http://www.cctgroup.com.cn/cctgroup/xwzx/mtjj/index.html",
 		"集团公告": "http://www.cctgroup.com.cn/cctgroup/xwzx/jtgg/index.html",
 		"出资企业": "http://www.cctgroup.com.cn/cctgroup/xwzx/czqy/index.html",
