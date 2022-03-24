@@ -236,7 +236,7 @@ func (f *Filter) AppendNewLine(newline []string) {
 	}
 }
 
-var HowManyPages = 3
+var HowManyPages = 1
 
 func EntryPoint() {
 	filter := NewFilter("sasNewsURL.txt")

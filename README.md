@@ -2,6 +2,7 @@
 
 ## 构建可执行文件
 ```sh
+GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/group cmd/group/group.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index cmd/index/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index24 cmd/index24/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/industry cmd/industry/main.go
