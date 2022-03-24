@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/xiaogogonuo/cct-spider/internal/group/urls"
 	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"io"
@@ -353,7 +354,9 @@ func EntryPoint() {
 	}
 	filter.AppendNewLine(newNews)
 	for _, gn := range groupNewsList {
-		send(webService, gn)
+		if _, ok := urls.URLS[gn.NewsUrl]; !ok {
+			send(webService, gn)
+		}
 	}
 }
 
