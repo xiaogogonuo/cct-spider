@@ -8,6 +8,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/parse"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/request"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/urlprocess"
+	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"net/http"
 	"strings"
@@ -72,6 +73,7 @@ func GetHtmlInfo(url string, errChan chan<- *callback.InfoChan, message chan<- *
 	infoMap[j.DocTitle] = strings.Join(data, "")
 	date := strings.Replace(strings.Split(j.DocDate, " ")[0], "-", "", -1)
 	message <- &callback.Message{
+		Id:         md5.MD5(url),
 		Url:        fmt.Sprintf(store.PageUrl, j.DocId),
 		Title:      strings.Replace(j.DocTitle, `'`, `"`, -1),
 		Summary:    strings.Replace(strings.Join(data, ""), `'`, `"`, -1),

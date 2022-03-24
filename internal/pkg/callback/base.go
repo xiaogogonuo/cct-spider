@@ -53,6 +53,7 @@ func (u InfoChan) GetInfoFunc(infoChan chan *InfoChan, message chan *Message, wg
 }
 
 type Message struct {
+	Id         string
 	Url        string
 	Title      string
 	Summary    string

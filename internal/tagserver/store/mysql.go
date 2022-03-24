@@ -8,12 +8,18 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/insertdb"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/request"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
+	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"net/http"
 	"strings"
 	"sync"
 )
 
 var rep *request.Request
+
+type resp struct {
+	Msg    string `json:"msg"`
+	Status bool   `json:"status"`
+}
 
 // 生产机
 var regionAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsRegionLabel/saveRequest"
@@ -227,6 +233,16 @@ func pullService(info interface{}) bool {
 	rep.Body = bytes.NewReader(m)
 	b, err := rep.Visit()
 	if err != nil {
+		return false
+	}
+	var j resp
+	err = json.Unmarshal(b, &j)
+	if err != nil {
+		logger.Error(err.Error())
+		return false
+	}
+	if !j.Status {
+		logger.Error(j.Msg)
 		return false
 	}
 	fmt.Println(string(b))

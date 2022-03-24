@@ -5,6 +5,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/callback"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/parse"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/request"
+	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
 )
@@ -43,6 +44,7 @@ func (pr *PR) GetHtmlInfo() (message *callback.Message) {
 	title, content, date := pr.Parse.GetTextByParseHtml()
 	info = append(info, content...)
 	message = &callback.Message{
+		Id:         md5.MD5(pr.Request.Url),
 		Url:        pr.Request.Url,
 		Title:      _replace(title),
 		Summary:    _replace(strings.Join(info, "")),

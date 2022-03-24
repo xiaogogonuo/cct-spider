@@ -10,7 +10,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/request"
 	"github.com/xiaogogonuo/cct-spider/internal/pkg/subString"
 	"github.com/xiaogogonuo/cct-spider/pkg/db/mysql"
-	"github.com/xiaogogonuo/cct-spider/pkg/encrypt/md5"
+	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"net/http"
 	"strings"
 	"time"
@@ -20,6 +20,11 @@ type DataInfo struct {
 	DBName     string
 	PolicyCode string
 	PolicyName string
+}
+
+type resp struct {
+	Msg    string `json:"msg"`
+	Status bool   `json:"status"`
 }
 
 var rep *request.Request
@@ -65,9 +70,8 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 			region = regionMap[r][0]
 			regionCode = regionMap[r][1]
 		}
-		guid := md5.MD5(mes.Url)
 		sqlValues := &callback.SqlValues{
-			NEWS_GUID:        guid,
+			NEWS_GUID:        mes.Id,
 			NEWS_TITLE:       mes.Title,
 			NEWS_TS:          mes.Date,
 			NEWS_URL:         mes.Url,
@@ -89,7 +93,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 			NEWS_GYS_CODE:    "90",
 			NEWS_GYS_NAME:    "爬虫",
 		}
-		f.WriteMap(guid)
+		f.WriteMap(mes.Id)
 		v, l := GetQuotesAndValues(sqlValues)
 		if beginLen+l+len(oneQuoteSql) < 500000 {
 			insertValues = append(insertValues, v...)
@@ -120,7 +124,17 @@ func pullService(info []callback.SqlValues) bool {
 	rep.Body = bytes.NewReader(m)
 	b, err := rep.Visit()
 	if err != nil {
-		fmt.Println(string(b))
+		return false
+	}
+	var j resp
+	err = json.Unmarshal(b, &j)
+	if err != nil {
+		logger.Error(err.Error())
+		return false
+	}
+	if !j.Status {
+		logger.Error(j.Msg)
+		fmt.Println(info)
 		return false
 	}
 	fmt.Println(string(b))
