@@ -3,6 +3,7 @@ module github.com/xiaogogonuo/cct-spider
 go 1.16
 
 require (
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1 // indirect
 	github.com/PuerkitoBio/goquery v1.7.0
 	github.com/antlabs/strsim v0.0.2
 	github.com/go-sql-driver/mysql v1.6.0

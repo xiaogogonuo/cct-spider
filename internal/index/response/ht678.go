@@ -60,6 +60,8 @@ func respondHT(condition string) string {
 		return "https://quote.fx678.com/exchange/COMEX"
 	case "fxLME": // 伦敦金属
 		return "https://quote.fx678.com/exchange/LME"
+	case "fxCBOT": // 芝加哥CBOT
+		return "https://quote.fx678.com/exchange/CBOT"
 	}
 	return ""
 }

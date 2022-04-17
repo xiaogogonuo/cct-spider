@@ -86,6 +86,20 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondHKDCNY()
 	case "eastMoneyIM":
 		rowRespond = response.RespondIM()
+	case "eastMoneyAGM":
+		rowRespond = response.RespondAGM()
+	case "eastMoneyAUM":
+		rowRespond = response.RespondAUM()
+	case "eastMoneyCUM":
+		rowRespond = response.RespondCUM()
+	case "eastMoneyNIM":
+		rowRespond = response.RespondNIM()
+	case "eastMoneyYM":
+		rowRespond = response.RespondYM()
+	case "eastMoneyCM":
+		rowRespond = response.RespondCM()
+	case "eastMoneySCM":
+		rowRespond = response.RespondSCM()
 	case "eastMoneyGCHN10":
 		rowRespond = response.RespondGCHN10()
 	case "eastMoneyHG":
@@ -104,7 +118,7 @@ func (c Config) routingDistribution() (rowRespond []response.Respond) {
 		rowRespond = response.RespondSinaCPI()
 	case "ifeng":
 		rowRespond = response.RespondTBI()
-	case "fxGJZS", "fxGJZQ", "fxWH", "fxWHMP", "fxIPE", "fxCOMEX", "fxLME":
+	case "fxGJZS", "fxGJZQ", "fxWH", "fxWHMP", "fxIPE", "fxCOMEX", "fxLME", "fxCBOT":
 		rowRespond = response.RespondHT(c.Name, c.Case)
 	case "fxLibor": // 美元Libor隔夜
 	  rowRespond = response.RespondUSLibor(c.TargetCode)

@@ -264,17 +264,6 @@ func RespondShiBor(stopPage int) (row []Respond) {
 //	return
 //}
 
-/* 铁矿石主力合约
-页面展示接口：http://quote.eastmoney.com/qihuo/IM.html
-数据抓包接口：https://futsseapi.eastmoney.com/static/114_im_qt
-*/
-
-var ImApi = "https://futsseapi.eastmoney.com/static/114_im_qt"
-
-type IM struct {
-	QT Detail `json:"qt"`
-}
-
 type Detail struct {
 	P     float64 `json:"p"`     // 最新价
 	ZDE   float64 `json:"zde"`   // 涨跌额
@@ -282,6 +271,17 @@ type Detail struct {
 	H     float64 `json:"h"`     // 最高
 	L     float64 `json:"l"`     // 最低
 	QRSPJ float64 `json:"qrspj"` // 昨收
+}
+
+/* 铁矿石主力合约
+页面展示接口：http://quote.eastmoney.com/qihuo/IM.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/114_im_qt
+*/
+
+var ImApi = "http://futsseapi.eastmoney.com/static/114_im_qt"
+
+type IM struct {
+	QT Detail `json:"qt"`
 }
 
 func visitIM(url string) (respBytes []byte, err error) {
@@ -308,6 +308,293 @@ func RespondIM() (row []Respond) {
 	var respond Respond
 	respond.Date = time.Now().Format("20060102")
 	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", im.QT.P, im.QT.ZDE, im.QT.ZDF, "%", im.QT.H, im.QT.L, im.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 沪银主力
+页面展示接口：http://quote.eastmoney.com/qihuo/agm.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/113_agm_qt
+*/
+
+var AGMApi = "http://futsseapi.eastmoney.com/static/113_agm_qt"
+
+type AGM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitAGM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondAGM() (row []Respond) {
+	body, err := visitAGM(AGMApi)
+	if err != nil {
+		return
+	}
+	var agm AGM
+	if err := json.Unmarshal(body, &agm); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", agm.QT.P, agm.QT.ZDE, agm.QT.ZDF, "%", agm.QT.H, agm.QT.L, agm.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 沪金主力
+页面展示接口：http://quote.eastmoney.com/qihuo/aum.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/113_aum_qt
+*/
+
+var AUMApi = "http://futsseapi.eastmoney.com/static/113_aum_qt"
+
+type AUM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitAUM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondAUM() (row []Respond) {
+	body, err := visitAUM(AUMApi)
+	if err != nil {
+		return
+	}
+	var aum AUM
+	if err := json.Unmarshal(body, &aum); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", aum.QT.P, aum.QT.ZDE, aum.QT.ZDF, "%", aum.QT.H, aum.QT.L, aum.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 沪铜主力
+页面展示接口：http://quote.eastmoney.com/qihuo/cum.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/113_cum_qt
+*/
+
+var CUMApi = "http://futsseapi.eastmoney.com/static/113_cum_qt"
+
+type CUM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitCUM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondCUM() (row []Respond) {
+	body, err := visitCUM(CUMApi)
+	if err != nil {
+		return
+	}
+	var cum CUM
+	if err := json.Unmarshal(body, &cum); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", cum.QT.P, cum.QT.ZDE, cum.QT.ZDF, "%", cum.QT.H, cum.QT.L, cum.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 沪镍主力
+页面展示接口：http://quote.eastmoney.com/qihuo/nim.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/113_nim_qt
+*/
+
+var NIMApi = "http://futsseapi.eastmoney.com/static/113_nim_qt"
+
+type NIM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitNIM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondNIM() (row []Respond) {
+	body, err := visitNIM(NIMApi)
+	if err != nil {
+		return
+	}
+	var nim NIM
+	if err := json.Unmarshal(body, &nim); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", nim.QT.P, nim.QT.ZDE, nim.QT.ZDF, "%", nim.QT.H, nim.QT.L, nim.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 豆油主力
+页面展示接口：http://quote.eastmoney.com/qihuo/ym.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/114_ym_qt
+*/
+
+var YMApi = "http://futsseapi.eastmoney.com/static/114_ym_qt"
+
+type YM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitYM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondYM() (row []Respond) {
+	body, err := visitYM(YMApi)
+	if err != nil {
+		return
+	}
+	var ym YM
+	if err := json.Unmarshal(body, &ym); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", ym.QT.P, ym.QT.ZDE, ym.QT.ZDF, "%", ym.QT.H, ym.QT.L, ym.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 玉米主力
+页面展示接口：http://quote.eastmoney.com/qihuo/cm.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/114_cm_qt
+*/
+
+var CMApi = "http://futsseapi.eastmoney.com/static/114_cm_qt"
+
+type CM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitCM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondCM() (row []Respond) {
+	body, err := visitCM(CMApi)
+	if err != nil {
+		return
+	}
+	var cm CM
+	if err := json.Unmarshal(body, &cm); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", cm.QT.P, cm.QT.ZDE, cm.QT.ZDF, "%", cm.QT.H, cm.QT.L, cm.QT.QRSPJ,
+		time.Now().Format("2006-01-02 15:04:05"))
+	respond.TargetValue = value
+	row = append(row, respond)
+	return
+}
+
+/* 原油主力
+页面展示接口：http://quote.eastmoney.com/qihuo/scm.html
+数据抓包接口：http://futsseapi.eastmoney.com/static/142_scm_qt
+*/
+
+var SCMApi = "http://futsseapi.eastmoney.com/static/142_scm_qt"
+
+type SCM struct {
+	QT Detail `json:"qt"`
+}
+
+func visitSCM(url string) (respBytes []byte, err error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	defer resp.Body.Close()
+	respBytes, err = io.ReadAll(resp.Body)
+	return
+}
+
+func RespondSCM() (row []Respond) {
+	body, err := visitSCM(SCMApi)
+	if err != nil {
+		return
+	}
+	var scm SCM
+	if err := json.Unmarshal(body, &scm); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var respond Respond
+	respond.Date = time.Now().Format("20060102")
+	value := fmt.Sprintf("%.2f,%.2f,%.2f%s,%.2f,%.2f,%.2f,%s", scm.QT.P, scm.QT.ZDE, scm.QT.ZDF, "%", scm.QT.H, scm.QT.L, scm.QT.QRSPJ,
 		time.Now().Format("2006-01-02 15:04:05"))
 	respond.TargetValue = value
 	row = append(row, respond)
@@ -397,7 +684,7 @@ func visitMacroIndex(sourceTargetCode string) (b []byte, err error) {
 
 // RespondMacroIndex 返回东方财富宏观指标数据
 // 适用指标：工业增加值增长、社会消费品零售总额、货币供应量、居民消费价格指数(CPI)、国内生产总值(GDP)
-// 采购经理人指数(PMI)、工业品出厂价格指数(PPI)、贷款基准利率LPR
+// 采购经理人指数(PMI)、工业品出厂价格指数(PPI)、贷款基准利率LPR、海关进出口
 func RespondMacroIndex(sourceTargetCode, targetCode string) (row []Respond) {
 	row = make([]Respond, 0)
 	b, err := visitMacroIndex(sourceTargetCode)
@@ -410,6 +697,8 @@ func RespondMacroIndex(sourceTargetCode, targetCode string) (row []Respond) {
 	switch targetCode {
 	case "HY00007": // 贷款基准利率
 		row = lprIndustryIndexApiSimilarMarcoIndex(stringB, 9, 5)
+	case "HY00067": // 存款基准利率
+		row = lprIndustryIndexApiSimilarMarcoIndex(stringB, 9, 2)
 	case "HG00016": // 工业增加值同比增长
 		row = marcoPipe(stringB, 0, 1)
 	case "HG00017": // 工业增加值累计增长
@@ -432,6 +721,10 @@ func RespondMacroIndex(sourceTargetCode, targetCode string) (row []Respond) {
 		row = marcoPipe(stringB, 0, 1)
 	case "HG00023": // 工业品出厂价格指数当月，对应国家统计局的工业生产者出厂价格指数(上年同月=100)
 		row = marcoPipe(stringB, 0, 1)
+	case "HG00065": // 出口当月同比增速
+	    row = marcoPipe(stringB, 0, 2)
+	case "HG00066": // 存款准备金率
+		row = marcoPipe(stringB, 1, 3)
 	case "HG00001": // 国内生产总值同比增长(季度)
 		row = marcoPipeMonth2Season(stringB, 0, 2)
 	}
