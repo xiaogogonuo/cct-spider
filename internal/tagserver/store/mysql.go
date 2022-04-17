@@ -25,7 +25,7 @@ type resp struct {
 var regionAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsRegionLabel/saveRequest"
 var companyAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsCompanyLabel/saveRequest"
 var industryAPI = "http://106.37.165.121/inf/chengtong/py/sy/newsIndustryLabel/saveRequest"
-var updateNewsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/updateRequest"
+var updateNewsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
 var maxByte = 50000
 
 func init() {
@@ -66,7 +66,7 @@ func InsertRegion(newsRegionChan <-chan *NewsRegion, wg *sync.WaitGroup) {
 			regionServer = append([]NewsRegion{}, *region)
 		}
 	}
-	if len(insertValues) == 0 {
+	if len(regionServer) == 0 {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
@@ -106,7 +106,7 @@ func InsertCompany(newsCompanyChan <-chan *NewsCompany, wg *sync.WaitGroup) {
 			beginLen = len(preamble) + len(epilogue) + len(oneQuoteSql) + l
 		}
 	}
-	if len(insertValues) == 0 {
+	if len(companyServer) == 0 {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
@@ -146,7 +146,7 @@ func InsertIndustry(newsIndustryChan <-chan *NewsIndustry, wg *sync.WaitGroup) {
 			beginLen = len(preamble) + len(epilogue) + len(oneQuoteSql) + l
 		}
 	}
-	if len(insertValues) == 0 {
+	if len(industryServer) == 0 {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
@@ -195,7 +195,7 @@ func UpdateNews(f *filter.Filter, newsChan <-chan *PolicyNews, wg *sync.WaitGrou
 
 		}
 	}
-	if len(updateFields) == 0 {
+	if len(newsServer) == 0 {
 		return
 	}
 	for index, data := range updateFields {

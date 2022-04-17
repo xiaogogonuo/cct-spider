@@ -27,10 +27,13 @@ type resp struct {
 	Status bool   `json:"status"`
 }
 
-var rep *request.Request
+var (
+	rep *request.Request
+	key map[string]byte
+	// 生产机
+	newsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/saveRequest"
+)
 
-// 生产机
-var newsAPI = "http://106.37.165.121/inf/chengtong/py/sy/policyNewsInfo/insertRequest"
 
 func init() {
 	rep = &request.Request{
@@ -38,6 +41,7 @@ func init() {
 		Method: http.MethodPost,
 		Header: map[string]string{"Content-Type": "application/json"},
 	}
+	key = make(map[string]byte)
 }
 
 func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Message) {
@@ -52,6 +56,11 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 		pullServer                      []callback.SqlValues
 	)
 	for mes := range message {
+		if _, ok := key[mes.Id]; !ok{
+			key[mes.Id] = 0
+		}else {
+			continue
+		}
 		tLen := len(mes.Title)
 		sLen := len(mes.Summary)
 		if tLen == 0 || sLen == 0 || tLen+sLen < 30 {
@@ -111,7 +120,7 @@ func (di *DataInfo) InsertIntoSQL(f *filter.Filter, message <-chan *callback.Mes
 			beginLen = len(preamble) + len(epilogue) + len(oneQuoteSql) + l
 		}
 	}
-	if len(insertValues) == 0 {
+	if len(pullServer) == 0 {
 		return
 	}
 	SQl := fmt.Sprintf("%s%s %s", preamble, strings.Join(quotes, ", "), epilogue)
