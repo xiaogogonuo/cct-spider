@@ -28,7 +28,7 @@ func GetPageUrlList(url string, urlChan chan<- *callback.UrlChan, wg *sync.WaitG
 	}
 	num := pr.GetPageNum("[0-9]+")
 	if num == 0 {
-		num = 80
+		num = 100
 	}
 	for i := 2; i < num; i++ {
 		if i < 10{
@@ -79,7 +79,7 @@ func GetHtmlInfo(url string, errChan chan<- *callback.InfoChan, message chan<- *
 			SourceCode:    "L_00008",
 			DateSelector:  ".new-time>span",
 			TitleSelector: ".bg-title",
-			TextSelector:  ".newText",
+			TextSelector:  ".newText, .text",
 			DomainName:    "www.chinawuliu.com.cn",
 		},
 	}
