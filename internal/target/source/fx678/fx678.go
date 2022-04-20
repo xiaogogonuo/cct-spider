@@ -1,7 +1,6 @@
 package fx678
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/xiaogogonuo/cct-spider/internal/target/model"
 	"github.com/xiaogogonuo/cct-spider/internal/target/pkg/downloader"
@@ -70,6 +69,5 @@ func SpiderFxExchangeTarget(sourceTargetCodeSpider, targetNameSpider string) (re
 	response.TargetValue = data
 	response.Date = time.Now().Format("20060102")
 	responses = append(responses, response)
-	fmt.Println(response)
 	return
 }

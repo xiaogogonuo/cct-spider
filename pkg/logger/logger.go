@@ -11,8 +11,8 @@ const (
 	logConsole = true                 // 是否打印日志到终端
 	JsonFormat = true                 // 日志保存格式是否采用json类型
 	Filename   = "log/cct-spider.log" // 日志保存路径
-	MaxSize    = 100                  // 每个日志文件保存几M，默认100M
-	MaxBackups = 30                   // 保留多少个备份，默认不限
+	MaxSize    = 10                   // 每个日志文件保存几M，默认100M
+	MaxBackups = 10                   // 保留多少个备份，默认不限
 	MaxAge     = 0                    // 保留多少天，默认不限
 	Compress   = false                // 是否压缩，默认不压缩
 )
@@ -51,7 +51,7 @@ func init() {
 		encoder,
 		syncer,
 		zap.NewAtomicLevelAt(zapcore.ErrorLevel),
-		)
+	)
 	allCore = append(allCore, coreFile)
 
 	if logConsole {
@@ -60,7 +60,7 @@ func init() {
 			encoder,
 			syncer,
 			zap.NewAtomicLevelAt(zapcore.InfoLevel),
-			)
+		)
 		allCore = append(allCore, coreConsole)
 	}
 

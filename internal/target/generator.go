@@ -23,7 +23,7 @@ func Generator(ec ExcelConfig, responses []model.Response, targetValueCut bool) 
 		db.DataSourceCode = ec.DataSourceCode
 		db.DataSourceName = ec.DataSourceName
 		db.SourceTargetCode = ec.SourceTargetCode
-		db.IsQuantity = ec.IsQuantity
+		db.IsQuantity = "Y"
 		db.UnitType = ec.UnitType
 		db.UnitName = ec.UnitName
 		db.RegionCode = response.RegionCode

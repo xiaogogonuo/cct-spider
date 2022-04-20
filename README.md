@@ -3,15 +3,19 @@
 ## 构建可执行文件
 ```sh
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/group cmd/group/group.go
-GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index cmd/index/main.go
-GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/index24 cmd/index24/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/industry cmd/industry/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/ministries cmd/ministries/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/government cmd/government/main.go
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/tagging cmd/tagging/main.go
 
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/similarity cmd/similarity/main.go
+```
 
+## 诚通宏观指标、行业指标
+```sh
+GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/target_http cmd/target/target_http/target_http.go
+chmod +x target_http
+nohup ./target_http > target_http.log 2>&1 &
 ```
 
 ```

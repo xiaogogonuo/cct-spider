@@ -2,6 +2,7 @@ package target
 
 // ExcelConfig Excel配置
 type ExcelConfig struct {
+	Enable                 bool   // 是否启用
 	TargetCode             string // 指标编码
 	TargetName             string // 指标名称
 	TargetNameSpider       string // 指标名称_爬虫程序
@@ -17,5 +18,4 @@ type ExcelConfig struct {
 	PeriodName             string // 指标期间名称
 	SpiderTime             string // 爬虫时间
 	Adapter                string // 适配
-	Enable                 bool   // 是否启用
 }

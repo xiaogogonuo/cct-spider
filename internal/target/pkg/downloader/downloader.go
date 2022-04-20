@@ -40,12 +40,14 @@ func Get(url string, header map[string]string) (body []byte, err error) {
 }
 
 // Post 带请求体的POST方法
-func Post(url string, reader []byte) (body []byte, err error) {
+func Post(url string, reader []byte, header map[string]string) (body []byte, err error) {
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(reader))
 	if err != nil {
 		return
 	}
-	req.Header.Add("Content-Type", "application/json")
+	for k, v := range header {
+		req.Header.Add(k, v)
+	}
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

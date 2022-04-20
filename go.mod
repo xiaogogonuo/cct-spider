@@ -3,13 +3,14 @@ module github.com/xiaogogonuo/cct-spider
 go 1.16
 
 require (
-	github.com/360EntSecGroup-Skylar/excelize v1.4.1 // indirect
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/PuerkitoBio/goquery v1.7.0
 	github.com/antlabs/strsim v0.0.2
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/robertkrimen/otto v0.0.0-20210614181706-373ff5438452
 	github.com/spf13/viper v1.7.1
+	github.com/tebeka/selenium v0.9.9
 	go.uber.org/zap v1.10.0
 	golang.org/x/text v0.3.2
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect

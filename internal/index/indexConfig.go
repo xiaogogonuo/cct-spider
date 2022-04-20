@@ -503,7 +503,7 @@ var ConfigString = `[
 "Name": "地区生产总值", 
 "Case": "sinaRegionGDP", 
 "TargetNameEN": "RegionGDP", 
-"TargetCode": "RegionCPI", 
+"TargetCode": "HG00002", 
 "DataSourceCode": "sina", 
 "DataSourceName": "新浪财经", 
 "SourceTargetCode": "event7", 

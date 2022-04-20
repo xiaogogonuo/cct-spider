@@ -62,7 +62,8 @@ func SpiderSCITargetPII() (responses []model.Response) {
 // spiderSCI 爬取卓创资讯的任意指数
 func spiderSCI(postData PostData) (responses []model.Response) {
 	reader, _ := json.Marshal(postData)
-	body, err := downloader.Post(APISCITarget, reader)
+	header := map[string]string{"Content-Type": "application/json"}
+	body, err := downloader.Post(APISCITarget, reader, header)
 	if err != nil {
 		logger.Error(err.Error())
 		return

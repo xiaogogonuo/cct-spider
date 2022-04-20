@@ -18,6 +18,9 @@ func ExcelSetUp() []ExcelConfig {
 			continue
 		}
 		var ec ExcelConfig
+		if row[0] == "1" {
+			ec.Enable = true
+		}
 		ec.TargetCode = row[1]
 		ec.TargetName = row[2]
 		ec.TargetNameSpider = row[3]
@@ -26,16 +29,12 @@ func ExcelSetUp() []ExcelConfig {
 		ec.DataSourceName = row[6]
 		ec.SourceTargetCodeSpider = row[7]
 		ec.SourceTargetCode = row[8]
-		ec.IsQuantity = row[9]
-		ec.UnitType = row[10]
-		ec.UnitName = row[11]
-		ec.PeriodType = row[12]
-		ec.PeriodName = row[13]
-		ec.SpiderTime = row[14]
-		ec.Adapter = row[15]
-		if row[16] == "是" {
-			ec.Enable = true
-		}
+		ec.UnitType = row[9]
+		ec.UnitName = row[10]
+		ec.PeriodType = row[11]
+		ec.PeriodName = row[12]
+		ec.SpiderTime = row[13]
+		ec.Adapter = row[14]
 		ecs = append(ecs, ec)
 	}
 	return ecs

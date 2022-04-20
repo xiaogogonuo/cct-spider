@@ -28,13 +28,13 @@ func ManualHandleUpDown(array model.ResponseArray) (responses []model.Response) 
 			upDownPercent = ""
 		} else {
 			delta := array[i].TargetValue-array[i+1].TargetValue
-			upDown = fmt.Sprintf("%.4f", delta)
-			upDownPercent = fmt.Sprintf("%.4f", (delta)/array[i+1].TargetValue)
+			upDown = fmt.Sprintf("%.2f", delta)
+			upDownPercent = fmt.Sprintf("%.2f%s", (delta)/array[i+1].TargetValue*100, "%")
 		}
 		response.TargetValue = strings.Join([]string{
 			todayValue,     // 现价
 			upDown,         // 涨跌
-			upDownPercent,  // 涨跌幅，这里没有转换成百分比
+			upDownPercent,  // 涨跌幅
 			"",             // 最高
 			"",             // 最低
 			yesterdayValue, // 昨收
