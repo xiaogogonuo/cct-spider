@@ -79,6 +79,10 @@ func NewTarget() {
 			responses := fx678.SpiderFxExchangeTarget(ec.SourceTargetCodeSpider, ec.TargetNameSpider)
 			data := Generator(ec, responses, false)
 			targets = append(targets, data...)
+		case "FxExchangeTargetSpecial": // 爬取"汇通财经"网站的外汇、债券、原油、期货、外盘、汇率等指标
+			responses := fx678.SpiderFxExchangeTargetSpecial(ec.SourceTargetCodeSpider, ec.SourceTargetCode)
+			data := Generator(ec, responses, false)
+			targets = append(targets, data...)
 		case "SCITargetCOI": // 爬取卓创资讯的原油价格指数
 			responses := sci.SpiderSCITargetCOI()
 			data := Generator(ec, responses, false)

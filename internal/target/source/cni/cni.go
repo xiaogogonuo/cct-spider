@@ -41,6 +41,17 @@ func SpiderCniCNYXTarget() (responses []model.Response) {
 		timeStamp = lastTwo[0].(float64)
 		v = lastTwo
 	}
+	if v == nil {
+		logger.Error("CniCNYXTarget value is nil")
+		return
+	}
+	for idx, vv := range v {
+		if vv == nil {
+			err := fmt.Errorf("CniCNYXTarget value idx %d is nil", idx)
+			logger.Error(err.Error())
+			return
+		}
+	}
 	tm := time.Unix(int64(timeStamp)/1000, 0)
 	var response model.Response
 	response.Date = tm.Format("20060102")

@@ -1,7 +1,10 @@
 package fx678
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/xiaogogonuo/cct-spider/internal/target/constant"
 	"github.com/xiaogogonuo/cct-spider/internal/target/model"
 	"github.com/xiaogogonuo/cct-spider/internal/target/pkg/downloader"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
@@ -36,7 +39,7 @@ var APIFxExchangeTarget = "https://quote.fx678.com/exchange/"
 // - 美债10年收益率、日债10年收益率、德债10年收益率、英债10年收益率
 //   • 页面展示接口：https://quote.fx678.com/exchange/GJZQ
 //   • 数据获取接口：https://quote.fx678.com/exchange/GJZQ
-// - 日经225、英国FTSE100、德国DAX30、法国CAC40、意大利MIB、(加拿大)S&P/TSX 60、斯托克600、纳斯达克指数、道琼斯工业指数、标普500、恒生指数
+// - 日经225、英国FTSE100、德国DAX30、法国CAC40、意大利MIB、加拿大SP/TSX、斯托克600、纳斯达克指数、道琼斯工业指数、标普500、恒生指数
 //   • 页面展示接口：https://quote.fx678.com/exchange/GJZS
 //   • 数据获取接口：https://quote.fx678.com/exchange/GJZS
 func SpiderFxExchangeTarget(sourceTargetCodeSpider, targetNameSpider string) (responses []model.Response) {
@@ -68,6 +71,48 @@ func SpiderFxExchangeTarget(sourceTargetCodeSpider, targetNameSpider string) (re
 	var response model.Response
 	response.TargetValue = data
 	response.Date = time.Now().Format("20060102")
+	responses = append(responses, response)
+	return
+}
+
+// APIFxExchangeTargetSpecial 汇通财经数据接口
+var APIFxExchangeTargetSpecial = "https://api-q.fx678img.com/getQuote.php?exchName=%s&symbol=%s"
+
+// SpiderFxExchangeTargetSpecial 爬取"汇通财经"网站的外汇、债券、原油、期货、外盘、汇率等特殊指标，指标在首页不展示，在自己单独页面
+// 适用指标：
+// - 斯托克600
+//   • 页面展示接口：https://quote.fx678.com/symbol/SXO
+//   • 数据获取接口：https://api-q.fx678img.com/getQuote.php?exchName=GJZS&symbol=SXO
+func SpiderFxExchangeTargetSpecial(sourceTargetCodeSpider, sourceTargetCode string) (responses []model.Response) {
+	url := fmt.Sprintf(APIFxExchangeTargetSpecial, sourceTargetCodeSpider, sourceTargetCode)
+	body, err := downloader.Get(url, map[string]string{
+		"Referer": "https://quote.fx678.com/",
+		"User-Agent": constant.UserAgent,
+	})
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var target fxTarget
+	if err = json.Unmarshal(body, &target); err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	if !target.StatusValid() {
+		logger.Error(fmt.Sprintf("%s status invalid", sourceTargetCode))
+		return
+	}
+	if !target.DataValid() {
+		logger.Error(fmt.Sprintf("%s data invalid", sourceTargetCode))
+		return
+	}
+	data, err := target.Handler()
+	if err != nil {
+		return
+	}
+	var response model.Response
+	response.Date = time.Now().Format("20060102")
+	response.TargetValue = data
 	responses = append(responses, response)
 	return
 }
