@@ -30,7 +30,7 @@ type DataBase struct {
 func (d *DataBase) UpdateAcct(date, periodType string) {
 	switch periodType {
 	case constant.PeriodTypeYear:
-		d.AcctYear = date
+		d.AcctYear = date[:4]
 	case constant.PeriodTypeSeason:
 		d.AcctYear = date[:4]
 		d.AcctSeason = date[4:6]
@@ -40,6 +40,6 @@ func (d *DataBase) UpdateAcct(date, periodType string) {
 	case constant.PeriodTypeDay:
 		d.AcctYear = date[:4]
 		d.AcctMonth = date[4:6]
-		d.AcctDate = date
+		d.AcctDate = date[:8]
 	}
 }

@@ -209,7 +209,13 @@ func SpiderEastMoneyEconomicTargetCHN10(pages int) (responses []model.Response) 
 			break
 		}
 		for _, data := range chn.Result.Data {
-			date := strings.Split(data.SolarDate, "/")
+			var date []string
+			if strings.Contains(data.SolarDate, "/") {
+				date = strings.Split(data.SolarDate, "/")
+			} else {
+				date = strings.Split(data.SolarDate, "-")
+			}
+			// date := strings.Split(data.SolarDate, "/")
 			var (
 				year  string
 				month string

@@ -53,7 +53,7 @@ func SpiderChinaWuLiuTarget(targetNameSpider string) (responses []model.Response
 					} else {
 						month = match[2]
 					}
-					response.TargetValue = match[3]
+					response.TargetValue = strings.ReplaceAll(match[3], "%", "")
 					response.Date = match[1] + month
 					responses = append(responses, response)
 				}

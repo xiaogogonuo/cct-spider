@@ -25,7 +25,7 @@ func push(newTargets []model.DataBase) []string {
 	var targetForUpdate []string
 	for _, tar := range newTargets {
 		if err := sendAnyData(tar); err == nil {
-			targetForUpdate = append(targetForUpdate, tar.TargetGUID)
+			targetForUpdate = append(targetForUpdate, tar.ValueGUID)
 		}
 	}
 	return targetForUpdate
