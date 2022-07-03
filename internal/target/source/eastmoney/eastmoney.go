@@ -179,6 +179,70 @@ func SpiderEastMoneyEconomicTargetBOR(sourceTargetCodeSpider string, pages int) 
 	return
 }
 
+// APIEastMoneyEconomicTargetBORV2 东方财富宏观指标`上海银行间同业拆放利率隔夜`数据接口
+var (
+	APIEastMoneyEconomicTargetBORV2Part1 = "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter="
+	APIEastMoneyEconomicTargetBORV2Part2 = "&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE"
+)
+
+// SpiderEastMoneyEconomicTargetBORV2 东方财富宏观指标`上海银行间同业拆放利率隔夜`数据接口V2
+// 适用指标：
+// - 上海银行间同业拆放利率隔夜
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99221&cu=cny&type=009016&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 上海银行间同业拆放利率1周
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99222&cu=cny&type=009017&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22101%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 上海银行间同业拆放利率1月
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99224&cu=cny&type=009019&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 上海银行间同业拆放利率3月
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99225&cu=cny&type=009020&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 上海银行间同业拆放利率1年
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=sh&t=99&d=99228&cu=cny&type=009023&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22301%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 伦敦同业间拆借利率隔夜
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=ld&t=96&d=99251&cu=usd&type=009001&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22GBP%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 伦敦同业间拆借利率1月
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=ld&t=96&d=99253&cu=usd&type=009004&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22GBP%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+// - 伦敦同业间拆借利率3月
+//   • 页面展示接口：https://data.eastmoney.com/shibor/shibor.aspx?m=ld&t=96&d=99255&cu=usd&type=009006&p=1
+//   • 数据获取接口：https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CREPORT_PERIOD%2CIR_RATE%2CCHANGE_RATE%2CINDICATOR_ID%2CLATEST_RECORD%2CMARKET%2CMARKET_CODE%2CCURRENCY%2CCURRENCY_CODE&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22GBP%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+func SpiderEastMoneyEconomicTargetBORV2(sourceTargetCodeSpider string) (responses []model.Response) {
+	url := APIEastMoneyEconomicTargetBORV2Part1 + sourceTargetCodeSpider + APIEastMoneyEconomicTargetBORV2Part2
+	body, err := downloader.SimpleGet(url)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	var bor eastMoneyBOR
+	err = json.Unmarshal(body, &bor)
+	if err != nil {
+		logger.Error(err.Error())
+		return
+	}
+	if !bor.Success {
+		logger.Info("download bor fail")
+		return
+	}
+	var ra model.ResponseArray
+	for _, data := range bor.Result.Data {
+		var response model.ResponseDateStringValueFloat
+		response.TargetValue = data.IR_RATE
+		reportDate := strings.Split(data.REPORT_DATE, " ")
+		if len(reportDate) != 2 {
+			continue
+		}
+		response.Date = strings.ReplaceAll(reportDate[0], "-", "")
+		ra = append(ra, response)
+	}
+	responses = ManualHandleUpDown(ra)
+	return
+}
+
 // APIEastMoneyEconomicTargetCHN10 东方财富宏观指标`中债10年期国债到期收益率`数据接口
 var APIEastMoneyEconomicTargetCHN10 = "https://datacenter-web.eastmoney.com/api/data/get?type=RPTA_WEB_TREASURYYIELD&sty=ALL&st=SOLAR_DATE&sr=-1&p=%d&ps=50"
 

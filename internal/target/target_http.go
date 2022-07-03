@@ -51,6 +51,10 @@ func NewTarget() {
 			responses := eastmoney.SpiderEastMoneyEconomicTargetBOR(ec.SourceTargetCodeSpider, 1)
 			data := Generator(ec, responses, false)
 			targets = append(targets, data...)
+		case "EastMoneyEconomicTargetBORV2": // 爬取"东方财富"网站的`宏观指标-上海银行间同业拆放利率隔夜`
+			responses := eastmoney.SpiderEastMoneyEconomicTargetBORV2(ec.SourceTargetCodeSpider)
+			data := Generator(ec, responses, false)
+			targets = append(targets, data...)
 		case "EastMoneyEconomicTargetCHN10": // 爬取"东方财富"网站的`宏观指标-中债10年期国债到期收益率`
 			responses := eastmoney.SpiderEastMoneyEconomicTargetCHN10(1)
 			data := Generator(ec, responses, false)
@@ -122,7 +126,6 @@ func NewTarget() {
 	var nonRealtimeTargets []model.DataBase // 代表非实时指标，需要做唯一性校验
 	var realtimeTargets []model.DataBase    // 代表实时指标，直接发送到数据库服务器
 	for _, tar := range targets {
-		fmt.Println(tar.AcctDate, len(tar.AcctDate))
 		if strings.Contains(tar.TargetValue, ",") { // 实时指标值包含多个数据，以逗号分隔
 			realtimeTargets = append(realtimeTargets, tar)
 			continue

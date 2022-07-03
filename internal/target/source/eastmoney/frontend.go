@@ -56,3 +56,22 @@ type eastMoneyGlobalTarget struct {
 		F170 float64 `json:"f170"` // 涨跌幅
 	} `json:"data"`
 }
+
+// eastMoneyBOR 东方财富拆借利率接口返回的数据结构
+type eastMoneyBOR struct {
+	Result struct{
+		Data []struct{
+			REPORT_DATE string `json:"REPORT_DATE"`
+			REPORT_PERIOD string `json:"REPORT_PERIOD"`
+			IR_RATE float64 `json:"IR_RATE"`
+			CHANGE_RATE float64 `json:"CHANGE_RATE"`
+			INDICATOR_ID string `json:"INDICATOR_ID"`
+			LATEST_RECORD float64 `json:"LATEST_RECORD"`
+			MARKET string `json:"MARKET"`
+			MARKET_CODE string `json:"MARKET_CODE"`
+			CURRENCY string `json:"CURRENCY"`
+			CURRENCY_CODE string `json:"CURRENCY_CODE"`
+		} `json:"data"`
+	} `json:"result"`
+	Success bool `json:"success"`
+}
