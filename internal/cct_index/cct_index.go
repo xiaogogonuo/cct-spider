@@ -1,10 +1,10 @@
 package cct_index
 
 import (
+	"fmt"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/factory"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/model"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/pkg/text"
-	"github.com/xiaogogonuo/cct-spider/internal/cct_index/remote"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/eastmoney"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
@@ -53,8 +53,8 @@ func CCTIndex() {
 			continue
 		}
 		switch ic.Adapter {
-		case "EastMoneyEconomicTarget": // 爬取"东方财富"网站的经济数据
-			buffers := eastmoney.SpiderEastMoneyEconomicTarget(ic.TargetCode)
+		case "EastMoney": // 东方财富
+			buffers := eastmoney.SpiderEastMoney(ic)
 			idx := factory.Manufacture(ic, buffers)
 			indexes = append(indexes, idx...)
 		}
@@ -70,22 +70,23 @@ func CCTIndex() {
 		}
 		if _, ok := uniqueIndexes[index.ValueGUID]; !ok {
 			noneRealIndexes = append(noneRealIndexes, index)
+			fmt.Println(*index)
 		}
 	}
 
 	// 第五步：将新数据发送到远程服务器
-	_ = remote.Push(realTimeIndexes)
-	u := remote.Push(noneRealIndexes)
+	//_ = remote.Push(realTimeIndexes)
+	//u := remote.Push(noneRealIndexes)
 
 	// 第六步：将新记录表中的内容追加到indexes.txt
-	var indexForAppend []string
-	for _, v := range u {
-		if _, ok := uniqueIndexes[v]; !ok {
-			indexForAppend = append(indexForAppend, v)
-		}
-	}
+	//var indexForAppend []string
+	//for _, v := range u {
+	//	if _, ok := uniqueIndexes[v]; !ok {
+	//		indexForAppend = append(indexForAppend, v)
+	//	}
+	//}
 
-	text.AppendToText(IndexValueGUID, indexForAppend...)
+	//text.AppendToText(IndexValueGUID, indexForAppend...)
 
 	time.Sleep(SpiderInterval)
 }

@@ -1,5 +1,6 @@
 package api
 
+// 东方财富经济数据接口
 const (
 	// 国内生产总值同比增长
 	// GDPTb 页面展示接口：
@@ -29,7 +30,7 @@ const (
 	// CPI 页面展示接口：
 	_ = "https://data.eastmoney.com/cjsj/cpi.html"
 	// CPI 数据获取接口：
-	CPI = "https://datacenter-web.eastmoney.com/api/data/v1/get?columns=REPORT_DATE%2CTIME%2CBASIC_CURRENCY%2CBASIC_CURRENCY_SAME%2CBASIC_CURRENCY_SEQUENTIAL%2CCURRENCY%2CCURRENCY_SAME%2CCURRENCY_SEQUENTIAL%2CFREE_CASH%2CFREE_CASH_SAME%2CFREE_CASH_SEQUENTIAL&pageNumber=1&pageSize=2000&sortColumns=REPORT_DATE&sortTypes=-1&reportName=RPT_ECONOMY_CURRENCY_SUPPLY"
+	CPI = "https://datacenter-web.eastmoney.com/api/data/v1/get?columns=REPORT_DATE%2CTIME%2CNATIONAL_SAME%2CNATIONAL_BASE%2CNATIONAL_SEQUENTIAL%2CNATIONAL_ACCUMULATE%2CCITY_SAME%2CCITY_BASE%2CCITY_SEQUENTIAL%2CCITY_ACCUMULATE%2CRURAL_SAME%2CRURAL_BASE%2CRURAL_SEQUENTIAL%2CRURAL_ACCUMULATE&pageNumber=1&pageSize=2000&sortColumns=REPORT_DATE&sortTypes=-1&reportName=RPT_ECONOMY_CPI"
 
 	// 采购经理人指数
 	// PMI 页面展示接口：
@@ -68,28 +69,56 @@ const (
 	WH = "https://datacenter-web.eastmoney.com/api/data/v1/get?columns=REPORT_DATE%2CTIME%2CGOLD_RESERVES%2CGOLD_RESERVES_SAME%2CGOLD_RESERVES_SEQUENTIAL%2CFOREX%2CFOREX_SAME%2CFOREX_SEQUENTIAL&pageNumber=1&pageSize=2000&sortColumns=REPORT_DATE&sortTypes=-1&reportName=RPT_ECONOMY_GOLD_CURRENCY"
 )
 
-/*
-上海银行同业拆借市场-Shibor人民币-隔夜
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+// 东方财富拆借利率接口
+const (
+	// 银行间拆借利率
+	// LendingRate 页面展示接口：
+	_ = "https://data.eastmoney.com/shibor/default.html"
+	// LendingRate 数据获取接口：
+	// 上海银行同业拆借市场-Shibor人民币-隔夜
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 上海银行同业拆借市场-Shibor人民币-1周
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22101%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 上海银行同业拆借市场-Shibor人民币-1月
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 上海银行同业拆借市场-Shibor人民币-3月
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 上海银行同业拆借市场-Shibor人民币-1年
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22301%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 伦敦银行同业拆借市场-Libor美元-隔夜(O/N)
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 伦敦银行同业拆借市场-Libor美元-1月
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+	//
+	// 伦敦银行同业拆借市场-Libor美元-3月
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
+	LendingRate = "https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=#&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE"
+)
 
-上海银行同业拆借市场-Shibor人民币-1周
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22101%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+// 东方财富行业指数接口
+const (
+	// Industry
+	// BDI 波罗的海干散货指数
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=(INDICATOR_ID%3D%22EMI00107664%22)
+	//
+	// LPI 物流业景气指数
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=(INDICATOR_ID%3D%22EMI00352262%22)
 
-上海银行同业拆借市场-Shibor人民币-1月
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	// CCI 中国大宗商品指数
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=(INDICATOR_ID%3D%22EMI00662535%22)
 
-上海银行同业拆借市场-Shibor人民币-3月
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	// CONC 美原油指数
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=(INDICATOR_ID%3D%22EMI01508580%22)
 
-上海银行同业拆借市场-Shibor人民币-1年
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22001%22)(CURRENCY_CODE%3D%22CNY%22)(INDICATOR_ID%3D%22301%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
+	// SOX 费城半导体指数
+	// https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=(INDICATOR_ID%3D%22EMI00055562%22)
 
-伦敦银行同业拆借市场-Libor美元-隔夜(O/N)
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22001%22)&pageNumber=1&pageSize=365&sortTypes=-1&sortColumns=REPORT_DATE
-
-伦敦银行同业拆借市场-Libor美元-1月
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22201%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
-
-伦敦银行同业拆借市场-Libor美元-3月
-https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_IMP_INTRESTRATEN&columns=REPORT_DATE%2CIR_RATE%2CCHANGE_RATE%2C&filter=(MARKET_CODE%3D%22003%22)(CURRENCY_CODE%3D%22USD%22)(INDICATOR_ID%3D%22203%22)&pageNumber=1&pageSize=20&sortTypes=-1&sortColumns=REPORT_DATE
-*/
+	//Industry 行业数据获取接口：
+	Industry = "https://datacenter-web.eastmoney.com/api/data/v1/get?sortColumns=REPORT_DATE&sortTypes=-1&pageSize=2000&pageNumber=1&reportName=RPT_INDUSTRY_INDEX&columns=REPORT_DATE%2CINDICATOR_VALUE%2CCHANGE_RATE%2CCHANGERATE_3M%2CCHANGERATE_6M%2CCHANGERATE_1Y%2CCHANGERATE_2Y%2CCHANGERATE_3Y&filter=#"
+)

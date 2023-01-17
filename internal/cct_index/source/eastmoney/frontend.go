@@ -150,7 +150,7 @@ type JCK struct {
 			ExitAccumulate       float64 `json:"EXIT_ACCUMULATE"`        // 累计出口额-金额(亿美元)：3593601500
 			ImportAccumulate     float64 `json:"IMPORT_ACCUMULATE"`      // 累计进口额-金额(亿美元)：2715998800
 			ExitAccumulateSame   float64 `json:"EXIT_ACCUMULATE_SAME"`   // 累计出口额-同比增长：7
-			ImportAccumulateSame string  `json:"IMPORT_ACCUMULATE_SAME"` // 累计进口额-同比增长：1.1
+			ImportAccumulateSame float64 `json:"IMPORT_ACCUMULATE_SAME"` // 累计进口额-同比增长：1.1
 		} `json:"data"`
 	} `json:"result"`
 }
@@ -185,6 +185,33 @@ type WH struct {
 			Forex                  float64 `json:"FOREX"`                    // 国家外汇储备(亿美元)-数值：31276.91
 			ForexSame              float64 `json:"FOREX_SAME"`               // 国家外汇储备(亿美元)-同比：-3.76826907
 			ForexSequential        float64 `json:"FOREX_SEQUENTIAL"`         // 国家外汇储备(亿美元)-环比：0.32728274
+		} `json:"data"`
+	} `json:"result"`
+}
+
+// LendingRate 拆借利率
+type LendingRate struct {
+	Result struct {
+		Data []struct {
+			ReportDate string  `json:"REPORT_DATE"` // 日期："2023-01-16 00:00:00"
+			IrRate     float64 `json:"IR_RATE"`     // 利率(%)：1.568
+			ChangeRate float64 `json:"CHANGE_RATE"` // 涨跌(BP)：32.6
+		} `json:"data"`
+	} `json:"result"`
+}
+
+// Industry 行业指数
+type Industry struct {
+	Result struct {
+		Data []struct {
+			ReportDate     string  `json:"REPORT_DATE"`     // 日期："2023-01-16 00:00:00"
+			IndicatorValue float64 `json:"INDICATOR_VALUE"` // 最新值：946
+			ChangeRate     float64 `json:"CHANGE_RATE"`     // 涨跌涨跌幅：0
+			ChangeRate3M   float64 `json:"CHANGERATE_3M"`   // 近3月涨跌幅：-48.53101197
+			ChangeRate6M   float64 `json:"CHANGERATE_6M"`   // 近6月涨跌幅：-56
+			ChangeRate1Y   float64 `json:"CHANGERATE_1Y"`   // 近1年涨跌幅：-46.37188209
+			ChangeRate2Y   float64 `json:"CHANGERATE_2Y"`   // 近2年涨跌幅：-46.06613455
+			ChangeRate3Y   float64 `json:"CHANGERATE_3Y"`   // 近3年涨跌幅：23.17708333
 		} `json:"data"`
 	} `json:"result"`
 }
