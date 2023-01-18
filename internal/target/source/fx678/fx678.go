@@ -39,7 +39,7 @@ var APIFxExchangeTarget = "https://quote.fx678.com/exchange/"
 // - 美债10年收益率、日债10年收益率、德债10年收益率、英债10年收益率
 //   • 页面展示接口：https://quote.fx678.com/exchange/GJZQ
 //   • 数据获取接口：https://quote.fx678.com/exchange/GJZQ
-// - 日经225、英国FTSE100、德国DAX30、法国CAC40、意大利MIB、加拿大SP/TSX、斯托克600、纳斯达克指数、道琼斯工业指数、标普500、恒生指数
+// - 日经225、英国FTSE100、德国DAX30、法国CAC40、意大利MIB、加拿大SP/TSX、纳斯达克指数、道琼斯工业指数、标普500、恒生指数
 //   • 页面展示接口：https://quote.fx678.com/exchange/GJZS
 //   • 数据获取接口：https://quote.fx678.com/exchange/GJZS
 func SpiderFxExchangeTarget(sourceTargetCodeSpider, targetNameSpider string) (responses []model.Response) {
@@ -86,7 +86,7 @@ var APIFxExchangeTargetSpecial = "https://api-q.fx678img.com/getQuote.php?exchNa
 func SpiderFxExchangeTargetSpecial(sourceTargetCodeSpider, sourceTargetCode string) (responses []model.Response) {
 	url := fmt.Sprintf(APIFxExchangeTargetSpecial, sourceTargetCodeSpider, sourceTargetCode)
 	body, err := downloader.Get(url, map[string]string{
-		"Referer": "https://quote.fx678.com/",
+		"Referer":    "https://quote.fx678.com/",
 		"User-Agent": constant.UserAgent,
 	})
 	if err != nil {

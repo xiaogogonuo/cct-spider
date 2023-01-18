@@ -11,8 +11,11 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/poster"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"regexp"
+	"sort"
 	"time"
 )
+
+// 宏观指数
 
 // 国内生产总值同比增长
 func eastMoneyEconomicGDPTB() (buffers []*model.Buffer) {
@@ -95,6 +98,7 @@ func eastMoneyEconomicIAV(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -144,6 +148,7 @@ func eastMoneyEconomicXFP(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -189,6 +194,7 @@ func eastMoneyEconomicM2(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -234,6 +240,7 @@ func eastMoneyEconomicCPI(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -277,6 +284,7 @@ func eastMoneyEconomicPMI(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -322,6 +330,7 @@ func eastMoneyEconomicPPI(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -410,6 +419,7 @@ func eastMoneyEconomicJCK(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -455,6 +465,7 @@ func eastMoneyEconomicLL(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
 	return
 }
 
@@ -500,5 +511,53 @@ func eastMoneyEconomicWH(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		}
 		buffers = append(buffers, buffer)
 	}
+
+	return
+}
+
+// 中美国债收益率
+func eastMoneyEconomicNationalDebt(ic *model.IndexConfig) (buffers []*model.Buffer) {
+	body, err := downloader.SimpleGet(api.NationalDebt)
+
+	if err != nil {
+		if !safeguard.IsNetworkNormal() {
+			logger.Error("请检查服务器的网络是否能联通外网")
+			return
+		}
+		logger.Error(err.Error())
+		go poster.Poster(ic)
+		return
+	}
+
+	var s NationalDebt
+	if err = json.Unmarshal(body, &s); err != nil {
+		logger.Error(err.Error())
+		go poster.Poster(ic)
+		return
+	}
+	if len(s.Result.Data) == 0 {
+		go poster.Poster(ic)
+		return
+	}
+
+	var bufferTFList model.BufferTFList
+	for _, v := range s.Result.Data {
+		t, err := time.Parse("2006-01-02 03:04:05", v.SolarDate)
+		if err != nil {
+			logger.Error(err.Error())
+			go poster.Poster(ic)
+			break
+		}
+		bufferTF := model.BufferTF{}
+		bufferTF.Date = t
+		switch ic.TargetCode {
+		case "HG00062": // 中国：国债收益率 - 10年
+			bufferTF.TargetValue = v.EMM00166466
+		}
+		bufferTFList = append(bufferTFList, bufferTF)
+	}
+	sort.Sort(bufferTFList)
+	buffers = expansion(bufferTFList)
+
 	return
 }

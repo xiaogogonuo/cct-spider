@@ -5,7 +5,7 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/factory"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/model"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/pkg/text"
-	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/eastmoney"
+	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/wuliu"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
 	"strings"
 	"time"
@@ -52,12 +52,23 @@ func CCTIndex() {
 		if !ic.Enable || !ic.IfSpider() {
 			continue
 		}
+		var buffers []*model.Buffer
 		switch ic.Adapter {
 		case "EastMoney": // 东方财富
-			buffers := eastmoney.SpiderEastMoney(ic)
-			idx := factory.Manufacture(ic, buffers)
-			indexes = append(indexes, idx...)
+			//buffers = eastmoney.SpiderEastMoney(ic)
+		case "Sina": // 新浪财经
+			//buffers = sina.SpiderSina(ic)
+		case "Sci": // 卓创资讯
+			//buffers = sci.SpiderSCI(ic)
+		case "Fx": // 汇通财经
+			//buffers = fx.SpiderFx(ic)
+		case "XiBen": // 西本资讯
+			//buffers = xiben.SpiderXiBen(ic)
+		case "WuLiu": // 中国物流
+			buffers = wuliu.SpiderWuLiu(ic)
 		}
+		idx := factory.Manufacture(ic, buffers)
+		indexes = append(indexes, idx...)
 	}
 
 	// 第四步：过滤重复指标
@@ -66,6 +77,7 @@ func CCTIndex() {
 	for _, index := range indexes {
 		if strings.Contains(index.TargetValue, ",") {
 			realTimeIndexes = append(realTimeIndexes, index)
+			fmt.Println(*index)
 			continue
 		}
 		if _, ok := uniqueIndexes[index.ValueGUID]; !ok {

@@ -215,3 +215,40 @@ type Industry struct {
 		} `json:"data"`
 	} `json:"result"`
 }
+
+// Global 全球指数
+// 字段F43、F44、F45、F46、F60、F169、F170的值都需要除100
+// 字段F86是unix时间戳的表示形式
+type Global struct {
+	Data struct {
+		F43  float64 `json:"f43"`  // 现价：19874
+		F44  float64 `json:"f44"`  // 最高：19878
+		F45  float64 `json:"f45"`  // 最低：19874
+		F46  float64 `json:"f46"`  // 今开：19878 (暂时不用)
+		F60  float64 `json:"f60"`  // 昨收：19877
+		F86  int64   `json:"f86"`  // 更新时间：1673942372
+		F169 float64 `json:"f169"` // 涨跌额：-3
+		F170 float64 `json:"f170"` // 涨跌幅：-2   单位是%
+	} `json:"data"`
+}
+
+// NationalDebt 国债
+type NationalDebt struct {
+	Result struct {
+		Data []struct {
+			SolarDate   string  `json:"SOLAR_DATE"`  // 日期："2023-01-17 00:00:00"
+			EMM00588704 float64 `json:"EMM00588704"` // 中国：国债收益率 - 2年：2.4013
+			EMM00166462 float64 `json:"EMM00166462"` // 中国：国债收益率 - 5年：2.7346
+			EMM00166466 float64 `json:"EMM00166466"` // 中国：国债收益率 - 10年：2.9017
+			EMM00166469 float64 `json:"EMM00166469"` // 中国：国债收益率 - 30年：3.2531
+			EMM01276014 float64 `json:"EMM01276014"` // 中国：国债收益率 - 30年-2年：0.5004
+			EMM00000024 float64 `json:"EMM00000024"` // 中国GDP年增率(%)：null
+			EMG00001306 float64 `json:"EMG00001306"` // 美国：国债收益率 - 2年：4.18
+			EMG00001308 float64 `json:"EMG00001308"` // 美国：国债收益率 - 5年：3.6
+			EMG00001310 float64 `json:"EMG00001310"` // 美国：国债收益率 - 10年：3.53
+			EMG00001312 float64 `json:"EMG00001312"` // 美国：国债收益率 - 30年：3.64
+			EMG01339436 float64 `json:"EMG01339436"` // 美国：国债收益率 - 10-2年：-0.65
+			EMG00159635 float64 `json:"EMG00159635"` // 美国GDP年增率(%)：null
+		} `json:"data"`
+	} `json:"result"`
+}

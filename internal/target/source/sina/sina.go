@@ -37,8 +37,7 @@ var APISinaTargetForexShow = "https://finance.sina.com.cn/money/forex/hq/%s.shtm
 //       + Referer: https://finance.sina.com.cn/money/forex/hq/CNYJPY.shtml
 func SpiderSinaTargetForex(sourceTargetCodeSpider string) (responses []model.Response) {
 	url := APISinaTargetForex + strings.ToLower(sourceTargetCodeSpider)
-	body, err := downloader.Get(url, map[string]string{"Referer":
-	fmt.Sprintf(APISinaTargetForexShow, strings.ToUpper(sourceTargetCodeSpider))})
+	body, err := downloader.Get(url, map[string]string{"Referer": fmt.Sprintf(APISinaTargetForexShow, strings.ToUpper(sourceTargetCodeSpider))})
 	if err != nil {
 		logger.Error(err.Error())
 		return
@@ -84,7 +83,7 @@ var APISinaEconomicTarget = "https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREM
 //   • 数据获取接口：https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALL/MacPage_Service.get_pagedata?cate=price&event=2&from=1&num=31&condition=
 // - 地区生产总值
 //   • 页面展示接口：http://finance.sina.com.cn/mac/#nation-7-0-31-3
-//   • 数据获取接口：https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALL/MacPage_Service.get_pagedata?cate=price&event=7&from=1&num=31&condition=
+//   • 数据获取接口：https://quotes.sina.cn/mac/api/jsonp_v3.php/SINAREMOTECALL/MacPage_Service.get_pagedata?cate=price&event=7&from=0&num=31&condition=
 func SpiderSinaEconomicTarget(sourceTargetCodeSpider, targetCode string, pages int) (responses []model.Response) {
 	for page := 0; ; page++ {
 		if page >= pages && pages != -1 {

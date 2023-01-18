@@ -15,8 +15,12 @@ import (
 )
 
 // 东方财富-行业指数
-// 适用指标：物流业景气指数、中国大宗商品指数、波罗的海干散货指数
-// 行业指数接口每天记录都返回相同的两条，对其进行过滤
+// 适用：
+// - 物流业景气指数
+// - 中国大宗商品指数
+// - 波罗的海干散货指数
+// - 美原油指数
+// - 费城半导体指数
 func eastMoneyIndustry(ic *model.IndexConfig) (buffers []*model.Buffer) {
 	url := strings.ReplaceAll(api.Industry, "#", ic.SourceTargetCodeSpider)
 	body, err := downloader.SimpleGet(url)
@@ -42,7 +46,7 @@ func eastMoneyIndustry(ic *model.IndexConfig) (buffers []*model.Buffer) {
 		return
 	}
 
-	filter := make(map[string]struct{})
+	filter := make(map[string]struct{}) // 行业指数接口每天记录都返回相同的两条，对其进行过滤
 	for _, v := range s.Result.Data {
 		buffer := &model.Buffer{}
 		t, err := time.Parse("2006-01-02 03:04:05", v.ReportDate)
