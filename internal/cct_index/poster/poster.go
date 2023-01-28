@@ -17,56 +17,11 @@ const (
 )
 
 var (
-	receivers = []string{"xiaogogonuo@163.com"}
-	subject   = "城通爬虫系统警报"
+	Receivers = []string{"xiaogogonuo@163.com"}
+	Subject   = "城通爬虫系统警报"
 )
 
-var e = mail.NewEmail163(user, pass, nick)
-
-func GDPTBPoster() {
-	body := `
-<html>
-    <body>
-		<div>数据源名称：东方财富</div>
-		<div>指标名称：国内生产总值同比增长</div>
-		<div>指标代码：HG00001</div>
-		<div>原接口：%s</div>
-		<div>返回的数据格式如下：</div>
-        <p>
-			{
-				"version": "d07e8629dcb9b3c9ecc3eecb895f4600",
-				"result": {
-					"pages": 1,
-					"data": [
-						{
-							"REPORT_DATE": "2022-09-01 00:00:00",
-							"TIME": "2022年第1-3季度",
-							"DOMESTICL_PRODUCT_BASE": 870269,
-							"FIRST_PRODUCT_BASE": 54779.1,
-							"SECOND_PRODUCT_BASE": 350189.5,
-							"THIRD_PRODUCT_BASE": 465300.4,
-							"SUM_SAME": 3,
-							"FIRST_SAME": 4.2,
-							"SECOND_SAME": 3.9,
-							"THIRD_SAME": 2.3
-						}
-					],
-					"count": 1
-				},
-				"success": true,
-				"message": "ok",
-				"code": 0
-			}
-        </p>
-		<div>请检查接口的返回数据格式</div>
-	</body>
-</html>
-	`
-	body = fmt.Sprintf(body, api.GDPTb)
-	if err := e.Send(receivers, subject, body); err != nil {
-		logger.Error(err.Error())
-	}
-}
+var E163 = mail.NewEmail163(user, pass, nick)
 
 const Template = `
 <html>
@@ -194,7 +149,41 @@ const TemplateWuLiu = `
 </html>
 `
 
+const TemplateNrc = `
+<html>
+    <body>
+		<div>数据源：%s</div>
+		<div>指标名称：%s</div>
+		<div>指标代码：%s</div>
+		<div>原接口：https://www.ndrc.gov.cn/fggz/fgzh/gnjjjc/hbjr/202212/t20221229_1344648.html 返回的数据格式应该如下所示：</div>
+			<div class="article_con article_con_title">
+				<div class=TRS_Editor>
+					<div class="Custom_UnionStyle">
+						<p>xxx</p>
+					</div>
+				</div>
+			</div>
+		<div>请检查接口的返回数据格式是否同上案例一致</div>
+	</body>
+</html>
+`
+
 const (
+	GDPResponse = `
+		{
+			"REPORT_DATE": "2022-12-01 00:00:00",
+			"TIME": "2022年第1-4季度",
+			"DOMESTICL_PRODUCT_BASE": 1210207,
+			"FIRST_PRODUCT_BASE": 88345,
+			"SECOND_PRODUCT_BASE": 483164,
+			"THIRD_PRODUCT_BASE: 638698,
+			"SUM_SAME": 3,
+			"FIRST_SAME": 4.1,
+			"SECOND_SAME": 3.8,
+			"THIRD_SAME": 2.3
+		}
+`
+
 	IAVResponse = `
 		{
 			"REPORT_DATE": "2022-11-01 00:00:00",
@@ -467,11 +456,48 @@ const (
 			"p": ["456.4600", "456.4600"]
 		}
 `
+
+	IrcResponse = `
+		{
+			"rptCode": 200,
+			"msg": "Success",
+			"data": {
+				"total": 42,
+				"lists": [
+					{
+						"id": "3627778",
+						"docId": "1090231",
+						"itemId": "995",
+						"itemName": "监管动态",
+						"keyword": [
+							"监管动态",
+							"一、上海银行业资产负债情况\n2022年11月，上海辖内银行业金融机构本外币总资产余额23.29万亿元，同比增长11.93%。
+							商业银行本外币总资产余额20.36万亿元，同比增长11.62%，其中大型商业银行本外币资产余额8.28万亿元，同比增长11.90%；
+							股份制商业银行本外币资产余额5.76万亿元，同比增长14.34%。\n2022年11月，上海辖内银行业金融机构本外币总负债余额
+							22.28万亿元，同比增长12.08%。商业银行本外币总负债余额19.72万亿元，同比增长11.82%，其中大型商业银行本外币负
+							债余额8.18万亿元，同比增长11.99%；股份制商业银行本外币负债余额5.73万亿元，同比增长14.54%。\n二、上海银行业
+							资产质量情况\n2022年11月，上海辖内银行业金融机构本外币不良贷款余额795.38亿元，不良贷款率0.77%；其中，商业银
+							行本外币不良贷款余额565.11亿元，不良贷款率0.67%。\n三、上海保险业主要经营数据\n2022年1—11月，上海辖内保险公
+							司原保险保费收入累计1918亿元，其中财产险公司原保险保费收入605亿元，人身险公司原保险保费收入1313亿元。\n2022
+							年1—11月，上海辖内保险公司原保险赔付支出累计598亿元，其中财产险公司原保险赔付支出301亿元，人身险公司原保险赔付
+							支出297亿元。\n2022年1—11月，上海辖内保险公司保单件数当年累计319170万件，其中财产险公司316665万件，人身险
+							公司2505万件。\n\n注：因部分保险机构目前处于风险处置阶段，从2021年6月起，汇总数据口径暂不包括这部分机构。,
+							"上海银保监局发布2022年11月辖内银行业保险业主要监管指标数据情况"
+						]
+				],
+				"checkpage": 4,
+				"agencyOrgs": [],
+				"items": []
+			}
+		}
+`
 )
 
 func Poster(ic *model.IndexConfig) {
 	var body string
 	switch ic.TargetCode {
+	case "HG00001", "HG00098":
+		body = fmt.Sprintf(Template, ic.DataSourceName, ic.TargetName, ic.TargetCode, api.GDP, GDPResponse)
 	case "HG00016", "HG00017":
 		body = fmt.Sprintf(Template, ic.DataSourceName, ic.TargetName, ic.TargetCode, api.IAV, IAVResponse)
 	case "HG00027", "HG00028", "HG00029", "HG00030":
@@ -527,11 +553,15 @@ func Poster(ic *model.IndexConfig) {
 		body = fmt.Sprintf(TemplateXiBen, ic.DataSourceName, ic.TargetName, ic.TargetCode, url)
 	case "HG00094":
 		body = TemplateWuLiu
+	case "HG00095":
+		body = fmt.Sprintf(TemplateGlobal, ic.DataSourceName, ic.TargetName, ic.TargetCode, api.NPLoan, IrcResponse)
+	case "HG00118", "HG00119", "HG00120":
+		body = fmt.Sprintf(TemplateNrc, ic.DataSourceName, ic.TargetName, ic.TargetCode)
 	default:
 		url := strings.ReplaceAll(api.FxExchange, "#", ic.SourceTargetCodeSpider)
 		body = fmt.Sprintf(TemplateExchange, ic.DataSourceName, ic.TargetName, ic.TargetCode, url)
 	}
-	if err := e.Send(receivers, subject, body); err != nil {
+	if err := E163.Send(Receivers, Subject, body); err != nil {
 		logger.Error(err.Error())
 	}
 }

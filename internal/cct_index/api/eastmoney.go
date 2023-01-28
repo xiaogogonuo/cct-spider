@@ -2,11 +2,10 @@ package api
 
 // 东方财富-经济数据接口
 const (
-	// 国内生产总值同比增长
-	// GDPTb 页面展示接口：
-	_ = "https://data.eastmoney.com/cjsj/gdp.html"
-	// GDPTb 数据获取接口：
-	GDPTb = "https://datacenter-web.eastmoney.com/api/data/v1/get?columns=REPORT_DATE%2CTIME%2CDOMESTICL_PRODUCT_BASE%2CFIRST_PRODUCT_BASE%2CSECOND_PRODUCT_BASE%2CTHIRD_PRODUCT_BASE%2CSUM_SAME%2CFIRST_SAME%2CSECOND_SAME%2CTHIRD_SAME&pageNumber=1&pageSize=500&sortColumns=REPORT_DATE&sortTypes=-1&reportName=RPT_ECONOMY_GDP"
+	// GDP 国内生产总值同比增长 、国内生产总值环比增长
+	// • 页面展示接口：https://data.eastmoney.com/cjsj/gdp.html
+	// • 数据获取接口：
+	GDP = "https://datacenter-web.eastmoney.com/api/data/v1/get?columns=REPORT_DATE%2CTIME%2CDOMESTICL_PRODUCT_BASE%2CFIRST_PRODUCT_BASE%2CSECOND_PRODUCT_BASE%2CTHIRD_PRODUCT_BASE%2CSUM_SAME%2CFIRST_SAME%2CSECOND_SAME%2CTHIRD_SAME&pageNumber=1&pageSize=500&sortColumns=REPORT_DATE&sortTypes=-1&reportName=RPT_ECONOMY_GDP"
 
 	// IAV 工业增加值
 	// • 页面展示接口：https://data.eastmoney.com/cjsj/gyzjz.html

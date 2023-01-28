@@ -44,7 +44,7 @@ import (
 // - 纳斯达克指数
 // - 道琼斯工业指数
 // - 标普500
-// -恒生指数
+// - 恒生指数
 func fxExchange(ic *model.IndexConfig) (buffers []*model.Buffer) {
 	url := strings.ReplaceAll(api.FxExchange, "#", ic.SourceTargetCodeSpider)
 	body, err := downloader.SimpleGet(url)

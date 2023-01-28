@@ -8,7 +8,7 @@ import (
 )
 
 // APICBIRCTarget 银保监会指标接口
-var APICBIRCTarget = "http://www.cbirc.gov.cn/cbircweb/solr/totalStaSerch"
+var APICBIRCTarget = "http://www.irc.gov.cn/cbircweb/solr/totalStaSerch"
 
 // SpiderCBIRCTarget 爬取银保监会指标
 // 适用指标：
@@ -18,11 +18,11 @@ var APICBIRCTarget = "http://www.cbirc.gov.cn/cbircweb/solr/totalStaSerch"
 func SpiderCBIRCTarget(targetNameSpider string) (responses []model.Response) {
 	for i := 1; ; i++ {
 		payload := PayLoad{
-			KeyWords: targetNameSpider,
-			PageNo: i,
-			PageSize: "10",
+			KeyWords:   targetNameSpider,
+			PageNo:     i,
+			PageSize:   "10",
 			SearchType: "1",
-			Title: targetNameSpider,
+			Title:      targetNameSpider,
 		}
 		m, _ := json.Marshal(payload)
 		header := map[string]string{"Content-Type": "application/json"}

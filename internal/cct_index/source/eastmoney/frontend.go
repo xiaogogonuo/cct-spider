@@ -12,10 +12,10 @@ type GDP struct {
 			FirstProductBase    float64 `json:"FIRST_PRODUCT_BASE"`     // 第一产业绝对值(亿元)：29137.2
 			SecondProductBase   float64 `json:"SECOND_PRODUCT_BASE"`    // 第二产业绝对值(亿元)：228636.4
 			ThirdProductBase    float64 `json:"THIRD_PRODUCT_BASE"`     // 第三产业绝对值(亿元)：304868
-			SumSame             float64 `json:"SUM_SAME"`               // 国内生产总值同比增长：2.5  需加%
-			FirstSame           float64 `json:"FIRST_SAME"`             // 第一产业同比增长：5       需加%
-			SecondSame          float64 `json:"SECOND_SAME"`            // 第二产业同比增长：3.2     需加%
-			ThirdSame           float64 `json:"THIRD_SAME"`             // 第三产业同比增长：1.8     需加%
+			SumSame             float64 `json:"SUM_SAME"`               // 国内生产总值同比增长：2.5
+			FirstSame           float64 `json:"FIRST_SAME"`             // 第一产业同比增长：5
+			SecondSame          float64 `json:"SECOND_SAME"`            // 第二产业同比增长：3.2
+			ThirdSame           float64 `json:"THIRD_SAME"`             // 第三产业同比增长：1.8
 		} `json:"data"`
 	} `json:"result"`
 }

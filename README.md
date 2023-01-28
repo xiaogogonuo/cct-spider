@@ -16,6 +16,8 @@ GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/similarit
 GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o bin/target_http cmd/target/target_http/target_http.go
 chmod +x target_http
 nohup ./target_http > target_http.log 2>&1 &
+
+nohup ./cct_index > cct_index.log 2>&1 &
 ```
 
 ```

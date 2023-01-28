@@ -17,42 +17,37 @@ import (
 
 // 宏观指数
 
-// 国内生产总值同比增长
-func eastMoneyEconomicGDPTB() (buffers []*model.Buffer) {
-	body, err := downloader.SimpleGet(api.GDPTb)
-	var gdp GDP
-	if err = json.Unmarshal(body, &gdp); err != nil {
+// 国内生产总值
+func eastMoneyEconomicGDP(ic *model.IndexConfig) (buffers []*model.Buffer) {
+	body, err := downloader.SimpleGet(api.GDP)
+	if err != nil {
+		if !safeguard.IsNetworkNormal() {
+			logger.Error("请检查服务器的网络是否能联通外网")
+			return
+		}
 		logger.Error(err.Error())
-		go poster.GDPTBPoster()
-		return
-	}
-	if len(gdp.Result.Data) == 0 {
-		go poster.GDPTBPoster()
+		go poster.Poster(ic)
 		return
 	}
 
-	for _, v := range gdp.Result.Data {
-		buffer := &model.Buffer{}
-		t, err := time.Parse("2006-01-02 03:04:05", v.ReportDate)
-		if err != nil {
-			logger.Error(err.Error())
-			go poster.GDPTBPoster()
-			break
-		}
-		buffer.Date = fmt.Sprintf("%d", t.Year())
-		switch int(t.Month()) {
-		case 3:
-			buffer.Date += "Q1"
-		case 6:
-			buffer.Date += "Q2"
-		case 9:
-			buffer.Date += "Q3"
-		case 12:
-			buffer.Date += "Q4"
-		}
-		buffer.TargetValue = fmt.Sprintf("%.1f", v.SumSame)
-		buffers = append(buffers, buffer)
+	var gdp GDP
+	if err = json.Unmarshal(body, &gdp); err != nil {
+		logger.Error(err.Error())
+		go poster.Poster(ic)
+		return
 	}
+	if len(gdp.Result.Data) == 0 {
+		go poster.Poster(ic)
+		return
+	}
+
+	switch ic.TargetCode {
+	case "HG00001":
+		buffers = processGDPTB(gdp, ic)
+	case "HG00098":
+		buffers = processGDPHB(gdp, ic)
+	}
+
 	return
 }
 

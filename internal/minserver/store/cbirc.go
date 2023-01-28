@@ -13,7 +13,7 @@ type JsonCbirc struct {
 }
 
 type DataCbirc struct {
-	DocId    int `json:"docId"`
+	DocId    int    `json:"docId"`
 	DocTitle string `json:"docTitle"`
 	DocDate  string `json:"publishDate"`
 	DocClob  string `json:"docClob"`
@@ -24,7 +24,6 @@ type JsonDetailsCbirc struct {
 }
 
 var (
-	DetailUrl = "http://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectByDocId/data_docId=%v.json"
-	PageUrl = "https://www.cbirc.gov.cn/cn/view/pages/ItemDetail.html?docId=%v"
+	DetailUrl = "http://www.irc.gov.cn/cn/static/data/DocInfo/SelectByDocId/data_docId=%v.json"
+	PageUrl   = "https://www.irc.gov.cn/cn/view/pages/ItemDetail.html?docId=%v"
 )
-

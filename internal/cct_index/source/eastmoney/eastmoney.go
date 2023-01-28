@@ -7,8 +7,9 @@ import (
 // SpiderEastMoney 东方财富
 func SpiderEastMoney(ic *model.IndexConfig) (buffers []*model.Buffer) {
 	switch ic.TargetCode {
-	//case "HG00001":
-	//	buffers = eastMoneyEconomicGDPTB()
+	// 东方财富 - 经济数据 - 国内生产总值
+	case "HG00001", "HG00098":
+		buffers = eastMoneyEconomicGDP(ic)
 	// 东方财富 - 经济数据 - 工业增加值
 	case "HG00016", "HG00017":
 		buffers = eastMoneyEconomicIAV(ic)
