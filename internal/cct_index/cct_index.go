@@ -9,9 +9,9 @@ import (
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/fx"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/irc"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/nrc"
-	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/ppi100"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/sci"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/sina"
+	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/stats"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/wuliu"
 	"github.com/xiaogogonuo/cct-spider/internal/cct_index/source/xiben"
 	"github.com/xiaogogonuo/cct-spider/pkg/logger"
@@ -76,8 +76,8 @@ func CCTIndex() {
 			buffers = wuliu.SpiderWuLiu(ic)
 		case "Irc": // 银保监会
 			buffers = irc.SpiderIrc(ic)
-		case "PPI100": //  生意社
-			buffers = ppi100.SpiderPPI100(ic)
+		case "Stats": // 国家统计局
+			buffers = stats.SpiderStats(ic)
 		case "Nrc": // 中华人民共和国国家发展和改革委员会
 			buffers = nrc.SpiderNrc(ic)
 		}

@@ -168,6 +168,25 @@ const TemplateNrc = `
 </html>
 `
 
+const TemplateStatsIndustrialOutput = `
+<html>
+    <body>
+		<div>数据源：%s</div>
+		<div>指标名称：%s</div>
+		<div>指标代码：%s</div>
+		<div>列表页接口：%s 返回的网页源代码中应该包含如下类似元素：
+            var urlstr = 'http://www.stats.gov.cn/tjsj/zxfb/202211/t20221115_1890235.html';
+        </div>
+		<div>详情页接口：http://www.stats.gov.cn/tjsj/zxfb/202211/t20221115_1890235.html 返回的网页源代码中应该包含如下类似元素：
+            <div class="TRS_Editor">
+                ......
+            </div>
+        </div>
+		<div>请检查接口的返回数据格式是否同上案例一致</div>
+	</body>
+</html>
+`
+
 const (
 	GDPResponse = `
 		{
@@ -557,6 +576,10 @@ func Poster(ic *model.IndexConfig) {
 		body = fmt.Sprintf(TemplateGlobal, ic.DataSourceName, ic.TargetName, ic.TargetCode, api.NPLoan, IrcResponse)
 	case "HG00118", "HG00119", "HG00120":
 		body = fmt.Sprintf(TemplateNrc, ic.DataSourceName, ic.TargetName, ic.TargetCode)
+	case "HG00096", "HG00097":
+		url := strings.ReplaceAll(api.IndustrialOutput, "#", fmt.Sprintf("%d", 1))
+		url = strings.ReplaceAll(url, "$", fmt.Sprintf("%d", 10))
+		body = fmt.Sprintf(TemplateStatsIndustrialOutput, ic.DataSourceName, ic.TargetName, ic.TargetCode, url)
 	default:
 		url := strings.ReplaceAll(api.FxExchange, "#", ic.SourceTargetCodeSpider)
 		body = fmt.Sprintf(TemplateExchange, ic.DataSourceName, ic.TargetName, ic.TargetCode, url)

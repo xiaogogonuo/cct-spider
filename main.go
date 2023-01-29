@@ -1,6 +1,10 @@
 package main
 
-func main() {}
+func main() {
+	test()
+}
+
+func test() {}
 
 // 判断接口是否正常运行
 /*
